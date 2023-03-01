@@ -62,6 +62,7 @@ export default {
         },
         'HTML-CSS': {
           fonts: ['TeX'],
+          // eslint-disable-next-line object-curly-spacing
           styles: { '.MathJax_Display': { margin: 0 } },
           // linebreaks: {automatic: true},
           scale: 85,

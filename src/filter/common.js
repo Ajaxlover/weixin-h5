@@ -21,6 +21,13 @@ function doFilter() {
   })
 }
 
+const Types = [
+  { type: '1', name: '判断题' },
+  { type: '2', name: '单选题' },
+  { type: '3', name: '多选题' }
+]
+
 export default {
-  doFilter
+  doFilter,
+  Types
 }
