@@ -1,5 +1,5 @@
 <template>
-  <div class="page-test">竞赛</div>
+  <div class="page-test">竞赛11</div>
 </template>
 
 <script>
