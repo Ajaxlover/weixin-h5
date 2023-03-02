@@ -1,16 +1,18 @@
 <template>
-  <div class="page-join">
+  <div class="page-promise">
     <Nav :path="path"></Nav>
     <div class="content">
       <p>11111111111111111111</p>
       <p>11111111111111111111</p>
       <p>11111111111111111111</p>
       <p>11111111111111111111</p>
-      <p style="background-color: red">11111111111111111111</p>
-      <p style="background-color: blue">11111111111111111111</p>
+      <p>11111111111111111111</p>
+      <p>11111111111111111111</p>
     </div>
     <div class="footer van-hairline--top">
-      <van-button class="join-btn" type="primary" size="large" round>去报名</van-button>
+      <van-button class="join-btn" :disabled="isDisable" type="primary" size="large" round to="/sign">{{
+        time == 0 ? '确定' : `${time}s`
+      }}</van-button>
     </div>
   </div>
 </template>
@@ -19,22 +21,42 @@
 import Nav from '@/components/Nav'
 
 export default {
-  name: 'Join',
+  name: 'Promise',
   components: {
     Nav
   },
   data() {
     return {
-      path: '/'
+      path: '/',
+      time: 5
     }
   },
-  computed: {},
-  methods: {}
+  computed: {
+    isDisable() {
+      return this.time !== 0
+    }
+  },
+  mounted() {
+    this.init()
+  },
+  methods: {
+    init() {
+      const timer = setInterval(() => {
+        this.time--
+        if (this.time === 0) {
+          clearInterval(timer)
+        }
+      }, 1000)
+      this.$once('hook:beforeDestroy', () => {
+        clearInterval(timer)
+      })
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.page-join {
+.page-promise {
   height: 100%;
   width: 100%;
   position: relative;

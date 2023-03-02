@@ -61,7 +61,9 @@ function doFilter() {
       } else if (to.path === '/sign_in') {
         return next()
       } else {
-        return next({ path: '/sign_in' })
+        console.log('888')
+        // return next({ path: '/sign_in' })
+        return next()
       }
     } else {
       return next()

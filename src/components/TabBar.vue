@@ -1,6 +1,6 @@
 /* eslint-disable vue/html-self-closing */
 <template>
-  <div v-if="$route.name == 'Home' || $route.name == 'Test' || $route.name == 'My'">
+  <div v-show="$route.name == 'Home' || $route.name == 'Test' || $route.name == 'My'">
     <van-tabbar v-model="active" inactive-color="#666666" active-color="#2CAE6A" fixed placeholder>
       <van-tabbar-item v-for="(item, index) in tabbarList" :key="index" replace :to="item.path">
         <span>{{ item.title }}</span>

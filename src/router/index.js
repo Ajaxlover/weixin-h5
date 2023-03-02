@@ -5,6 +5,9 @@ import Home from '@/views/home'
 import Test from '@/views/exam'
 import My from '@/views/my'
 import Join from '@/views/join'
+import Rule from '@/views/join/rule.vue'
+import Promise from '@/views/join/promise.vue'
+import Sign from '@/views/join/sign.vue'
 
 export const routes = [
   {
@@ -12,7 +15,7 @@ export const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      auth: false, // 需要登录
+      auth: true, // 需要登录
       thirdAuth: 'userinfo', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: false, // 是否需要微信验签
@@ -45,6 +48,66 @@ export const routes = [
       },
       keepAlive: false,
       title: '竞赛报名'
+    }
+  },
+  {
+    path: '/rule',
+    name: 'Rule',
+    component: Rule,
+    meta: {
+      auth: false, // 需要登录
+      thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      wx: {
+        sign: false, // 是否需要微信验签
+        jsApiList: [
+          'updateAppMessageShareData', // 分享朋友
+          'updateTimelineShareData', // 分享朋友圈
+          'getLocation', // 定位
+          'openLocation' // 打开地图
+        ]
+      },
+      keepAlive: false,
+      title: '报名须知'
+    }
+  },
+  {
+    path: '/promise',
+    name: 'Promise',
+    component: Promise,
+    meta: {
+      auth: false, // 需要登录
+      thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      wx: {
+        sign: false, // 是否需要微信验签
+        jsApiList: [
+          'updateAppMessageShareData', // 分享朋友
+          'updateTimelineShareData', // 分享朋友圈
+          'getLocation', // 定位
+          'openLocation' // 打开地图
+        ]
+      },
+      keepAlive: false,
+      title: '诚信承诺书'
+    }
+  },
+  {
+    path: '/sign',
+    name: 'Sign',
+    component: Sign,
+    meta: {
+      auth: false, // 需要登录
+      thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      wx: {
+        sign: false, // 是否需要微信验签
+        jsApiList: [
+          'updateAppMessageShareData', // 分享朋友
+          'updateTimelineShareData', // 分享朋友圈
+          'getLocation', // 定位
+          'openLocation' // 打开地图
+        ]
+      },
+      keepAlive: false,
+      title: '电子签名'
     }
   },
   {

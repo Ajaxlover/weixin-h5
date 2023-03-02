@@ -27,6 +27,7 @@ import {
   Lazyload, // 懒加载
   List,
   Loading, // loading
+  NavBar,
   Overlay, // 蒙层
   Popup, // 弹窗
   Radio,
@@ -74,6 +75,7 @@ Vue.use(Button)
   .use(Lazyload)
   .use(List)
   .use(Loading)
+  .use(NavBar)
   .use(Overlay)
   .use(Popup)
   .use(Radio)

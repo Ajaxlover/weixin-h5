@@ -6,8 +6,8 @@
       <p>11111111111111111111</p>
       <p>11111111111111111111</p>
       <p>11111111111111111111</p>
-      <p style="background-color: red">11111111111111111111</p>
-      <p style="background-color: blue">11111111111111111111</p>
+      <p>11111111111111111111</p>
+      <p>11111111111111111111</p>
     </div>
     <div class="footer van-hairline--top">
       <van-button class="join-btn" type="primary" size="large" round>去报名</van-button>
