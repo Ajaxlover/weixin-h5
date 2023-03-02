@@ -1,13 +1,11 @@
 <template>
-  <div class="page-promise">
+  <div class="page-info">
     <Nav :path="path"></Nav>
     <div class="content">
-      <p>考生守则</p>
+      <p>报名信息填写</p>
     </div>
     <div class="footer van-hairline--top">
-      <van-button class="join-btn" :disabled="isDisable" type="primary" size="large" round to="/sign">{{
-        time == 0 ? '确定' : `${time}s`
-      }}</van-button>
+      <van-button class="join-btn" :disabled="isDisable" type="primary" size="large" round to="/sign">提交</van-button>
     </div>
   </div>
 </template>
@@ -16,42 +14,31 @@
 import Nav from '@/components/Nav'
 
 export default {
-  name: 'Promise',
+  name: 'Info',
   components: {
     Nav
   },
   data() {
     return {
-      path: '/',
-      time: 5
+      path: '/'
     }
   },
   computed: {
     isDisable() {
-      return this.time !== 0
+      return false
     }
   },
   mounted() {
     this.init()
   },
   methods: {
-    init() {
-      const timer = setInterval(() => {
-        this.time--
-        if (this.time === 0) {
-          clearInterval(timer)
-        }
-      }, 1000)
-      this.$once('hook:beforeDestroy', () => {
-        clearInterval(timer)
-      })
-    }
+    init() {}
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.page-promise {
+.page-info {
   height: 100%;
   width: 100%;
   position: relative;

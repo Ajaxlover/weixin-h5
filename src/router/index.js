@@ -8,6 +8,7 @@ import Join from '@/views/join'
 import Rule from '@/views/join/rule.vue'
 import Promise from '@/views/join/promise.vue'
 import Sign from '@/views/join/sign.vue'
+import Info from '@/views/join/info.vue'
 
 export const routes = [
   {
@@ -108,6 +109,26 @@ export const routes = [
       },
       keepAlive: false,
       title: '电子签名'
+    }
+  },
+  {
+    path: '/info',
+    name: 'Info',
+    component: Info,
+    meta: {
+      auth: false, // 需要登录
+      thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      wx: {
+        sign: false, // 是否需要微信验签
+        jsApiList: [
+          'updateAppMessageShareData', // 分享朋友
+          'updateTimelineShareData', // 分享朋友圈
+          'getLocation', // 定位
+          'openLocation' // 打开地图
+        ]
+      },
+      keepAlive: false,
+      title: '报名信息'
     }
   },
   {
