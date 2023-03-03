@@ -62,8 +62,9 @@ function doFilter() {
         return next()
       } else {
         console.log('888')
-        // return next({ path: '/sign_in' })
-        return next()
+        const redirect_url = getThirdUrl(to)
+        window.location.href = redirect_url
+        // return next()
       }
     } else {
       return next()
@@ -115,6 +116,15 @@ function getThirdUrl(to) {
         encodeURIComponent(process.env.VUE_APP_BASEURL + process.env.VUE_APP_BASE_PUBLIC_PATH + to.fullPath) +
         '&state=1'
     }
+  } else {
+    redirect_url =
+      'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
+      store.getters.appId +
+      '&redirect_uri=' +
+      encodeURIComponent(process.env.VUE_APP_BASEURL + process.env.VUE_APP_BASE_PUBLIC_PATH + to.fullPath) +
+      '&response_type=code&scope=snsapi_base&state=' +
+      process.env.VUE_APP_STATE +
+      '#wechat_redirect'
   }
   return redirect_url
 }

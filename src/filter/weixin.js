@@ -12,17 +12,20 @@ function doFilter() {
       const isiOS = !!agent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
 
       if (isiOS) {
+        // ios环境
         const url = process.env.VUE_APP_BASEURL + process.env.VUE_APP_BASE_PUBLIC_PATH + to.fullPath // ios 落地页问题
         store.dispatch('wxSign/setOriginUrl', url).then(v => {
           // wx-js-sdk初始化
           wxUtils.init({
-            apiList: to.meta.wx.jsApiList
+            apiList: to.meta.wx.jsApiList,
+            hideMenuList: to.meta.wx.hideMenuList ? to.meta.wx.hideMenuList : []
           })
         })
       } else {
         // wx-js-sdk初始化
         wxUtils.init({
-          apiList: to.meta.wx.jsApiList
+          apiList: to.meta.wx.jsApiList,
+          hideMenuList: to.meta.wx.hideMenuList ? to.meta.wx.hideMenuList : []
         })
       }
       return next()

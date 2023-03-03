@@ -19,6 +19,7 @@ const wxSignParams = {
 function init(params) {
   wxSignParams.signUrl = isiOS ? window.location.href : window.location.href //
   if (store.getters.thirdType === 'wx') {
+    console.log('获取js-sdk参数')
     // 获取验签参数
     return wxSign({
       uri: wxSignParams.signUrl
@@ -49,6 +50,12 @@ function wxConfig(params) {
     jsApiList: params.apiList
   }
   wx.config(configObj)
+  wx.ready(() => {
+    // 屏蔽功能菜单
+    wx.hideMenuItems({
+      menuList: params.hideMenuList
+    })
+  })
   wx.error(res => {
     console.log('wx.config fail', res)
     if (wxSignParams.errorCount >= 0) {
@@ -72,13 +79,13 @@ function pay(params) {
       signType: params.sign_type, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
       paySign: params.pay_sign, // 支付签名
 
-      success: function(res) {
+      success: function (res) {
         resolve({ success: res })
       },
-      cancel: function(res) {
+      cancel: function (res) {
         resolve('cancel', res)
       },
-      fail: function(res) {
+      fail: function (res) {
         resolve('fail', res)
       }
     })
@@ -95,7 +102,7 @@ function share(params) {
       desc: params.desc, // 分享描述
       link: params.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
       imgUrl: params.imgUrl, // 分享图标
-      success: function(res) {
+      success: function (res) {
         // 设置成功
       }
     })
@@ -103,7 +110,7 @@ function share(params) {
       title: params.title, // 分享标题
       link: params.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
       imgUrl: params.imgUrl, // 分享图标
-      success: function(res) {
+      success: function (res) {
         // 设置成功
       }
     })
@@ -119,14 +126,14 @@ function getLocation() {
     wx.ready(() => {
       wx.getLocation({
         type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-        success: function(res) {
+        success: function (res) {
           resolve({ success: res })
           // var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
           // var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
           // var speed = res.speed; // 速度，以米/每秒计
           // var accuracy = res.accuracy; // 位置精度
         },
-        fail: function(res) {
+        fail: function (res) {
           resolve('fail', res)
         }
       })
@@ -148,10 +155,10 @@ function openLocation(params) {
         address: params.address, // 地址详情说明
         scale: 14, // 地图缩放级别,整形值,范围从1~28。默认为最大
         infoUrl: params.infoUrl, // 在查看位置界面底部显示的超链接,可点击跳转
-        success: function(res) {
+        success: function (res) {
           resolve({ success: res })
         },
-        fail: function(res) {
+        fail: function (res) {
           console.log('openLocation fail', res)
           resolve('fail', res)
         }

@@ -8,22 +8,15 @@ import {
   CellGroup, // 单元格
   Checkbox,
   CheckboxGroup, // 复选框
-  Collapse, // 折叠面板
-  CollapseItem,
   CountDown, // 倒计时
-  DatetimePicker, // 时间选择器
   Dialog, // 确认弹窗
   Divider, // 分割线
   Empty, // 空状态
   Field, // input输入栏
-  GoodsAction,
-  GoodsActionIcon,
-  GoodsActionButton, // 商品导航
+  Form,
   Icon,
   Image as VanImage, // 图
   ImagePreview, // 图片预览
-  IndexBar,
-  IndexAnchor, // 索引栏
   Lazyload, // 懒加载
   List,
   Loading, // loading
@@ -32,15 +25,12 @@ import {
   Popup, // 弹窗
   Radio,
   RadioGroup, // 单选框
-  Rate, // 评星
   Step,
   Steps, // 步骤条
   Sticky, // 粘性布局
-  Swipe,
-  SwipeItem, // 轮播
-  SwipeCell, // 滑动单元格
-  Tab,
-  Tabs, // 标签页
+  // Swipe,
+  // SwipeItem, // 轮播
+  // SwipeCell, // 滑动单元格
   Tabbar,
   TabbarItem, // 标签栏
   Tag, // 标签
@@ -56,22 +46,15 @@ Vue.use(Button)
   .use(CellGroup)
   .use(Checkbox)
   .use(CheckboxGroup)
-  .use(Collapse)
-  .use(CollapseItem)
   .use(CountDown)
-  .use(DatetimePicker)
   .use(Dialog)
   .use(Divider)
   .use(Empty)
   .use(Field)
-  .use(GoodsAction)
-  .use(GoodsActionButton)
-  .use(GoodsActionIcon)
+  .use(Form)
   .use(Icon)
   .use(VanImage)
   .use(ImagePreview)
-  .use(IndexBar)
-  .use(IndexAnchor)
   .use(Lazyload)
   .use(List)
   .use(Loading)
@@ -80,15 +63,12 @@ Vue.use(Button)
   .use(Popup)
   .use(Radio)
   .use(RadioGroup)
-  .use(Rate)
   .use(Step)
   .use(Steps)
   .use(Sticky)
-  .use(Swipe)
-  .use(SwipeItem)
-  .use(SwipeCell)
-  .use(Tab)
-  .use(Tabs)
+  // .use(Swipe)
+  // .use(SwipeItem)
+  // .use(SwipeCell)
   .use(Tabbar)
   .use(TabbarItem)
   .use(Tag)

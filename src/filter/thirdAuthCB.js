@@ -33,7 +33,7 @@ function doFilter() {
           // return next({ path: '/sign_in', replace: true })  // 防止用户在手机注册页点击返回到home页
         })
         .catch(() => {
-          console.error('登录失败!!!')
+          console.error('获取微信网页Access_token失败,登录失败!!!')
         })
     } else {
       return next()

@@ -85,7 +85,7 @@ export default {
     width: 100%;
     height: calc(100% - 180px);
     overflow: auto;
-    padding: 0 28px 100px 28px;
+    padding: 20px 28px 100px 28px;
     .intro {
       height: 400px;
       .intro-title {

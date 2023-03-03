@@ -34,6 +34,8 @@ const actions = {
       thirdType = systemType
       // 注: 目前仅适配第三方wx环境,如需其他环境,如ali,可再配置config.js,根据平台类型循环读取appid等配置
       appId = process.env.VUE_APP_APPID
+    } else {
+      appId = process.env.VUE_APP_APPID
     }
 
     // 初始化 浏览器、系统平台类型
