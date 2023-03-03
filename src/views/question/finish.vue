@@ -1,10 +1,10 @@
 <template>
-  <div class="page-my">个人中心</div>
+  <div class="page-finish">答题完成界面</div>
 </template>
 
 <script>
 export default {
-  name: 'My',
+  name: 'Finish',
   data() {
     return {}
   },
@@ -14,8 +14,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page-my {
-  height: 1500px;
+.page-finish {
+  // height: 100%;
   width: 100%;
 }
 </style>

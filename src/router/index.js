@@ -2,13 +2,21 @@ import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
 import Home from '@/views/home'
-import Test from '@/views/exam'
+import Test from '@/views/contest'
 import My from '@/views/my'
+import Credentials from '@/views/my/credentials.vue'
+
 import Join from '@/views/join'
+import Control from '@/views/join/control.vue'
 import Rule from '@/views/join/rule.vue'
 import Promise from '@/views/join/promise.vue'
 import Sign from '@/views/join/sign.vue'
 import Info from '@/views/join/info.vue'
+
+import Start from '@/views/question/start.vue'
+import Question from '@/views/question'
+import Finish from '@/views/question/finish.vue'
+import Result from '@/views/question/result.vue'
 
 export const routes = [
   {
@@ -37,6 +45,71 @@ export const routes = [
     }
   },
   {
+    path: '/start',
+    name: 'Start',
+    component: Start,
+    meta: {
+      auth: false, // 需要登录
+      thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      wx: {
+        sign: false, // 是否需要微信验签
+        jsApiList: []
+      },
+      keepAlive: false,
+      title: '开始答题'
+    }
+  },
+  {
+    path: '/question',
+    name: 'Question',
+    component: Question,
+    meta: {
+      auth: false, // 需要登录
+      thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      wx: {
+        sign: false, // 是否需要微信验签
+        jsApiList: [
+          'updateAppMessageShareData', // 分享朋友
+          'updateTimelineShareData', // 分享朋友圈
+          'getLocation', // 定位
+          'openLocation' // 打开地图
+        ]
+      },
+      keepAlive: false,
+      title: '题目'
+    }
+  },
+  {
+    path: '/finish',
+    name: 'Finish',
+    component: Finish,
+    meta: {
+      auth: false, // 需要登录
+      thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      wx: {
+        sign: false, // 是否需要微信验签
+        jsApiList: []
+      },
+      keepAlive: false,
+      title: '答题结束'
+    }
+  },
+  {
+    path: '/result',
+    name: 'Result',
+    component: Result,
+    meta: {
+      auth: false, // 需要登录
+      thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      wx: {
+        sign: false, // 是否需要微信验签
+        jsApiList: []
+      },
+      keepAlive: false,
+      title: '成绩公布'
+    }
+  },
+  {
     path: '/join',
     name: 'Join',
     component: Join,
@@ -53,7 +126,27 @@ export const routes = [
         ]
       },
       keepAlive: false,
-      title: '竞赛报名'
+      title: '竞赛详情'
+    }
+  },
+  {
+    path: '/control',
+    name: 'Control',
+    component: Control,
+    meta: {
+      auth: false, // 需要登录
+      thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      wx: {
+        sign: false, // 是否需要微信验签
+        jsApiList: [
+          'updateAppMessageShareData', // 分享朋友
+          'updateTimelineShareData', // 分享朋友圈
+          'getLocation', // 定位
+          'openLocation' // 打开地图
+        ]
+      },
+      keepAlive: false,
+      title: '报名流程'
     }
   },
   {
@@ -93,7 +186,7 @@ export const routes = [
         ]
       },
       keepAlive: false,
-      title: '诚信承诺书'
+      title: ''
     }
   },
   {
@@ -153,7 +246,7 @@ export const routes = [
         ]
       },
       keepAlive: false,
-      title: '竞赛'
+      title: '竞赛列表'
     }
   },
   {
@@ -174,6 +267,21 @@ export const routes = [
       },
       keepAlive: false,
       title: '个人中心'
+    }
+  },
+  {
+    path: '/credentials',
+    name: 'Credentials',
+    component: Credentials,
+    meta: {
+      auth: false, // 需要登录
+      thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      wx: {
+        sign: false, // 是否需要微信验签
+        jsApiList: []
+      },
+      keepAlive: false,
+      title: '证书列表'
     }
   },
   {

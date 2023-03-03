@@ -1,10 +1,10 @@
 <template>
-  <div class="page-my">个人中心</div>
+  <div class="page-credentials">证书列表</div>
 </template>
 
 <script>
 export default {
-  name: 'My',
+  name: 'Credentials',
   data() {
     return {}
   },
@@ -14,7 +14,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page-my {
+.page-credentials {
   height: 1500px;
   width: 100%;
 }
