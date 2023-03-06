@@ -5,6 +5,7 @@ import Home from '@/views/home'
 import Test from '@/views/contest'
 import My from '@/views/my'
 import Credentials from '@/views/my/credentials.vue'
+import CreDetail from '@/views/my/credentialsDetail.vue'
 
 import Join from '@/views/join'
 import Control from '@/views/join/control.vue'
@@ -282,6 +283,21 @@ export const routes = [
       },
       keepAlive: false,
       title: '证书列表'
+    }
+  },
+  {
+    path: '/credentials-detail',
+    name: 'credentials-detail',
+    component: CreDetail,
+    meta: {
+      auth: false, // 需要登录
+      thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      wx: {
+        sign: false, // 是否需要微信验签
+        jsApiList: []
+      },
+      keepAlive: false,
+      title: '证书详情'
     }
   },
   {

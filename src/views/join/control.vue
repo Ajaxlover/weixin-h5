@@ -2,7 +2,11 @@
   <div class="page-control">
     <Nav :path="path"></Nav>
     <div class="content">
-      <p>报名信息填写</p>
+      <div class="contest-name">1111</div>
+      <div class="contest-time"></div>
+      <div class="contest-icons"></div>
+      <div class="contest-line"></div>
+      <div class="contest-timeline"></div>
     </div>
     <div class="footer van-hairline--top">
       <van-button class="join-btn" :disabled="isDisable" type="primary" size="large" round to="/sign">提交</van-button>
@@ -39,18 +43,31 @@ export default {
 
 <style lang="scss" scoped>
 .page-control {
-  height: 100%;
+  height: 1400px;
+  background-color: #f4f4f4;
+
   width: 100%;
   position: relative;
   .content {
     width: 100%;
-    height: calc(100% - 180px);
+    // height: calc(100% - 180px);
+    height: 100%;
     overflow: auto;
     padding-bottom: 100px;
+    .content-name {
+    }
+    .content-time {
+    }
+    .content-icons {
+    }
+    .content-line {
+    }
+    .content-timeline {
+    }
   }
-  .content p {
-    height: 300px;
-  }
+  // .content p {
+  //   height: 300px;
+  // }
   .footer {
     width: 100%;
     position: fixed;
