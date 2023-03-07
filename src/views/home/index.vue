@@ -32,7 +32,7 @@
               <span>第一届全国大学物理竞赛</span>
             </div>
             <div class="join-time">
-              <span>报名时间：2023/05/01 00:00-2023/06/01 23:59</span>
+              <span>报名时间：{{ timeFormat('1672812596000') }}-2023/06/01 23:59</span>
             </div>
           </div>
         </van-list>
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { parseTime } from '../../utils'
 export default {
   name: 'Home',
   data() {
@@ -55,6 +56,10 @@ export default {
   },
   computed: {},
   methods: {
+    // 时间格式化
+    timeFormat(time) {
+      return parseTime(time, '{y}/{m}/{d} {h}:{i}:{s}')
+    },
     onLoad() {
       //  if (this.isFinished || this.isLoading) {
       //         return;
