@@ -56,5 +56,6 @@ body,
   // height: 100%;
   width: 100%;
   overflow: auto;
+  background-color: #f4f4f4;
 }
 </style>

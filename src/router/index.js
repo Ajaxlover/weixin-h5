@@ -247,7 +247,7 @@ export const routes = [
         ]
       },
       keepAlive: false,
-      title: '竞赛列表'
+      title: '我的竞赛'
     }
   },
   {

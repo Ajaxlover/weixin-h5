@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const KeyPrefix = 'vue-wx-h5-template'
+const KeyPrefix = 'jd-wx-h5'
 const TokenKey = KeyPrefix + 'access-token'
 const UserInfoKey = KeyPrefix + 'user-info'
 const wxCodeKey = KeyPrefix + 'wx-code'

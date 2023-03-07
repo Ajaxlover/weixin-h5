@@ -80,6 +80,7 @@ export default {
 .page-sign {
   height: 100%;
   width: 100%;
+  background-color: #fff;
   position: relative;
   .content {
     width: 100%;

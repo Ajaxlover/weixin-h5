@@ -115,6 +115,7 @@ export default {
 .page-home {
   height: 100%;
   width: 100%;
+  background-color: #fff;
   .t-container {
     padding: 0 28px;
 

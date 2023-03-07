@@ -2,7 +2,7 @@
   <div class="page-credentials">
     <Nav :path="path"></Nav>
     <div class="content">
-      <div class="list-item">
+      <div class="list-item" @click="goDetail">
         <div class="item-box">
           <div class="item-name">第一届全国物理知识竞赛</div>
           <div class="item-honor">
@@ -33,7 +33,11 @@ export default {
     }
   },
   computed: {},
-  methods: {}
+  methods: {
+    goDetail() {
+      this.$router.push('/credentials-detail')
+    }
+  }
 }
 </script>
 
