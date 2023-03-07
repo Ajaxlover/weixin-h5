@@ -56,10 +56,10 @@ export default {
       tabs: [
         { url: require('../../assets/image/报名须知.png'), text: '报名须知', path: '/rule' },
         { url: require('../../assets/image/考生守则.png'), text: '诚信承诺书', path: '/promise' },
-        { url: require('../../assets/image/信息填写.png'), text: '信息填写', path: '' },
+        { url: require('../../assets/image/信息填写.png'), text: '信息填写', path: '/info' },
         { url: require('../../assets/image/立即参赛.png'), text: '立即参赛', path: '' },
         { url: require('../../assets/image/模拟.png'), text: '模拟练习', path: '' },
-        { url: require('../../assets/image/证书.png'), text: '证书查看', path: '' }
+        { url: require('../../assets/image/证书.png'), text: '证书查看', path: '/credentials' }
       ]
     }
   },
