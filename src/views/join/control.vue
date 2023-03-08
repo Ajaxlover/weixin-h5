@@ -56,7 +56,7 @@ export default {
         { url: require('../../assets/image/报名须知.png'), text: '报名须知', path: '/rule' },
         { url: require('../../assets/image/考生守则.png'), text: '诚信承诺书', path: '/promise' },
         { url: require('../../assets/image/信息填写.png'), text: '信息填写', path: '/info' },
-        { url: require('../../assets/image/立即参赛.png'), text: '立即参赛', path: '' },
+        { url: require('../../assets/image/立即参赛.png'), text: '立即参赛', path: '/start' },
         { url: require('../../assets/image/模拟.png'), text: '模拟练习', path: '' },
         { url: require('../../assets/image/证书.png'), text: '证书查看', path: '/credentials' }
       ]
@@ -111,13 +111,13 @@ export default {
       border-radius: 10px;
       display: flex;
       align-items: center;
-      padding-left: 20px;
+      padding-left: 10px;
       .clock {
         width: 23px;
         height: 23px;
         background: url('../../assets/image/提醒.png') no-repeat;
         background-size: contain;
-        margin-right: 15px;
+        margin-right: 10px;
       }
       span {
         color: #666;
