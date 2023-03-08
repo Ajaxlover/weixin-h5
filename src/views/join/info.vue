@@ -1,6 +1,6 @@
 <template>
   <div class="page-info">
-    <Nav :path="path"></Nav>
+    <Nav @go-back="goBack"></Nav>
     <div class="content">
       <div class="desc">报考信息</div>
       <div class="content-form">
@@ -73,7 +73,6 @@ export default {
   },
   data() {
     return {
-      path: '/control',
       username: '',
       school: '',
       teacherName: '',
@@ -90,6 +89,12 @@ export default {
     this.init()
   },
   methods: {
+    goBack() {
+      this.$router.push({
+        path: '/control',
+        query: {}
+      })
+    },
     init() {},
     takePhoto() {
       console.log('拍照')

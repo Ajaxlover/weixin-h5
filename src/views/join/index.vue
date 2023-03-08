@@ -1,6 +1,6 @@
 <template>
   <div class="page-join">
-    <Nav :path="path"></Nav>
+    <Nav @go-back="goBack"></Nav>
     <div class="content">
       <p>11111111111111111111</p>
       <p>11111111111111111111</p>
@@ -24,12 +24,17 @@ export default {
     Nav
   },
   data() {
-    return {
-      path: '/'
-    }
+    return {}
   },
   computed: {},
-  methods: {}
+  methods: {
+    goBack() {
+      this.$router.push({
+        path: '/',
+        query: {}
+      })
+    }
+  }
 }
 </script>
 

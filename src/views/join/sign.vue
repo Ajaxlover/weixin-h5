@@ -1,6 +1,6 @@
 <template>
   <div class="page-sign">
-    <Nav :path="path"></Nav>
+    <Nav @go-back="goBack"></Nav>
     <div class="content">
       <div class="intro">
         <div class="intro-title">诚信考试承诺书</div>
@@ -40,7 +40,6 @@ export default {
   },
   data() {
     return {
-      path: '/',
       lineWidth: 6,
       lineColor: '#000000',
       bgColor: '',
@@ -55,6 +54,12 @@ export default {
   },
   mounted() {},
   methods: {
+    goBack() {
+      this.$router.push({
+        path: '/',
+        query: {}
+      })
+    },
     init() {},
     toPromise() {
       this.$router.push('/promise')

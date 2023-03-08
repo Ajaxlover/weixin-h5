@@ -1,6 +1,6 @@
 <template>
   <div class="page-credentials-detail">
-    <Nav :path="path"></Nav>
+    <Nav @go-back="goBack"></Nav>
     <div class="content">
       <div class="content-box">
         <div class="title">第一届全君物理知识竞赛</div>
@@ -45,12 +45,17 @@ export default {
     Nav
   },
   data() {
-    return {
-      path: '/credentials'
-    }
+    return {}
   },
   computed: {},
-  methods: {}
+  methods: {
+    goBack() {
+      this.$router.push({
+        path: '/credentials',
+        query: {}
+      })
+    }
+  }
 }
 </script>
 

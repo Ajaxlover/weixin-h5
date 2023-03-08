@@ -1,6 +1,6 @@
 <template>
   <div class="page-credentials">
-    <Nav :path="path"></Nav>
+    <Nav @go-back="goBack"></Nav>
     <div class="content">
       <div class="list-item" @click="goDetail">
         <div class="item-box">
@@ -28,12 +28,17 @@ export default {
   },
   data() {
     return {
-      path: '/my',
       list: []
     }
   },
   computed: {},
   methods: {
+    goBack() {
+      this.$router.push({
+        path: '/my',
+        query: {}
+      })
+    },
     goDetail() {
       this.$router.push('/credentials-detail')
     }

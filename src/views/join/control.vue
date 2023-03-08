@@ -1,6 +1,6 @@
 <template>
   <div class="page-control">
-    <Nav :path="path"></Nav>
+    <Nav @go-back="goBack"></Nav>
     <div class="content">
       <div class="contest-name">竞赛名称</div>
       <div class="contest-time">
@@ -52,7 +52,6 @@ export default {
   data() {
     return {
       active: 0,
-      path: '/',
       tabs: [
         { url: require('../../assets/image/报名须知.png'), text: '报名须知', path: '/rule' },
         { url: require('../../assets/image/考生守则.png'), text: '诚信承诺书', path: '/promise' },
@@ -72,6 +71,12 @@ export default {
     this.init()
   },
   methods: {
+    goBack() {
+      this.$router.push({
+        path: '/',
+        query: {}
+      })
+    },
     goPath(item, idx) {
       this.$router.push(item.path)
     },

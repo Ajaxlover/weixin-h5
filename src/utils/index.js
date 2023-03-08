@@ -160,7 +160,7 @@ export function param(json) {
 }
 
 /**
- * 文件大小字节转mb单位
+ * 文件大小字节转MB单位
  * @param {int} size
  */
 export function sizeBytes2Mb(size) {

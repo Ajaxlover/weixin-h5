@@ -22,30 +22,15 @@ import components from './components' // 全局组件
 // eslint-disable-next-line
 import mixins from './mixins' // 全局混入
 
+import { parseTime } from './utils'
+Vue.prototype.$parseTime = parseTime // 时间戳格式化
+
 Vue.prototype.$log = window.console.log // 在template模板中使用$log()打印
 store.dispatch('system/initSystemType') // 初始化系统平台类型
 filter.doFilters() // 全局过滤处理 - 只要判断逻辑
 
 Vue.config.productionTip = false
 
-// router.beforeEach((to, from, next) => {
-//   // chrome
-//   document.body.scrollTop = 0
-//   // firefox
-//   document.documentElement.scrollTop = 0
-//   // safari
-//   window.pageYOffset = 0
-//   next()
-// })
-
-// router.beforeEach((to, from, next) => {
-//   document.documentElement.scrollTop = 0
-// })
-// router.afterEach((to, from, next) => {
-//   document.body.scrollTop = 0
-
-//   document.documentElement.scrollTop = 0
-// })
 new Vue({
   router,
   store,
