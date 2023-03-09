@@ -10,7 +10,7 @@
         考试说明：哈哈哈哈哈哈哈哈哈哈哈哈或哈哈哈哈或哈哈或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或
       </div>
       <div class="start-btn">
-        <van-button type="primary" size="large" round>开始</van-button>
+        <van-button type="primary" size="large" round @click="goAnswer">开始</van-button>
       </div>
     </div>
   </div>
@@ -31,6 +31,12 @@ export default {
   methods: {
     goBack() {
       this.$router.go(-1)
+    },
+    goAnswer() {
+      this.$router.push({
+        path: '/question',
+        query: {}
+      })
     }
   }
 }
@@ -76,8 +82,6 @@ export default {
       color: #666;
     }
     .start-btn {
-      // position: absolute;
-      // bottom: 0;
       padding: 0 130px;
       margin-top: 150px;
     }

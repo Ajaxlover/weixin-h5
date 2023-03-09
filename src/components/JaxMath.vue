@@ -22,7 +22,10 @@
 export default {
   name: 'Math',
   props: {
-    data: String
+    data: {
+      type: String,
+      default: ''
+    }
   },
   watch: {
     data() {

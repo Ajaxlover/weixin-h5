@@ -31,7 +31,7 @@ export default {
       this.$emit('go-back')
     },
     onClickRight() {
-      console.log('222')
+      this.$emit('right-click')
     }
   }
 }
