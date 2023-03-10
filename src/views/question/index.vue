@@ -30,7 +30,7 @@
         </div>
       </div>
     </van-popup>
-    <Nav :is-show-right="isShowRight" @go-back="goBack" @right-click="rightClick"></Nav>
+    <Nav :is-show-right="isShowRight" :is-show-time="isShowTime" @go-back="goBack" @right-click="rightClick" @finish="finish"></Nav>
     <div class="content">
       <div v-for="(item, index) in question" v-show="index === idx" :key="index" class="question">
         <div class="subject-type">
@@ -79,6 +79,7 @@ export default {
       // 1.记录开始考试时间 2.倒计时 限时-（当前-开始）
       show: false,
       idx: 0,
+      isShowTime: true,
       isShowRight: true,
       ismultipleAnswer: [],
       question: [
@@ -339,6 +340,9 @@ export default {
             // on cancel
           })
       }
+    },
+    finish() {
+      console.log('倒计时结束')
     },
     // 保持页面常亮
     noSleep() {
