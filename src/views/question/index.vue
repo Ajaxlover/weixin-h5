@@ -473,7 +473,7 @@ export default {
         .bgc {
           // border: 1px rgb(250, 109, 0) solid;
           color: #fff;
-          background-color: #a5e3bd;
+          background-color: #07c160;
         }
       }
     }
@@ -486,6 +486,7 @@ export default {
     bottom: 0;
     background-color: #fff;
     z-index: 999;
+    padding: 0 28px;
     .join-btn {
       height: 90px;
     }
