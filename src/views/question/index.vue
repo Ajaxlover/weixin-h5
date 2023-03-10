@@ -238,6 +238,7 @@ export default {
     }
   },
   mounted() {
+    this.noSleep()
     this.question.forEach(i => {
       if (i.ismultiple) {
         this.questionMultiple.push(i)
@@ -338,6 +339,18 @@ export default {
             // on cancel
           })
       }
+    },
+    // 保持页面常亮
+    noSleep() {
+      const noSleep = new this.$NoSleep()
+      document.addEventListener(
+        'click',
+        function enableNoSleep() {
+          noSleep.enable()
+          document.removeEventListener('click', enableNoSleep, false)
+        },
+        false
+      )
     }
   }
 }

@@ -7,6 +7,7 @@ import 'babel-polyfill' // ES6转ES5
 import 'normalize.css/normalize.css' //  重置样式
 import '@/assets/style/index.scss' // 全局生效样式
 import '@/plugins/vant' // 按需引入UI库 vant
+import NoSleep from 'nosleep.js/dist/NoSleep.min.js'
 
 if (process.env.VUE_APP_USE_VCONSOLE === 'true') {
   const vConsole = require('vconsole')
@@ -24,6 +25,8 @@ import mixins from './mixins' // 全局混入
 
 import { parseTime } from './utils'
 Vue.prototype.$parseTime = parseTime // 时间戳格式化
+
+Vue.prototype.$NoSleep = NoSleep
 
 Vue.prototype.$log = window.console.log // 在template模板中使用$log()打印
 store.dispatch('system/initSystemType') // 初始化系统平台类型
