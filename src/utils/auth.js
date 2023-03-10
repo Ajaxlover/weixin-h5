@@ -43,6 +43,14 @@ function setWxCode(code) {
   return sessionStorage.setItem(wxCodeKey, JSON.stringify(code))
 }
 
+function setExamRecord(key, question) {
+  return localStorage.setItem(key, JSON.stringify(question))
+}
+
+function getExamRecord(key) {
+  return localStorage.getItem(key) ? localStorage.getItem(key) : ''
+}
+
 export default {
   getToken,
   setToken,
@@ -51,5 +59,7 @@ export default {
   setUserInfo,
   removeUserInfo,
   getWxCode,
-  setWxCode
+  setWxCode,
+  setExamRecord,
+  getExamRecord
 }

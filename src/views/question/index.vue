@@ -1,8 +1,33 @@
 <template>
   <div class="page-question">
-    <van-popup v-model="show" round position="bottom" :style="{ height: '70%' }">
+    <van-popup v-model="show" round position="bottom" :style="{ height: '600px' }">
       <div class="contest-popup">
-        <div class="contest-popup-danxuan">单选题</div>
+        <div class="contest-popup-toolBar van-hairline--bottom">
+          <div class="text-l">题目列表</div>
+          <div class="text-r">
+            <div style="width: 10px; height: 10px; border-radius: 50%; background-color: #00a400"></div>
+            <span class="answered">已答</span>
+            <div style="width: 10px; height: 10px; border-radius: 50%; background-color: #aaa; margin-left: 10px"></div>
+            <span class="unAnswer">未答</span>
+          </div>
+        </div>
+        <div class="option-container">
+          <div class="contest-popup-danxuan">单选题</div>
+          <div class="contest-popup-danxuan-list">
+            <div v-for="(i, index) in questionSingle" :key="index" class="list-item">
+              <div :class="i.stuAnswer ? 'answered-bgc' : ''" class="item" @click="changIdx(i)">{{ i.num }}</div>
+            </div>
+          </div>
+          <div class="contest-popup-danxuan">多选题</div>
+          <div class="contest-popup-danxuan-list">
+            <div v-for="(j, index) in questionMultiple" :key="index" class="list-item">
+              <div :class="j.stuAnswer ? 'answered-bgc' : ''" class="item" @click="changIdx(j)">{{ j.num }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="commit">
+          <van-button class="commit-btn" type="primary" size="large" round @click="submitPaper">交卷</van-button>
+        </div>
       </div>
     </van-popup>
     <Nav :is-show-right="isShowRight" @go-back="goBack" @right-click="rightClick"></Nav>
@@ -27,9 +52,6 @@
           >
             {{ i.letter }}. {{ i.name }}
           </div>
-          <!-- <div class="option-item van-hairline--surround">111111111</div> -->
-          <!-- <div class="option-item van-hairline--surround">111111111</div> -->
-          <!-- <div class="option-item van-hairline--surround">111111111</div> -->
         </div>
       </div>
     </div>
@@ -40,8 +62,10 @@
 </template>
 
 <script>
+import { Dialog } from 'vant'
 import Nav from '@/components/Nav'
 import JaxMath from '@/components/JaxMath'
+import Storage from '@/utils/auth'
 
 export default {
   name: 'Question',
@@ -52,7 +76,7 @@ export default {
   data() {
     return {
       // 考试结束时间-开始时间>= 限时(倒计时)
-      // 1.记录开始考试时间 2.倒计时 当前-开始
+      // 1.记录开始考试时间 2.倒计时 限时-（当前-开始）
       show: false,
       idx: 0,
       isShowRight: true,
@@ -206,6 +230,13 @@ export default {
     }
   },
   computed: {},
+  created() {
+    // 判断当前是否有缓存
+    const questionCache = Storage.getExamRecord('contest-11')
+    if (questionCache) {
+      this.question = JSON.parse(questionCache)
+    }
+  },
   mounted() {
     this.question.forEach(i => {
       if (i.ismultiple) {
@@ -216,6 +247,11 @@ export default {
     })
   },
   methods: {
+    // 切换到指定题目
+    changIdx(i) {
+      this.idx = i.num - 1
+      this.show = false
+    },
     rightClick() {
       this.show = true
     },
@@ -270,8 +306,12 @@ export default {
       console.log('选中的答案', isAnswer)
       console.log('题目的答案', answer)
 
-      // 判断是否选正确，计算分数
+      this.question[this.idx].stuAnswer = isAnswer // 记录学生答案
 
+      // 缓存作答记录
+      Storage.setExamRecord('contest-11', this.question)
+
+      // 判断是否选正确，计算分数
       // if (isAnswer == answer) {
       //   // 如果选的答案与题目答案相等,isOk 说明选对了
       //   this.question[this.idx].isOk = true
@@ -280,6 +320,24 @@ export default {
       //   this.question[this.idx].isOk = false
       //   this.question[this.idx].isDone = true
       // }
+    },
+    submitPaper() {
+      const flag = this.question.some(i => {
+        return !i.stuAnswer
+      })
+      if (flag) {
+        // 存在未答题目
+        Dialog.confirm({
+          title: '提示',
+          message: '您还有题目未答，是否交卷?'
+        })
+          .then(() => {
+            // on confirm
+          })
+          .catch(() => {
+            // on cancel
+          })
+      }
     }
   }
 }
@@ -298,6 +356,81 @@ export default {
   position: relative;
   /deep/ .van-popup--bottom {
     padding-top: 30px;
+  }
+  .contest-popup {
+    .contest-popup-toolBar {
+      color: #666;
+      height: 60px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      // margin-bottom: 20px;
+      .text-l {
+        color: #333;
+      }
+
+      .text-r {
+        // float: right;
+        display: flex;
+        align-items: center;
+        .answered {
+          // float: right;
+        }
+
+        .unAnswer {
+          // float: right;
+        }
+      }
+    }
+    .option-container {
+      height: 900px;
+      overflow-y: scroll;
+      padding-bottom: 10px;
+      .contest-popup-danxuan {
+        height: 60px;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+      }
+      .contest-popup-danxuan-list {
+        padding: 0 20px;
+        width: 100%;
+        // background-color: ;
+        display: flex;
+        // justify-content: space-between;
+        flex-wrap: wrap;
+        .list-item {
+          width: 20%;
+          height: 100px;
+          margin-bottom: 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .item {
+            width: 90px;
+            height: 90px;
+            border: 1px solid #aaa;
+            color: #333;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 90px;
+          }
+
+          .answered-bgc {
+            color: #00a400;
+            border: 1px solid #00a400;
+            background: rgba(0, 164, 0, 0.17);
+          }
+        }
+      }
+    }
+    .commit {
+      .commit-btn {
+        height: 85px;
+      }
+    }
   }
   .content {
     width: 100%;
