@@ -25,8 +25,8 @@ export const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      auth: false, // 需要登录
-      thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      auth: true, // 需要登录
+      thirdAuth: 'userinfo', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: false, // 是否需要微信验签
         jsApiList: [

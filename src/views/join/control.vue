@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      active: 0,
+      active: -1,
       tabs: [
         { url: require('../../assets/image/报名须知.png'), text: '报名须知', path: '/rule' },
         { url: require('../../assets/image/考生守则.png'), text: '诚信承诺书', path: '/promise' },
@@ -88,6 +88,9 @@ export default {
 <style lang="scss" scoped>
 .page-control {
   // height: 1800px;
+  /deep/ .van-step__circle {
+    background-color: #07c160;
+  }
   background-color: #f4f4f4;
   width: 100%;
   position: relative;

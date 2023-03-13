@@ -13,7 +13,7 @@ export function getCredentialList(data) {
 }
 
 /**
- * @desc 获取竞赛详情（去报名）
+ * @desc 获取证书详情
  * @param
  */
 export function getCredentialDetail(data) {

@@ -35,8 +35,8 @@ const actions = {
   // 保存token
   setToken({ commit }, data) {
     return new Promise((resolve, reject) => {
-      commit('SET_TOKEN', data.access_token)
-      authUtils.setToken(data.access_token)
+      commit('SET_TOKEN', data)
+      authUtils.setToken(data)
       resolve()
     })
   },

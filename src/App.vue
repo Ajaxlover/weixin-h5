@@ -49,6 +49,12 @@ export default {
 body {
   -webkit-tap-highlight-color: rgba($color: #000000, $alpha: 0); // 点击高亮
   -webkit-text-size-adjust: 100% !important; // ios禁止调整字体大小
+  // user-select: none;
+  // -moz-user-select: none; /* Firefox私有属性 */
+  // -webkit-user-select: none; /* WebKit内核私有属性 */
+  // -ms-user-select: none; /* IE私有属性(IE10及以后) */
+  // -khtml-user-select: none; /* Khtml内核私有属性 */
+  // -o-user-select: none; /* Opera私有属性 */
 }
 html,
 body,
@@ -57,5 +63,14 @@ body,
   width: 100%;
   overflow: auto;
   background-color: #f4f4f4;
+}
+
+img {
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 </style>

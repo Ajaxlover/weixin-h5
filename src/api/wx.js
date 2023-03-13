@@ -6,7 +6,7 @@ import request from '@/utils/request'
  */
 export function wxSign(data) {
   return request({
-    url: '/api/wechat/jsapi_ticketghjgkh',
+    url: '/wx/createJsSignature',
     method: 'post',
     data
   })
@@ -16,10 +16,10 @@ export function wxSign(data) {
  * @desc 获取微信授权地址(授权用)
  * @param
  */
-export function wxRedirectUrl(params) {
+export function wxRedirectUrl(data) {
   return request({
-    url: '/api/wechat/oauth/get_redirect_url',
-    method: 'get',
-    params
+    url: '/wx/getAuthorizationUrl',
+    method: 'post',
+    data
   })
 }

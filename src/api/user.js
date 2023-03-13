@@ -6,7 +6,7 @@ import request from '@/utils/request'
  */
 export function code2AccessToken(params) {
   return request({
-    url: '/api/wechat/oauth/user_access_token',
+    url: '/wx/loginByCode',
     method: 'get',
     params
   })
@@ -18,7 +18,7 @@ export function code2AccessToken(params) {
  */
 export function getUserInfo(params) {
   return request({
-    url: '/api/wechat/oauth/get_user_info',
+    url: '/wx/loginByCode',
     method: 'get',
     params
   })

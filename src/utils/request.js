@@ -10,31 +10,31 @@ const service = axios.create({
     function transformRequest(data, headers) {
       if (!data) {
         data = {
-          client: 4
+          appId: 3
         }
       }
       if (data instanceof FormData || data instanceof ArrayBuffer || data instanceof Buffer || data instanceof File || data instanceof Blob) {
         // 接口参数 token
-        data.append('client', 4)
+        data.append('appId', 3)
         if (!data.has('token')) {
           data.append('token', store.state.user.token)
-          data.append('uid', store.state.user.userId)
+          data.append('uid', store.state.user.userId ? store.state.user.userId : '')
         }
         return data
       } else if (data instanceof URLSearchParams) {
         // 接口参数 token
-        data.append('client', 4)
+        data.append('appId', 3)
         if (!data.has('token')) {
           data.append('token', store.state.user.token)
-          data.append('uid', store.state.user.userId)
+          data.append('uid', store.state.user.userId ? store.state.user.userId : '')
         }
         // headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
         return data.toString()
       } else if (data instanceof Object) {
         // 接口参数 token
-        data.client = 4
+        data.appId = 3
         data.token = store.state.user.token
-        data.uid = store.state.user.userId
+        data.uid = store.state.user.userId ? store.state.user.userId : ''
         // headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
         const _data = Object.keys(data)
         return _data.map(name => `${name}=${encodeURIComponent(data[name])}`).join('&')
@@ -67,7 +67,7 @@ service.interceptors.response.use(
     const res = response.data
 
     if (res && res.code === 200) {
-      return res.data
+      return res
     } else {
       // token失效
       if (res.code === 200201 || res.code === 200202 || res.code === 200103) {

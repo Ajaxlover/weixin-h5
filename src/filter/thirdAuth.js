@@ -2,6 +2,8 @@ import router from '../router'
 import store from '../store'
 import authUtils from '@/utils/auth'
 import systemUtils from '@/utils/system'
+import { wxRedirectUrl } from '@/api/wx'
+
 /**
  * @desc token 用户信息；拉起授权判断
  *
@@ -38,10 +40,19 @@ function doFilter() {
         if (third_redirect_code && third_redirect_code !== old_third_redirect_code) {
           return next()
         }
-
+        const url = process.env.VUE_APP_BASEURL + process.env.VUE_APP_BASE_PUBLIC_PATH + to.fullPath
+        wxRedirectUrl({
+          url
+        })
+          .then(res => {
+            window.location.href = res.data.authorizationUrl
+          })
+          .catch(() => {
+            console.error('获取网页授权回调地址失败')
+          })
         // 拉起第三方授权页
-        const redirect_url = getThirdUrl(to)
-        window.location.href = redirect_url
+        // const redirect_url = getThirdUrl(to)
+        // window.location.href = redirect_url
       }
     } else if (!thirdType) {
       //  浏览器环境处理

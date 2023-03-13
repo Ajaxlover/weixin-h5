@@ -27,8 +27,11 @@ function doFilter() {
         state: third_redirect_state
       })
         .then(res => {
+          console.log('55', res)
           // 保存微信返回的code 判断code已用且仍在url中,但是清除了token
           store.dispatch('user/setWxCode', third_redirect_code)
+          store.dispatch('user/setToken', res.data.token)
+          store.dispatch('user/setUserInfo', res.data)
           return next()
           // return next({ path: '/sign_in', replace: true })  // 防止用户在手机注册页点击返回到home页
         })

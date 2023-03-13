@@ -362,11 +362,12 @@ export default {
 
 <style lang="scss" scoped>
 .page-question {
-  // -moz-user-select: none; /* Firefox私有属性 */
-  // -webkit-user-select: none; /* WebKit内核私有属性 */
-  // -ms-user-select: none; /* IE私有属性(IE10及以后) */
-  // -khtml-user-select: none; /* Khtml内核私有属性 */
-  // -o-user-select: none; /* Opera私有属性 */
+  user-select: none;
+  -moz-user-select: none; /* Firefox私有属性 */
+  -webkit-user-select: none; /* WebKit内核私有属性 */
+  -ms-user-select: none; /* IE私有属性(IE10及以后) */
+  -khtml-user-select: none; /* Khtml内核私有属性 */
+  -o-user-select: none; /* Opera私有属性 */
   // height: 100%;
   width: 100%;
   background-color: #fff;

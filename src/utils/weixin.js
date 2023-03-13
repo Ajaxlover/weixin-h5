@@ -19,12 +19,13 @@ const wxSignParams = {
 function init(params) {
   wxSignParams.signUrl = isiOS ? window.location.href : window.location.href //
   if (store.getters.thirdType === 'wx') {
-    console.log('获取js-sdk参数')
     // 获取验签参数
     return wxSign({
-      uri: wxSignParams.signUrl
+      url: wxSignParams.signUrl
     })
       .then(res => {
+        console.log('获取js-sdk参数', res)
+
         wxSignParams.timestamp = res.timestamp
         wxSignParams.nonceStr = res.nonce_str
         wxSignParams.signature = res.signature
