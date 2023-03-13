@@ -42,6 +42,8 @@
 </template>
 
 <script>
+// import { getContestList } from '@/api/home'
+
 export default {
   name: 'Home',
   data() {
