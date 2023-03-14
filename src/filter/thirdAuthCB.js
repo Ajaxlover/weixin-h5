@@ -21,6 +21,7 @@ function doFilter() {
 
     // 第三方环境code处理
     if (!hasToken && thirdType && to.meta.thirdAuth && third_redirect_code && third_redirect_code !== old_third_redirect_code) {
+      console.log('zhixinf')
       // code获取token
       code2AccessToken({
         code: third_redirect_code,
@@ -32,6 +33,7 @@ function doFilter() {
           store.dispatch('user/setWxCode', third_redirect_code)
           store.dispatch('user/setToken', res.data.token)
           store.dispatch('user/setUserInfo', res.data)
+          store.dispatch('user/setUserId', res.data.uid)
           return next()
           // return next({ path: '/sign_in', replace: true })  // 防止用户在手机注册页点击返回到home页
         })

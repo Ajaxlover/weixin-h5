@@ -2,7 +2,7 @@ import { getUserInfo } from '@/api/user'
 import authUtils from '@/utils/auth.js'
 const getDefaultState = () => {
   return {
-    userId: '',
+    userId: authUtils.getUserId(),
     token: authUtils.getToken(), // cookie持久化
     userInfo: authUtils.getUserInfo(), // sessionStorage持久化
     wxCode: authUtils.getWxCode() // 微信授权返回的code码 - 解决: 用户授权后该页面仍带着老的code 此时token被清除 beforeEach无法根据是否有code判断是否授权 进入死循环
@@ -11,6 +11,9 @@ const getDefaultState = () => {
 const state = getDefaultState()
 
 const mutations = {
+  SET_USER_ID: (state, userId) => {
+    state.userId = userId
+  },
   SET_TOKEN: (state, token) => {
     state.token = token
   },
@@ -32,6 +35,14 @@ const mutations = {
 }
 
 const actions = {
+  // 保存userId
+  setUserId({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      commit('SET_USER_ID', data)
+      authUtils.setUserId(data)
+      resolve()
+    })
+  },
   // 保存token
   setToken({ commit }, data) {
     return new Promise((resolve, reject) => {
@@ -47,8 +58,8 @@ const actions = {
       getUserInfo()
         .then(response => {
           // 保存用户信息
-          commit('SET_USER_INFO', response)
-          authUtils.setUserInfo(response)
+          commit('SET_USER_INFO', response.data)
+          authUtils.setUserInfo(response.data)
           resolve(response)
         })
         .catch(error => {

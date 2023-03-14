@@ -1,6 +1,7 @@
 import router from '../router'
 import store from '../store'
 import authUtils from '@/utils/auth'
+// eslint-disable-next-line no-unused-vars
 import systemUtils from '@/utils/system'
 import { wxRedirectUrl } from '@/api/wx'
 
@@ -26,18 +27,19 @@ function doFilter() {
         if (hasUserInfo) {
           return next()
         } else {
-          store
-            .dispatch('user/getUserInfo')
-            .then(() => {
-              return next()
-            })
-            .catch(() => {
-              return next()
-            })
+          // store
+          //   .dispatch('user/getUserInfo')
+          //   .then(() => {
+          //     return next()
+          //   })
+          //   .catch(() => {
+          //     return next()
+          //   })
         }
       } else {
         // 已经拿到code(old_third_redirect_code 防止失效code仍在url中,需重新拿到third_redirect_code)
         if (third_redirect_code && third_redirect_code !== old_third_redirect_code) {
+          console.log('2222')
           return next()
         }
         const url = process.env.VUE_APP_BASEURL + process.env.VUE_APP_BASE_PUBLIC_PATH + to.fullPath

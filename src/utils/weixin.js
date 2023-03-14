@@ -5,6 +5,7 @@ import { wxSign } from '@/api/wx'
 const agent = navigator.userAgent
 const isiOS = !!agent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios手机
 const wxSignParams = {
+  appId: '',
   signUrl: '',
   timestamp: '',
   nonceStr: '',
@@ -25,10 +26,11 @@ function init(params) {
     })
       .then(res => {
         console.log('获取js-sdk参数', res)
-
-        wxSignParams.timestamp = res.timestamp
-        wxSignParams.nonceStr = res.nonce_str
-        wxSignParams.signature = res.signature
+        const { appId, timestamp, nonceStr, signature } = res.data
+        wxSignParams.appId = appId
+        wxSignParams.timestamp = timestamp
+        wxSignParams.nonceStr = nonceStr
+        wxSignParams.signature = signature
         wxConfig(params)
       })
       .catch(error => {
@@ -44,26 +46,30 @@ function init(params) {
 function wxConfig(params) {
   const configObj = {
     debug: false,
-    appId: store.getters.appId,
+    appId: wxSignParams.appId,
     timestamp: wxSignParams.timestamp,
     nonceStr: wxSignParams.nonceStr,
     signature: wxSignParams.signature,
     jsApiList: params.apiList
   }
+  console.log('configObj', configObj)
   wx.config(configObj)
   wx.ready(() => {
-    // 屏蔽功能菜单
-    wx.hideMenuItems({
-      menuList: params.hideMenuList
-    })
+    setTimeout(() => {
+      wx.hideAllNonBaseMenuItem()
+      // 屏蔽功能菜单
+      // wx.hideMenuItems({
+      //   menuList: params.hideMenuList
+      // })
+    }, 400)
   })
   wx.error(res => {
     console.log('wx.config fail', res)
-    if (wxSignParams.errorCount >= 0) {
-      wxSignParams.errorCount = wxSignParams.errorCount - 1
-      wxSignParams.signUrl = window.location.href.indexOf('?') === -1 ? window.location.href : window.location.href
-      init(params)
-    }
+    // if (wxSignParams.errorCount >= 0) {
+    //   wxSignParams.errorCount = wxSignParams.errorCount - 1
+    //   wxSignParams.signUrl = window.location.href.indexOf('?') === -1 ? window.location.href : window.location.href
+    //   init(params)
+    // }
   })
 }
 

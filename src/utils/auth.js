@@ -4,6 +4,7 @@ const KeyPrefix = 'jd-wx-h5'
 const TokenKey = KeyPrefix + 'access-token'
 const UserInfoKey = KeyPrefix + 'user-info'
 const wxCodeKey = KeyPrefix + 'wx-code'
+const UidKey = KeyPrefix + 'uid'
 
 // token - cookie
 function getToken() {
@@ -14,33 +15,42 @@ function setToken(token) {
   return Cookies.set(TokenKey, token, { expires: 30 })
 }
 
+function getUserId(uid) {
+  return Cookies.get(UidKey) ? Cookies.get(UidKey) : ''
+}
+function setUserId(uid) {
+  return Cookies.set(UidKey, uid, { expires: 30 })
+}
+
 function removeToken() {
   return Cookies.remove(TokenKey)
 }
 
 // 用户信息 - session
 function getUserInfo() {
-  return ['undefined', 'null', ''].includes(sessionStorage.getItem(UserInfoKey)) ? null : JSON.parse(sessionStorage.getItem(UserInfoKey))
+  return ['undefined', 'null', ''].includes(Cookies.get(UserInfoKey)) ? null : Cookies.get(UserInfoKey)
 }
 
 function setUserInfo(info) {
   const origin = getUserInfo()
   let userInfo = info
   origin ? (userInfo = { ...origin, ...info }) : ''
-  return sessionStorage.setItem(UserInfoKey, JSON.stringify(userInfo))
+  return Cookies.set(UserInfoKey, userInfo)
 }
 
 function removeUserInfo() {
-  return sessionStorage.removeItem(UserInfoKey)
+  return Cookies.remove(UserInfoKey)
 }
 
 // 微信授权code - session
 function getWxCode() {
-  return ['undefined', 'null', ''].includes(sessionStorage.getItem(wxCodeKey)) ? '' : JSON.parse(sessionStorage.getItem(wxCodeKey))
+  // return ['undefined', 'null', ''].includes(Cookies.get(wxCodeKey)) ? '' : JSON.parse(Cookies.get(wxCodeKey))
+  return ['undefined', 'null', ''].includes(Cookies.get(wxCodeKey)) ? '' : Cookies.get(wxCodeKey)
 }
 
 function setWxCode(code) {
-  return sessionStorage.setItem(wxCodeKey, JSON.stringify(code))
+  // return Cookies.set(wxCodeKey, JSON.stringify(code))
+  return Cookies.set(wxCodeKey, code)
 }
 
 function setExamRecord(key, question) {
@@ -54,6 +64,8 @@ function getExamRecord(key) {
 export default {
   getToken,
   setToken,
+  getUserId,
+  setUserId,
   removeToken,
   getUserInfo,
   setUserInfo,

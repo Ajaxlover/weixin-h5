@@ -25,7 +25,8 @@
         <span>竞赛活动</span>
       </div>
       <div class="home-exams">
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <van-empty v-if="list.length === 0" description="暂无竞赛" />
+        <van-list v-else v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
           <div v-for="item in list" :key="item" class="home-exam-item van-hairline--surround" @click="toJoin">
             <img src="../../assets/image/test_pic .png" alt="" />
             <div class="exam-name van-ellipsis">
@@ -42,7 +43,8 @@
 </template>
 
 <script>
-// import { getContestList } from '@/api/home'
+import { getContestList } from '@/api/home'
+// import authUtils from '@/utils/auth.js'
 
 export default {
   name: 'Home',
@@ -56,49 +58,54 @@ export default {
     }
   },
   computed: {},
+  mounted() {
+    this.onLoad()
+  },
   methods: {
     onLoad() {
-      //  if (this.isFinished || this.isLoading) {
-      //         return;
-      //       }
-      //       this.pageNum += 1;
-      //       this.getListData();
+      if (this.finished || this.loading) {
+        return
+      }
+      this.pageNum += 1
+      this.getListData()
 
       // 异步更新数据
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1)
-        }
+      // setTimeout(() => {
+      //   for (let i = 0; i < 10; i++) {
+      //     this.list.push(this.list.length + 1)
+      //   }
 
-        // 加载状态结束
-        this.loading = false
+      //   // 加载状态结束
+      //   this.loading = false
 
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true
-        }
-      }, 1000)
+      //   // 数据全部加载完成
+      //   if (this.list.length >= 40) {
+      //     this.finished = true
+      //   }
+      // }, 1000)
     },
     getListData() {
-      // this.isLoading = true
-      // yourApi
-      //   .getListData(this.pageNum, this.pageSize)
-      //   .then(res => {
-      //     this.isLoading = false
-      //     if (res.length === 0 || res.length < this.pageSize) {
-      //       this.isFinished = true // 数据全部加载完毕
-      //     }
-      //     if (this.pageNum === 1) {
-      //       this.listData = res // 刷新时替换原有数据
-      //     } else {
-      //       this.listData = this.listData.concat(res) // 上拉加载时追加数据
-      //     }
-      //   })
-      //   .catch(err => {
-      //     this.isLoading = false
-      //     console.error(err)
-      //   })
+      this.loading = true
+      getContestList({
+        pageNo: this.pageNum,
+        pageSize: this.pageSize
+      })
+        .then(res => {
+          this.loading = false
+          if (res.length === 0 || res.length < this.pageSize) {
+            this.finished = true // 数据全部加载完毕
+          }
+          if (this.pageNum === 1) {
+            this.list = res // 刷新时替换原有数据
+          } else {
+            this.list = this.list.concat(res) // 上拉加载时追加数据
+          }
+        })
+        .catch(err => {
+          this.loading = false
+          console.error(err)
+        })
     },
     toMy() {
       this.$router.push('/my')

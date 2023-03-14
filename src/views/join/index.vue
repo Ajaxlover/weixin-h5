@@ -49,6 +49,7 @@ export default {
   },
   computed: {},
   methods: {
+    getInfo() {},
     goBack() {
       this.$router.push({
         path: '/',

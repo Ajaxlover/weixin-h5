@@ -6,7 +6,7 @@ import request from '@/utils/request'
  */
 export function getContestList(data) {
   return request({
-    url: '/api/wechat/jsapi_ticketghjgkh',
+    url: '/exam/masterHead/stu/getList',
     method: 'post',
     data
   })
@@ -30,7 +30,7 @@ export function getMyContestList(data) {
  */
 export function getContestDetail(data) {
   return request({
-    url: '/api/wechat/oauth/get_redirect_url',
+    url: '/exam/masterHeadStu/getStuRegistrationInfo',
     method: 'post',
     data
   })

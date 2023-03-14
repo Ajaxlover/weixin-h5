@@ -65,6 +65,7 @@
 <script>
 import Nav from '@/components/Nav'
 import { Toast } from 'vant'
+import wx from 'weixin-js-sdk'
 
 export default {
   name: 'Info',
@@ -89,6 +90,28 @@ export default {
     this.init()
   },
   methods: {
+    base64toFile(dataurl) {
+      const arr = dataurl.split(',')
+      const mime = arr[0].match(/:(.*?);/)[1]
+      // suffix是该文件的后缀
+      const suffix = mime.split('/')[1]
+      // atob 对经过 base-64 编码的字符串进行解码
+      const bstr = atob(arr[1])
+      // n 是解码后的长度
+      let n = bstr.length
+      // Uint8Array 数组类型表示一个 8 位无符号整型数组 初始值都是 数子0
+      const u8arr = new Uint8Array(n)
+      // charCodeAt() 方法可返回指定位置的字符的 Unicode 编码。这个返回值是 0 - 65535 之间的整数
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n)
+      }
+      const filename = new Date().getTime()
+      // new File返回File对象 第一个参数是 ArraryBuffer 或 Bolb 或Arrary 第二个参数是文件名
+      // 第三个参数是 要放到文件中的内容的 MIME 类型
+      return new File([u8arr], `${filename}.${suffix}`, {
+        type: mime
+      })
+    },
     goBack() {
       this.$router.push({
         path: '/control',
@@ -98,6 +121,25 @@ export default {
     init() {},
     takePhoto() {
       console.log('拍照')
+      const that = this
+      // eslint-disable-next-line no-undef
+      wx.chooseImage({
+        count: 1, // 默认9
+        sizeType: ['original'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+          const localIds = res.localIds // 返回选定照片的本地 ID 列表，localId可以作为 img 标签的 src 属性显示图片
+          wx.getLocalImgData({
+            localId: localIds[0], // 图片的localID
+            success: function (res) {
+              var base64Data = res.localData // localData是图片的base64数据，可以用 img 标签显示
+              const file = that.base64toFile(base64Data)
+              console.log(file)
+              // file上传到服务器获取url
+            }
+          })
+        }
+      })
     },
     submitInfo() {
       if (this.username.trim().length === 0) {
