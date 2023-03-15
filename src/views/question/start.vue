@@ -18,6 +18,7 @@
 
 <script>
 import Nav from '@/components/Nav'
+import { getContestInfo } from '@/api/exam'
 
 export default {
   name: 'Start',
@@ -25,10 +26,27 @@ export default {
     Nav
   },
   data() {
-    return {}
+    return {
+      id: this.$route.query.id,
+      info: {}
+    }
   },
   computed: {},
+  mounted() {
+    this.getInfo()
+  },
   methods: {
+    getInfo() {
+      getContestInfo({
+        masterHeadId: this.id
+      })
+        .then(res => {
+          this.info = res.data
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
     goBack() {
       this.$router.go(-1)
     },

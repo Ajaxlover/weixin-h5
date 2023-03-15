@@ -1,6 +1,6 @@
 import store from '../store'
 import router from '../router'
-const defaultTitle = 'vue-wx-h5-template'
+const defaultTitle = ''
 /**
  * @desc 全局处理
  *         1. 遮罩层

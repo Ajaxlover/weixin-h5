@@ -2,10 +2,10 @@
   <div class="page-control">
     <Nav @go-back="goBack"></Nav>
     <div class="content">
-      <div class="contest-name">竞赛名称</div>
+      <div class="contest-name">{{ info.mhName }}</div>
       <div class="contest-time">
         <div class="clock"></div>
-        <span>报名时间：2023/05/01 00:00-2023/06/01 23:59</span>
+        <span>报名时间：{{ $parseTime(info.startTime, '{y}/{m}/{d} {h}:{i}') }}-{{ $parseTime(info.endTime, '{y}/{m}/{d} {h}:{i}') }}</span>
       </div>
       <div class="contest-icons">
         <div v-for="(item, idx) in tabs" :key="idx" class="icon-item" @click="goPath(item, idx)">
@@ -43,6 +43,10 @@
 
 <script>
 import Nav from '@/components/Nav'
+import { getContestDetail } from '@/api/home'
+import { contestBegin, contestMockBegin } from '@/api/exam'
+import { contestCredential } from '@/api/credential'
+import { Toast } from 'vant'
 
 export default {
   name: 'Control',
@@ -51,6 +55,8 @@ export default {
   },
   data() {
     return {
+      id: this.$route.query.id,
+      info: {},
       active: -1,
       tabs: [
         { url: require('../../assets/image/报名须知.png'), text: '报名须知', path: '/rule' },
@@ -58,7 +64,7 @@ export default {
         { url: require('../../assets/image/信息填写.png'), text: '信息填写', path: '/info' },
         { url: require('../../assets/image/立即参赛.png'), text: '立即参赛', path: '/start' },
         { url: require('../../assets/image/模拟.png'), text: '模拟练习', path: '' },
-        { url: require('../../assets/image/证书.png'), text: '证书查看', path: '/credentials' }
+        { url: require('../../assets/image/证书.png'), text: '证书查看', path: '/credentials-detail' }
       ]
     }
   },
@@ -73,14 +79,90 @@ export default {
   methods: {
     goBack() {
       this.$router.push({
-        path: '/',
-        query: {}
+        path: '/join',
+        query: {
+          id: this.id
+        }
       })
     },
     goPath(item, idx) {
-      this.$router.push(item.path)
+      if (idx === 3) {
+        contestBegin({
+          masterHeadId: this.id
+        }).then(res => {
+          if (res.code === 200) {
+            const examId = res.data
+            this.$router.push({
+              path: item.path,
+              query: {
+                examId
+              }
+            })
+          } else {
+            Toast({
+              message: res.msg,
+              position: 'middle'
+            })
+          }
+        })
+      } else if (idx === 4) {
+        contestMockBegin({
+          masterHeadId: this.id
+        }).then(res => {
+          if (res.code === 200) {
+            const examId = res.data
+            this.$router.push({
+              path: item.path,
+              query: {
+                examId
+              }
+            })
+          } else {
+            Toast({
+              message: res.msg,
+              position: 'middle'
+            })
+          }
+        })
+      } else if (idx === 5) {
+        contestCredential({
+          masterHeadId: this.id
+        }).then(res => {
+          if (res.code === 200) {
+            this.$router.push({
+              path: item.path,
+              query: {
+                id: this.id,
+                type: 1 // control进入证书详情
+              }
+            })
+          } else {
+            Toast({
+              message: res.msg,
+              position: 'middle'
+            })
+          }
+        })
+      } else {
+        this.$router.push({
+          path: item.path,
+          query: {
+            id: this.id
+          }
+        })
+      }
     },
-    init() {}
+    init() {
+      getContestDetail({
+        masterheadId: this.id
+      })
+        .then(res => {
+          this.info = res.data
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    }
   }
 }
 </script>

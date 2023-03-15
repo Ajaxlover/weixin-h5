@@ -23,3 +23,15 @@ export function getCredentialDetail(data) {
     data
   })
 }
+
+/**
+ * @desc 证书查看
+ * @param
+ */
+export function contestCredential(data) {
+  return request({
+    url: '/exam/masterHead/award/lookStuAward',
+    method: 'post',
+    data
+  })
+}

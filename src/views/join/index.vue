@@ -3,28 +3,29 @@
     <Nav @go-back="goBack"></Nav>
     <div class="content">
       <div class="pic">
-        <img src="../../assets/image/test_pic .png" alt="" />
+        <img :src="info.coverUrl" alt="" />
       </div>
       <div class="contest-info">
-        <div class="contest-name">第一届全君大学物理竞赛</div>
-        <div class="contest-time van-hairline--bottom">报名时间：2023/04/02 00:00-2023/05/01 00:00</div>
-        <div class="contest-time van-hairline--bottom">报名时间：2023/04/02 00:00-2023/05/01 00:00</div>
+        <div class="contest-name">{{ info.mhName }}</div>
+        <div class="contest-time van-hairline--bottom">
+          报名时间：{{ $parseTime(info.startTime, '{y}/{m}/{d} {h}:{i}') }}-{{ $parseTime(info.endTime, '{y}/{m}/{d} {h}:{i}') }}
+        </div>
+        <div class="contest-time van-hairline--bottom">
+          竞赛时间：{{ $parseTime(info.competeStartTime, '{y}/{m}/{d} {h}:{i}') }}-{{ $parseTime(info.competeEndTime, '{y}/{m}/{d} {h}:{i}') }}
+        </div>
         <div class="contest-time van-hairline--bottom">主办单位：<span>国防科技大学</span></div>
         <div class="contest-time">竞赛方式：<span>线上知识竞赛</span></div>
       </div>
       <div class="contest-detail">
         <div class="contest-detail-title">详情</div>
-        <div class="contest-detail-content">
-          第一届全君大学物理竞赛第一届全君大学物理竞赛第一 届全君大学物理竞赛第一届全君大学物理竞赛第一届全 君大学物理竞赛。
-          第一届全君大学物理竞赛第一届全君大学物理竞赛第一 届全君大学物理竞赛第一届全君大学物理竞赛第一届全 君大学物理竞赛。
-        </div>
+        <div class="contest-detail-content" v-html="info.introduction"></div>
         <!-- <div style="width: 400px; height: 100%">
           <div class="contest-detail-title">详情</div>
           <div>6666666</div>
         </div> -->
       </div>
       <div class="share-btn">
-        <van-button square type="primary" :icon="iconUrl"> 分享 </van-button>
+        <van-button square type="primary" :icon="iconUrl" @click="toShare"> 分享 </van-button>
         <van-button square type="primary" @click="goControl">报名</van-button>
       </div>
     </div>
@@ -36,6 +37,8 @@
 
 <script>
 import Nav from '@/components/Nav'
+import wx from 'weixin-js-sdk'
+import { getContestDetail } from '@/api/home'
 
 export default {
   name: 'Join',
@@ -44,12 +47,69 @@ export default {
   },
   data() {
     return {
-      iconUrl: require('../../assets/image/share.png')
+      id: this.$route.query.id,
+      iconUrl: require('../../assets/image/share.png'),
+      info: {}
     }
   },
   computed: {},
+  mounted() {
+    this.getInfo()
+  },
   methods: {
-    getInfo() {},
+    getInfo() {
+      getContestDetail({
+        masterheadId: this.id
+      })
+        .then(res => {
+          this.info = res.data
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
+    toShare() {
+      wx.updateAppMessageShareData({
+        title: '竞赛', // 分享标题
+        desc: '5555', // 分享描述
+        link: 'http://192.168.254.8:8086/join', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: 'https://test.guangyiedu.com/202208/4698291661910044115.jpg', // 分享图标
+        success: function (res) {
+          // 设置成功
+          console.log('share朋友', res)
+        }
+      })
+      // wx.updateTimelineShareData({
+      //   title: '竞赛', // 分享标题
+      //   desc: '5555', // 分享描述
+      //   link: 'http://192.168.254.8:8086/join', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      //   imgUrl: 'https://test.guangyiedu.com/202208/4698291661910044115.jpg', // 分享图标
+      //   success: function (res) {
+      //     console.log('share朋友圈', res)
+      //     // 设置成功
+      //   }
+      // })
+      // wx.ready(() => {
+      //   wx.updateAppMessageShareData({
+      //     title: '竞赛', // 分享标题
+      //     desc: '5555', // 分享描述
+      //     link: 'https://test.guangyiedu.com/202208/4698291661910044115.jpg', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      //     imgUrl: 'https://test.guangyiedu.com/202208/4698291661910044115.jpg', // 分享图标
+      //     success: function (res) {
+      //       // 设置成功
+      //     }
+      //   })
+      //   wx.updateTimelineShareData({
+      //     title: '竞赛', // 分享标题
+      //     desc: '5555', // 分享描述
+      //     link: 'https://test.guangyiedu.com/202208/4698291661910044115.jpg', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      //     imgUrl: 'https://test.guangyiedu.com/202208/4698291661910044115.jpg', // 分享图标
+      //     success: function (res) {
+      //       // 设置成功
+      //     }
+      //   })
+      // })
+    },
     goBack() {
       this.$router.push({
         path: '/',
@@ -59,7 +119,9 @@ export default {
     goControl() {
       this.$router.push({
         path: '/control',
-        query: {}
+        query: {
+          id: this.id
+        }
       })
     }
   }

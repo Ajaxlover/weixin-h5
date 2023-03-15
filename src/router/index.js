@@ -117,12 +117,10 @@ export const routes = [
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
-        sign: false, // 是否需要微信验签
+        sign: true, // 是否需要微信验签
         jsApiList: [
           'updateAppMessageShareData', // 分享朋友
-          'updateTimelineShareData', // 分享朋友圈
-          'getLocation', // 定位
-          'openLocation' // 打开地图
+          'updateTimelineShareData' // 分享朋友圈
         ]
       },
       keepAlive: false,

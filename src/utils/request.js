@@ -68,6 +68,8 @@ service.interceptors.response.use(
 
     if (res && res.code === 200) {
       return res
+    } else if (res && (res.code === 246 || res.code === 247 || res.code === 248 || res.code === 251)) {
+      return res
     } else {
       // token失效
       if (res.code === 200201 || res.code === 200202 || res.code === 200103) {

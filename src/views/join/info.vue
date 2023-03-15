@@ -57,7 +57,17 @@
       </div>
     </div>
     <div class="footer van-hairline--top">
-      <van-button class="join-btn" :disabled="isDisable" type="primary" size="large" round @click="submitInfo">提交</van-button>
+      <van-button
+        class="join-btn"
+        :disabled="isDisable"
+        type="primary"
+        size="large"
+        :loading="loading"
+        loading-text="提交中..."
+        round
+        @click="submitInfo"
+        >提交</van-button
+      >
     </div>
   </div>
 </template>
@@ -66,6 +76,9 @@
 import Nav from '@/components/Nav'
 import { Toast } from 'vant'
 import wx from 'weixin-js-sdk'
+import { uploadImage } from '@/api/exam'
+import { getContestDetail } from '@/api/home'
+import { registerJoin } from '@/api/exam'
 
 export default {
   name: 'Info',
@@ -74,6 +87,10 @@ export default {
   },
   data() {
     return {
+      loading: false,
+      id: this.$route.query.id,
+      info: {},
+      faceUrl: '',
       username: '',
       school: '',
       teacherName: '',
@@ -115,10 +132,32 @@ export default {
     goBack() {
       this.$router.push({
         path: '/control',
-        query: {}
+        query: {
+          id: this.id
+        }
       })
     },
-    init() {},
+    init() {
+      getContestDetail({
+        masterheadId: this.id
+      })
+        .then(res => {
+          this.info = res.data
+          if (res.data.hasStuRegister === 1) {
+            // 已报名
+            const { name, facePic, school, email, appointTeacher, mobile } = res.data
+            this.faceUrl = facePic
+            this.username = name
+            this.school = school
+            this.teacherName = appointTeacher
+            this.email = email
+            this.phone = mobile
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
     takePhoto() {
       console.log('拍照')
       const that = this
@@ -134,14 +173,29 @@ export default {
             success: function (res) {
               var base64Data = res.localData // localData是图片的base64数据，可以用 img 标签显示
               const file = that.base64toFile(base64Data)
-              console.log(file)
-              // file上传到服务器获取url
+              const fd = new FormData()
+              fd.append('cosPath', 'gfkd/masterhead')
+              fd.append('file', file)
+              uploadImage(fd).then(result => {
+                if (result.code === 200) {
+                  this.faceUrl = result.data.accessUrl
+                }
+              })
             }
           })
         }
       })
     },
     submitInfo() {
+      // 获取电子签名
+      const signPic = localStorage.getItem(`esign${this.id}`) ? localStorage.getItem(`esign${this.id}`) : ''
+      if (!signPic) {
+        Toast({
+          message: '未签写电子签名，请检查',
+          position: 'middle'
+        })
+        return
+      }
       if (this.username.trim().length === 0) {
         Toast({
           message: '姓名不能为空',
@@ -163,6 +217,34 @@ export default {
         })
         return
       }
+      if (this.faceUrl.length === 0) {
+        Toast({
+          message: '请录入人脸信息',
+          position: 'middle'
+        })
+        return
+      }
+
+      const data = {
+        masterheadId: this.id,
+        signPic,
+        name: this.username,
+        school: this.school,
+        email: this.email,
+        facePic: this.faceUrl,
+        appointTeacher: this.teacherName,
+        mobile: this.phone
+      }
+      this.loading = true
+      registerJoin(data)
+        .then(res => {
+          this.loading = false
+        })
+        .catch(err => {
+          this.loading = false
+
+          console.error(err)
+        })
     }
   }
 }

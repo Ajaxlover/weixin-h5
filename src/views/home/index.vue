@@ -27,16 +27,19 @@
       <div class="home-exams">
         <van-empty v-if="list.length === 0" description="暂无竞赛" />
         <van-list v-else v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-          <div v-for="item in list" :key="item" class="home-exam-item van-hairline--surround" @click="toJoin">
-            <img src="../../assets/image/test_pic .png" alt="" />
+          <div v-for="item in list" :key="item.id" class="home-exam-item van-hairline--surround" @click="toJoin(item)">
+            <!-- <img src="../../assets/image/test_pic .png" alt="" /> -->
+            <img :src="item.coverUrl" alt="" />
             <div class="exam-name van-ellipsis">
-              <span>第一届全国大学物理竞赛</span>
+              <div class="exam-name van-ellipsis">
+                <span>{{ item.name }}</span>
+              </div>
+              <div class="join-time">
+                <span>报名时间：{{ $parseTime(item.startTime, '{y}/{m}/{d} {h}:{i}') }}-{{ $parseTime(item.endTime, '{y}/{m}/{d} {h}:{i}') }}</span>
+              </div>
             </div>
-            <div class="join-time">
-              <span>报名时间：{{ $parseTime('1672812596000', '{y}/{m}/{d} {h}:{i}') }}-2023/06/01 23:59</span>
-            </div>
-          </div>
-        </van-list>
+          </div></van-list
+        >
       </div>
     </div>
   </div>
@@ -59,7 +62,7 @@ export default {
   },
   computed: {},
   mounted() {
-    this.onLoad()
+    this.getListData()
   },
   methods: {
     onLoad() {
@@ -93,11 +96,12 @@ export default {
       })
         .then(res => {
           this.loading = false
-          if (res.length === 0 || res.length < this.pageSize) {
+          const { records } = res.data
+          if (records.length === 0 || records.length < this.pageSize) {
             this.finished = true // 数据全部加载完毕
           }
           if (this.pageNum === 1) {
-            this.list = res // 刷新时替换原有数据
+            this.list = records // 刷新时替换原有数据
           } else {
             this.list = this.list.concat(res) // 上拉加载时追加数据
           }
@@ -113,8 +117,13 @@ export default {
     toExamList() {
       this.$router.push('/test')
     },
-    toJoin() {
-      this.$router.push('/join')
+    toJoin(item) {
+      this.$router.push({
+        path: '/join',
+        query: {
+          id: item.id
+        }
+      })
     }
   }
 }
@@ -189,6 +198,7 @@ export default {
         flex-direction: column;
         img {
           width: 100%;
+          height: 300px;
           border-radius: 8px;
           overflow: hidden;
         }
