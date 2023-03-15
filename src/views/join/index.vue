@@ -17,7 +17,7 @@
         <div class="contest-time">竞赛方式：<span>线上知识竞赛</span></div>
       </div>
       <div class="contest-detail">
-        <div class="contest-detail-title">详情</div>
+        <div class="contest-detail-title">竞赛详情</div>
         <div class="contest-detail-content" v-html="info.introduction"></div>
         <!-- <div style="width: 400px; height: 100%">
           <div class="contest-detail-title">详情</div>
