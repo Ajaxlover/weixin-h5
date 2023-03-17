@@ -18,7 +18,8 @@ const wxSignParams = {
  * @param {*} params
  */
 function init(params) {
-  wxSignParams.signUrl = isiOS ? window.location.href : window.location.href //
+  // wxSignParams.signUrl = isiOS ? window.location.href : window.location.href
+  wxSignParams.signUrl = isiOS ? store.getters.originUrl : window.location.href
   if (store.getters.thirdType === 'wx') {
     // 获取验签参数
     return wxSign({
@@ -55,21 +56,21 @@ function wxConfig(params) {
   console.log('configObj', configObj)
   wx.config(configObj)
   wx.ready(() => {
-    setTimeout(() => {
-      wx.hideAllNonBaseMenuItem()
-      // 屏蔽功能菜单
-      // wx.hideMenuItems({
-      //   menuList: params.hideMenuList
-      // })
-    }, 400)
+    // setTimeout(() => {
+    //   wx.hideAllNonBaseMenuItem()
+    //   屏蔽功能菜单
+    //   wx.hideMenuItems({
+    //     menuList: params.hideMenuList
+    //   })
+    // }, 400)
   })
   wx.error(res => {
     console.log('wx.config fail', res)
-    // if (wxSignParams.errorCount >= 0) {
-    //   wxSignParams.errorCount = wxSignParams.errorCount - 1
-    //   wxSignParams.signUrl = window.location.href.indexOf('?') === -1 ? window.location.href : window.location.href
-    //   init(params)
-    // }
+    if (wxSignParams.errorCount >= 0) {
+      wxSignParams.errorCount = wxSignParams.errorCount - 1
+      wxSignParams.signUrl = window.location.href.indexOf('?') === -1 ? window.location.href : window.location.href
+      init(params)
+    }
   })
 }
 

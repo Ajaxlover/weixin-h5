@@ -22,6 +22,7 @@ function doFilter() {
           })
         })
       } else {
+        console.log(to.fullPath)
         // wx-js-sdk初始化
         wxUtils.init({
           apiList: to.meta.wx.jsApiList,

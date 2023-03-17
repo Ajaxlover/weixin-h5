@@ -2,13 +2,11 @@
   <div class="page-start">
     <Nav @go-back="goBack"></Nav>
     <div class="content">
-      <div class="contest-name">1111111111</div>
-      <div class="contest-time">竞赛开始时间：2023/04/08 00:00</div>
-      <div class="contest-time">竞赛开始时间：2023/04/08 00:00</div>
-      <div class="contest-limit">考试限时：60分钟</div>
-      <div class="contest-intro">
-        考试说明：哈哈哈哈哈哈哈哈哈哈哈哈或哈哈哈哈或哈哈或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或
-      </div>
+      <div class="contest-name">{{ info.examName }}</div>
+      <div class="contest-time">竞赛开始时间：{{ $parseTime(info.startTime, '{y}/{m}/{d} {h}:{i}') }}</div>
+      <div class="contest-time">竞赛结束时间：{{ $parseTime(info.endTime, '{y}/{m}/{d} {h}:{i}') }}</div>
+      <div class="contest-limit">考试限时：{{ info.answerTime }}分钟</div>
+      <div class="contest-intro">考试说明：{{ info.examNotes ? info.examNotes : '无' }}</div>
       <div class="start-btn">
         <van-button type="primary" size="large" round @click="goAnswer">开始</van-button>
       </div>
@@ -28,6 +26,7 @@ export default {
   data() {
     return {
       id: this.$route.query.id,
+      examId: this.$route.query.examId,
       info: {}
     }
   },
@@ -38,7 +37,7 @@ export default {
   methods: {
     getInfo() {
       getContestInfo({
-        masterHeadId: this.id
+        examId: this.examId
       })
         .then(res => {
           this.info = res.data
@@ -48,12 +47,20 @@ export default {
         })
     },
     goBack() {
-      this.$router.go(-1)
+      this.$router.push({
+        path: '/control',
+        query: {
+          id: this.id
+        }
+      })
     },
     goAnswer() {
       this.$router.push({
         path: '/question',
-        query: {}
+        query: {
+          examId: this.examId,
+          id: this.id
+        }
       })
     }
   }

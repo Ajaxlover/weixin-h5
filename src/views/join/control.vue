@@ -63,7 +63,7 @@ export default {
         { url: require('../../assets/image/考生守则.png'), text: '诚信承诺书', path: '/promise' },
         { url: require('../../assets/image/信息填写.png'), text: '信息填写', path: '/info' },
         { url: require('../../assets/image/立即参赛.png'), text: '立即参赛', path: '/start' },
-        { url: require('../../assets/image/模拟.png'), text: '模拟练习', path: '' },
+        { url: require('../../assets/image/模拟.png'), text: '模拟练习', path: '/start' },
         { url: require('../../assets/image/证书.png'), text: '证书查看', path: '/credentials-detail' }
       ]
     }
@@ -91,11 +91,12 @@ export default {
           masterHeadId: this.id
         }).then(res => {
           if (res.code === 200) {
-            const examId = res.data
+            const { examId } = res.data
             this.$router.push({
               path: item.path,
               query: {
-                examId
+                examId,
+                id: this.id
               }
             })
           } else {
@@ -110,11 +111,12 @@ export default {
           masterHeadId: this.id
         }).then(res => {
           if (res.code === 200) {
-            const examId = res.data
+            const { examId } = res.data
             this.$router.push({
               path: item.path,
               query: {
-                examId
+                examId,
+                id: this.id
               }
             })
           } else {

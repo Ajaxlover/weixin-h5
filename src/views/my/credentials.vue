@@ -2,24 +2,25 @@
   <div class="page-credentials">
     <Nav @go-back="goBack"></Nav>
     <div class="content">
-      <div class="list-item" @click="goDetail">
+      <van-empty v-if="list.length === 0" description="您还没有证书" />
+      <div v-for="(item, idx) in list" v-else :key="idx" class="list-item" @click="goDetail(item)">
         <div class="item-box">
-          <div class="item-name">第一届全国物理知识竞赛</div>
+          <div class="item-name">{{ item.masterheadName }}</div>
           <div class="item-honor">
             <div class="item-icon"></div>
-            <span>一等奖</span>
+            <span>{{ item.awardName }}</span>
           </div>
-          <div class="item-num">证书编号：111111111111</div>
+          <div class="item-num">证书编号：{{ item.certificateNo }}</div>
           <div class="item-btn">进入</div>
         </div>
       </div>
     </div>
-    <!-- <van-empty description="您还没有证书" /> -->
   </div>
 </template>
 
 <script>
 import Nav from '@/components/Nav'
+import { getCredentialList } from '@/api/credential'
 
 export default {
   name: 'Credentials',
@@ -28,19 +29,52 @@ export default {
   },
   data() {
     return {
-      list: []
+      list: [],
+      loading: false,
+      finished: false,
+      pageNum: 1,
+      pageSize: 9999
     }
   },
   computed: {},
+  mounted() {
+    this.getListData()
+  },
   methods: {
+    getListData() {
+      getCredentialList({
+        pageNo: this.pageNum,
+        pageSize: this.pageSize
+      })
+        .then(res => {
+          const { records } = res.data
+          if (records.length === 0 || records.length < this.pageSize) {
+            this.finished = true // 数据全部加载完毕
+          }
+          if (this.pageNum === 1) {
+            this.list = records // 刷新时替换原有数据
+          } else {
+            this.list = this.list.concat(res) // 上拉加载时追加数据
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
     goBack() {
       this.$router.push({
         path: '/my',
         query: {}
       })
     },
-    goDetail() {
-      this.$router.push('/credentials-detail')
+    goDetail(item) {
+      this.$router.push({
+        path: '/credentials-detail',
+        query: {
+          competeStuId: item.competeStuId,
+          type: 2 // 证书列表进入
+        }
+      })
     }
   }
 }

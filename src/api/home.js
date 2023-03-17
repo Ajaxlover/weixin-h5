@@ -35,3 +35,15 @@ export function getContestDetail(data) {
     data
   })
 }
+
+/**
+ * @desc 考前5min去开始答题
+ * @param
+ */
+export function start5minBefore(data) {
+  return request({
+    url: '/exam/masterHeadCompete/getAdvanceCompeteExam',
+    method: 'post',
+    data
+  })
+}

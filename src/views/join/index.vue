@@ -24,14 +24,15 @@
           <div>6666666</div>
         </div> -->
       </div>
-      <div class="share-btn">
+      <!-- <div class="share-btn">
         <van-button square type="primary" :icon="iconUrl" @click="toShare"> 分享 </van-button>
         <van-button square type="primary" @click="goControl">报名</van-button>
-      </div>
+      </div> -->
     </div>
-    <!-- <div class="footer van-hairline--top">
-      <van-button class="join-btn" type="primary" size="large" round>去报名</van-button>
-    </div> -->
+    <div class="footer van-hairline--top">
+      <van-button square type="primary" :icon="iconUrl" @click="toShare">分享 </van-button>
+      <van-button square type="primary" @click="goControl">报名</van-button>
+    </div>
   </div>
 </template>
 
@@ -39,6 +40,7 @@
 import Nav from '@/components/Nav'
 import wx from 'weixin-js-sdk'
 import { getContestDetail } from '@/api/home'
+import { Toast } from 'vant'
 
 export default {
   name: 'Join',
@@ -54,6 +56,26 @@ export default {
   },
   computed: {},
   mounted() {
+    wx.ready(() => {
+      wx.updateAppMessageShareData({
+        title: '竞赛-分享朋友', // 分享标题
+        desc: '5555描述', // 分享描述
+        link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: 'http://www.ay1.cc/img?w=30&h=30', // 分享图标
+        success: function (res) {
+          // 设置成功
+        }
+      })
+      wx.updateTimelineShareData({
+        title: '竞赛-分享朋友圈', // 分享标题
+        desc: '描述', // 分享描述
+        link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: 'http://www.ay1.cc/img?w=30&h=30', // 分享图标
+        success: function (res) {
+          // 设置成功
+        }
+      })
+    })
     this.getInfo()
   },
   methods: {
@@ -69,46 +91,10 @@ export default {
         })
     },
     toShare() {
-      wx.updateAppMessageShareData({
-        title: '竞赛', // 分享标题
-        desc: '5555', // 分享描述
-        link: 'http://192.168.254.8:8086/join', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: 'https://test.guangyiedu.com/202208/4698291661910044115.jpg', // 分享图标
-        success: function (res) {
-          // 设置成功
-          console.log('share朋友', res)
-        }
+      Toast({
+        message: '请您点击微信右上角的“...”进行分享',
+        position: 'middle'
       })
-      // wx.updateTimelineShareData({
-      //   title: '竞赛', // 分享标题
-      //   desc: '5555', // 分享描述
-      //   link: 'http://192.168.254.8:8086/join', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-      //   imgUrl: 'https://test.guangyiedu.com/202208/4698291661910044115.jpg', // 分享图标
-      //   success: function (res) {
-      //     console.log('share朋友圈', res)
-      //     // 设置成功
-      //   }
-      // })
-      // wx.ready(() => {
-      //   wx.updateAppMessageShareData({
-      //     title: '竞赛', // 分享标题
-      //     desc: '5555', // 分享描述
-      //     link: 'https://test.guangyiedu.com/202208/4698291661910044115.jpg', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-      //     imgUrl: 'https://test.guangyiedu.com/202208/4698291661910044115.jpg', // 分享图标
-      //     success: function (res) {
-      //       // 设置成功
-      //     }
-      //   })
-      //   wx.updateTimelineShareData({
-      //     title: '竞赛', // 分享标题
-      //     desc: '5555', // 分享描述
-      //     link: 'https://test.guangyiedu.com/202208/4698291661910044115.jpg', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-      //     imgUrl: 'https://test.guangyiedu.com/202208/4698291661910044115.jpg', // 分享图标
-      //     success: function (res) {
-      //       // 设置成功
-      //     }
-      //   })
-      // })
     },
     goBack() {
       this.$router.push({
@@ -139,6 +125,7 @@ export default {
     overflow: auto;
     // padding-bottom: 100px;
     padding: 30px 28px 200px 28px;
+    position: relative;
     // background-color: #fff;
     .pic {
       border-radius: 10px;
@@ -184,8 +171,8 @@ export default {
       }
     }
     .share-btn {
-      display: flex;
       margin-top: 90px;
+      display: flex;
       justify-content: space-between;
       /deep/ .van-button {
         width: 49%;
@@ -201,10 +188,16 @@ export default {
     position: fixed;
     height: 100px;
     bottom: 0;
-    background-color: #fff;
+    background-color: #f4f4f4;
     z-index: 999;
-    .join-btn {
-      height: 90px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 28px;
+    /deep/ .van-button {
+      width: 49%;
+      height: 70px;
+      background-color: #2cad69;
+      border-radius: 10px;
     }
   }
 }

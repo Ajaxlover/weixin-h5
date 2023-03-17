@@ -35,7 +35,7 @@ function setUserInfo(info) {
   const origin = getUserInfo()
   let userInfo = info
   origin ? (userInfo = { ...origin, ...info }) : ''
-  return Cookies.set(UserInfoKey, userInfo)
+  return Cookies.set(UserInfoKey, userInfo, { expires: 30 })
 }
 
 function removeUserInfo() {

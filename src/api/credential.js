@@ -6,7 +6,7 @@ import request from '@/utils/request'
  */
 export function getCredentialList(data) {
   return request({
-    url: '/api/wechat/jsapi_ticketghjgkh',
+    url: '/exam/masterHead/award/findMyAwardList',
     method: 'post',
     data
   })
@@ -18,7 +18,7 @@ export function getCredentialList(data) {
  */
 export function getCredentialDetail(data) {
   return request({
-    url: '/api/wechat/oauth/get_redirect_url',
+    url: '/exam/masterHead/award/findStuAwardDetail',
     method: 'post',
     data
   })

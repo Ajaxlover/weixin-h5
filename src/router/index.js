@@ -135,12 +135,16 @@ export const routes = [
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
-        sign: false, // 是否需要微信验签
+        sign: true, // 是否需要微信验签
         jsApiList: [
-          'updateAppMessageShareData', // 分享朋友
-          'updateTimelineShareData', // 分享朋友圈
-          'getLocation', // 定位
-          'openLocation' // 打开地图
+          'chooseImage' // 拍照
+          // 'hideMenuItems',
+          // 'hideAllNonBaseMenuItem'
+        ],
+        hideMenuList: [
+          'menuItem:copyUrl', // 屏蔽复制链接
+          'menuItem:openWithQQBrowser', // 屏蔽在QQ浏览器打开
+          'menuItem:openWithSafari' // 屏蔽在Safari浏览器打开
         ]
       },
       keepAlive: false,
@@ -217,9 +221,9 @@ export const routes = [
       wx: {
         sign: true, // 是否需要微信验签
         jsApiList: [
-          'chooseImage', // 拍照
-          'hideMenuItems',
-          'hideAllNonBaseMenuItem'
+          'chooseImage' // 拍照
+          // 'hideMenuItems',
+          // 'hideAllNonBaseMenuItem'
         ],
         hideMenuList: [
           'menuItem:copyUrl', // 屏蔽复制链接

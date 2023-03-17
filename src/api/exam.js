@@ -59,3 +59,27 @@ export function contestMockBegin(data) {
     data
   })
 }
+
+/**
+ * @desc 获取考试题目
+ * @param
+ */
+export function getExamSubject(data) {
+  return request({
+    url: '/exam/exam/student/startExam',
+    method: 'post',
+    data
+  })
+}
+
+/**
+ * @desc 提交试卷
+ * @param
+ */
+export function submitExam(data) {
+  return request({
+    url: '/exam/exam/student/submitExam',
+    method: 'post',
+    data
+  })
+}

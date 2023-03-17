@@ -6,7 +6,8 @@ const getters = {
   appId: state => state.system.appId, // 三方应用的appid
 
   token: state => state.user.token,
-  userInfo: state => state.user.userInfo
+  userInfo: state => state.user.userInfo,
+  userId: state => state.user.userId
 }
 
 export default getters

@@ -5,9 +5,18 @@
       <div class="desc">报考信息</div>
       <div class="content-form">
         <van-cell-group>
-          <van-field v-model="username" label-class="content-form-text" label-width="90" required label="姓名：" placeholder="请输入姓名" />
+          <van-field
+            v-model="username"
+            :readonly="isDisable"
+            label-class="content-form-text"
+            label-width="90"
+            required
+            label="姓名："
+            placeholder="请输入姓名"
+          />
           <van-field
             v-model="school"
+            :readonly="isDisable"
             label-class="content-form-text"
             label-width="90"
             required
@@ -17,6 +26,7 @@
           />
           <van-field
             v-model="teacherName"
+            :readonly="isDisable"
             label-class="content-form-text"
             label-width="90"
             label="指导老师："
@@ -25,6 +35,7 @@
           />
           <van-field
             v-model="email"
+            :readonly="isDisable"
             label-class="content-form-text"
             label-width="90"
             required
@@ -34,6 +45,7 @@
           />
           <van-field
             v-model="phone"
+            :readonly="isDisable"
             label-class="content-form-text"
             label-width="90"
             type="tel"
@@ -47,7 +59,7 @@
             </template></van-field
           > -->
           <div style="height: 50px; line-height: 50px; padding-left: 30px; color: #646566" class="face-area">
-            人脸录入：<span style="color: #03bd7c; margin-left: 10px" @click="takePhoto">点击录入</span>
+            人脸录入：<span style="color: #03bd7c; margin-left: 10px" @click="takePhoto">{{ faceUrl ? '重新录入' : '点击录入' }}</span>
           </div>
         </van-cell-group>
         <div class="face-btn">
@@ -66,7 +78,7 @@
         loading-text="提交中..."
         round
         @click="submitInfo"
-        >提交</van-button
+        >{{ submitBtnText }}</van-button
       >
     </div>
   </div>
@@ -88,6 +100,8 @@ export default {
   data() {
     return {
       loading: false,
+      hasStuRegister: 0,
+      status: -1,
       id: this.$route.query.id,
       info: {},
       faceUrl: '',
@@ -95,12 +109,31 @@ export default {
       school: '',
       teacherName: '',
       email: '',
-      phone: ''
+      phone: '',
+      mhStuId: ''
     }
   },
   computed: {
+    submitBtnText() {
+      let str = '提交'
+      switch (this.status) {
+        case 0:
+          str = '待审核'
+          break
+        case 2:
+          str = '审核通过'
+          break
+        default:
+          break
+      }
+      return str
+    },
     isDisable() {
-      return false
+      if (this.hasStuRegister === 0) {
+        return false
+      } else {
+        return this.status !== 3
+      }
     }
   },
   mounted() {
@@ -143,15 +176,18 @@ export default {
       })
         .then(res => {
           this.info = res.data
+          this.hasStuRegister = res.data.hasStuRegister
           if (res.data.hasStuRegister === 1) {
             // 已报名
-            const { name, facePic, school, email, appointTeacher, mobile } = res.data
+            const { name, facePic, school, email, appointTeacher, mobile, status, mhStuId } = res.data
             this.faceUrl = facePic
             this.username = name
             this.school = school
             this.teacherName = appointTeacher
             this.email = email
             this.phone = mobile
+            this.status = status
+            this.mhStuId = mhStuId
           }
         })
         .catch(err => {
@@ -159,7 +195,13 @@ export default {
         })
     },
     takePhoto() {
-      console.log('拍照')
+      if (this.isDisable) {
+        Toast({
+          message: '不可修改',
+          position: 'middle'
+        })
+        return
+      }
       const that = this
       // eslint-disable-next-line no-undef
       wx.chooseImage({
@@ -171,14 +213,23 @@ export default {
           wx.getLocalImgData({
             localId: localIds[0], // 图片的localID
             success: function (res) {
-              var base64Data = res.localData // localData是图片的base64数据，可以用 img 标签显示
+              let base64Data = ''
+              if (res.localData.indexOf(';base64,') === -1) {
+                // 兼容处理，安卓获取的图片base64码没有前缀，而苹果有,base64前缀并不固定
+                base64Data = 'data:image/jpeg;base64,' + res.localData
+              }
+              if (res.localData.indexOf('data:image/jpg;base64,') !== -1) {
+                // 兼容处理，若是苹果手机，将前缀中的jgp替换成jpeg
+                base64Data = res.localData.replace('data:image/jpg;base64,', 'data:image/jpeg;base64,')
+              }
+
               const file = that.base64toFile(base64Data)
               const fd = new FormData()
               fd.append('cosPath', 'gfkd/masterhead')
               fd.append('file', file)
               uploadImage(fd).then(result => {
                 if (result.code === 200) {
-                  this.faceUrl = result.data.accessUrl
+                  that.faceUrl = result.data.accessUrl
                 }
               })
             }
@@ -235,10 +286,24 @@ export default {
         appointTeacher: this.teacherName,
         mobile: this.phone
       }
+      if (this.mhStuId) {
+        data.mhStuId = this.mhStuId
+      }
       this.loading = true
       registerJoin(data)
         .then(res => {
           this.loading = false
+          Toast({
+            message: '报名成功',
+            position: 'middle'
+          })
+          this.init()
+          // this.$router.push({
+          //   path: '/control',
+          //   query: {
+          //     id: this.id
+          //   }
+          // })
         })
         .catch(err => {
           this.loading = false
