@@ -38,6 +38,7 @@
 
 <script>
 import Nav from '@/components/Nav'
+// import { getCredentialList,contestCredential } from '@/api/credential'
 
 export default {
   name: 'CreDetail',
@@ -45,9 +46,20 @@ export default {
     Nav
   },
   data() {
-    return {}
+    return {
+      type: this.$route.query.type,
+      id: this.$route.query.id
+    }
   },
   computed: {},
+  mounted() {
+    // if (this.type === 1) {
+    // } else {
+    //   // 证书详情
+    // }
+    // type = 1
+    // contestCredential 证书查看
+  },
   methods: {
     goBack() {
       this.$router.push({
