@@ -4,6 +4,7 @@ Vue.use(Router)
 import Home from '@/views/home'
 import Test from '@/views/contest'
 import My from '@/views/my'
+import Personal from '@/views/my/personal.vue'
 import Credentials from '@/views/my/credentials.vue'
 import CreDetail from '@/views/my/credentialsDetail.vue'
 
@@ -50,10 +51,12 @@ export const routes = [
     component: Start,
     meta: {
       auth: false, // 需要登录
-      thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      thirdAuth: '', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
-        sign: false, // 是否需要微信验签
-        jsApiList: []
+        sign: true, // 是否需要微信验签
+        jsApiList: [
+          'chooseImage' // 拍照
+        ]
       },
       keepAlive: false,
       title: '开始答题'
@@ -114,7 +117,7 @@ export const routes = [
     name: 'Join',
     component: Join,
     meta: {
-      auth: false, // 需要登录
+      auth: true, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: true, // 是否需要微信验签
@@ -273,6 +276,21 @@ export const routes = [
       },
       keepAlive: false,
       title: '个人中心'
+    }
+  },
+  {
+    path: '/personal',
+    name: 'Personal',
+    component: Personal,
+    meta: {
+      auth: false, // 需要登录
+      thirdAuth: '', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      wx: {
+        sign: false, // 是否需要微信验签
+        jsApiList: []
+      },
+      keepAlive: false,
+      title: '个人信息'
     }
   },
   {

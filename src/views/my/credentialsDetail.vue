@@ -3,42 +3,44 @@
     <Nav @go-back="goBack"></Nav>
     <div class="content">
       <div class="content-box">
-        <div class="title">第一届全君物理知识竞赛</div>
+        <div class="title">{{ info.masterheadName }}</div>
         <div class="container">
-          <div class="username">11111</div>
+          <div class="username">{{ info.stuName }}</div>
           <div class="user_pic">
-            <img src="../../assets/image/avatar.png" alt="" />
+            <!-- <img src="../../assets/image/avatar.png" alt="" /> -->
+            <img :src="info.facePic" alt="" />
           </div>
           <div class="info">
             <div class="part">
               <div class="part-left">学校:</div>
-              <div class="part-right">2222221111111111111</div>
+              <div class="part-right">{{ info.school }}</div>
             </div>
             <div class="part">
               <div class="part-left">指导老师:</div>
-              <div class="part-right">2222221111111111111</div>
+              <div class="part-right">{{ info.appointTeacher }}</div>
             </div>
             <div class="part">
               <div class="part-left">所获奖项:</div>
-              <div class="part-right">2222221111111111111</div>
+              <div class="part-right">{{ info.awardName }}</div>
             </div>
             <div class="part">
               <div class="part-left">证书编号:</div>
-              <div class="part-right">2222221111111111111</div>
+              <div class="part-right">{{ info.certificateNo }}</div>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="footer van-hairline--top">
-      <van-button class="join-btn" type="primary" size="large" round>查看证书</van-button>
+      <van-button class="join-btn" type="primary" size="large" round @click="preview(info)">查看证书</van-button>
     </div>
   </div>
 </template>
 
 <script>
 import Nav from '@/components/Nav'
-// import { getCredentialList,contestCredential } from '@/api/credential'
+import { getCredentialDetail, contestCredential } from '@/api/credential'
+import { ImagePreview } from 'vant'
 
 export default {
   name: 'CreDetail',
@@ -48,24 +50,66 @@ export default {
   data() {
     return {
       type: this.$route.query.type,
-      id: this.$route.query.id
+      id: this.$route.query.id,
+      competeStuId: this.$route.query.competeStuId,
+      info: {}
     }
   },
   computed: {},
   mounted() {
-    // if (this.type === 1) {
-    // } else {
-    //   // 证书详情
-    // }
-    // type = 1
-    // contestCredential 证书查看
+    if (this.type === 1) {
+      this.getTypeOne()
+    } else {
+      this.getTypeTwo()
+    }
   },
   methods: {
-    goBack() {
-      this.$router.push({
-        path: '/credentials',
-        query: {}
+    preview(info) {
+      ImagePreview({
+        images: [info.certificateUrl],
+        showIndex: false
       })
+    },
+    getTypeOne() {
+      contestCredential({
+        masterHeadId: this.id
+      })
+        .then(res => {
+          if (res.code === 200) {
+            this.info = res.data
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
+    getTypeTwo() {
+      getCredentialDetail({
+        competeStuId: this.competeStuId
+      })
+        .then(res => {
+          if (res.code === 200) {
+            this.info = res.data
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
+    goBack() {
+      if (this.type === 1) {
+        this.$router.push({
+          path: '/control',
+          query: {
+            id: this.id
+          }
+        })
+      } else {
+        this.$router.push({
+          path: '/credentials',
+          query: {}
+        })
+      }
     }
   }
 }

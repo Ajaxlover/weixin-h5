@@ -61,6 +61,18 @@ export function contestMockBegin(data) {
 }
 
 /**
+ * @desc 开始考试校验
+ * @param
+ */
+export function checkStartExam(data) {
+  return request({
+    url: '/exam/exam/student/checkStartExam',
+    method: 'post',
+    data
+  })
+}
+
+/**
  * @desc 获取考试题目
  * @param
  */
@@ -79,6 +91,18 @@ export function getExamSubject(data) {
 export function submitExam(data) {
   return request({
     url: '/exam/exam/student/submitExam',
+    method: 'post',
+    data
+  })
+}
+
+/**
+ * @desc 查询考试成绩
+ * @param
+ */
+export function getExamScore(data) {
+  return request({
+    url: '/exam/exam/stu/getResultScore',
     method: 'post',
     data
   })

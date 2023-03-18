@@ -22,24 +22,18 @@ export default {
           title: '首页',
           normal: require('../assets/image/home.png'),
           active: require('../assets/image/home_active.png')
-          // normal: 'https://sucai.suoluomei.cn/sucai_zs/images/20190910093117-fx2.png',
-          // active: 'https://sucai.suoluomei.cn/sucai_zs/images/20190910093117-fx.png'
         },
         {
           path: '/test',
           title: '竞赛',
           normal: require('../assets/image/test.png'),
           active: require('../assets/image/test_active.png')
-          // normal: 'https://sucai.suoluomei.cn/sucai_zs/images/20190910093117-xx.png',
-          // active: 'https://sucai.suoluomei.cn/sucai_zs/images/20190910093117-xx2.png'
         },
         {
           path: '/my',
           title: '个人中心',
           normal: require('../assets/image/my.png'),
           active: require('../assets/image/my_active.png')
-          // normal: 'https://sucai.suoluomei.cn/sucai_zs/images/20190910093117-wd.png',
-          // active: 'https://sucai.suoluomei.cn/sucai_zs/images/20190910093117-wd2.png'
         }
       ]
     }

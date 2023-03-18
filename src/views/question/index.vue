@@ -65,7 +65,7 @@
       </div>
     </div>
     <div class="footer van-hairline--top">
-      <van-button class="join-btn" type="primary" size="large" round @click="next">提交本题</van-button>
+      <van-button class="join-btn" type="primary" size="large" round @click.native="next">提交本题</van-button>
     </div>
   </div>
 </template>
@@ -199,7 +199,6 @@ export default {
         }
       })
 
-      // let isAnswer = info.letter // 选中的答案
       let isAnswer = '' // 选中的答案
       if (info.checked) {
         isAnswer = info.disorderOption // 选中的答案
@@ -215,7 +214,7 @@ export default {
             this.ismultipleAnswer.push(item.disorderOption)
           }
         })
-        isAnswer = this.ismultipleAnswer.join(',') // 将ismultipleAnswer转为字符串 下面与答案比较
+        isAnswer = this.ismultipleAnswer.join(',') // 将ismultipleAnswer转为字符串
       }
 
       console.log('选中的答案', isAnswer)

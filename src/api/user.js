@@ -23,3 +23,27 @@ export function getUserInfo(params) {
     params
   })
 }
+
+/**
+ * @desc 获取用户信息(个人中心)
+ * @param
+ */
+export function getUserInfoByUid(data) {
+  return request({
+    url: '/oauth/v4/user/infoByUid',
+    method: 'post',
+    data
+  })
+}
+
+/**
+ * @desc 更新用户信息(个人中心)
+ * @param
+ */
+export function updateUserInfoByUid(data) {
+  return request({
+    url: '/oauth/v4/user/changeInfo',
+    method: 'post',
+    data
+  })
+}
