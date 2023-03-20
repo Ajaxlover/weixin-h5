@@ -3,9 +3,10 @@
     <div class="my-box">
       <div class="content">
         <div class="wx-pic">
-          <img src="../../assets/image/home.png" alt="" />
+          <!-- <img src="../../assets/image/home.png" alt="" /> -->
+          <img :src="info.pic" alt="" />
         </div>
-        <div class="wx-nickname">昵称：22222</div>
+        <div class="wx-nickname">昵称：{{ info.username }}</div>
       </div>
       <div class="b-part"></div>
       <div class="tab-box">
@@ -21,10 +22,13 @@
 </template>
 
 <script>
+import authUtils from '@/utils/auth.js'
+
 export default {
   name: 'My',
   data() {
     return {
+      info: {},
       tabs: [
         { url: require('../../assets/image/my_contest.png'), text: '我的竞赛', path: '/test' },
         { url: require('../../assets/image/my_info.png'), text: '个人信息', path: '/personal' },
@@ -34,11 +38,21 @@ export default {
     }
   },
   computed: {},
+  mounted() {
+    const info = authUtils.getUserInfo()
+    if (info) {
+      this.info = JSON.parse(info)
+    }
+  },
   methods: {
     goPath(item, idx) {
-      this.$router.push({
-        path: item.path
-      })
+      if (idx === 3) {
+        return false
+      } else {
+        this.$router.push({
+          path: item.path
+        })
+      }
     }
   }
 }
@@ -94,7 +108,6 @@ export default {
         .tab-item {
           width: 25%;
           height: 100%;
-          // background-color: red;
           display: flex;
           flex-direction: column;
           justify-content: center;

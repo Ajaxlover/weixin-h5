@@ -84,6 +84,7 @@ const actions = {
       authUtils.removeToken()
       commit('REMOVE_USER_INFO')
       authUtils.removeUserInfo()
+      authUtils.removeUserId()
       resolve()
     })
   },

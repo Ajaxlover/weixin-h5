@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
+import router from '../router'
 import { Toast } from 'vant'
 
 const service = axios.create({
@@ -72,9 +73,12 @@ service.interceptors.response.use(
       return res
     } else {
       // token失效
-      if (res.code === 200201 || res.code === 200202 || res.code === 200103) {
+      if (res.code === -6 || res.code === 200202 || res.code === 200103) {
         store.dispatch('user/logout').then(() => {
-          location.reload()
+          // location.reload()
+          router.push({
+            path: '/'
+          })
         })
       } else {
         // 弹窗提示错误信息

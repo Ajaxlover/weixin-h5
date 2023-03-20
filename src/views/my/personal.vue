@@ -2,11 +2,19 @@
   <div class="page-info">
     <Nav @go-back="goBack"></Nav>
     <div class="content">
-      <div class="desc">报考信息</div>
+      <!-- <div class="desc">报考信息</div> -->
       <div class="content-form">
+        <div class="wx-user-info">
+          <div class="wx-pic">
+            <!-- <img src="../../assets/image/home.png" alt="" /> -->
+            <img :src="info.pic" alt="" />
+          </div>
+          <div class="wx-nickname">昵称：{{ info.username }}</div>
+        </div>
         <van-cell-group>
           <van-field
-            v-model="username"
+            v-model.trim="username"
+            v-focus
             :readonly="isDisable"
             label-class="content-form-text"
             label-width="90"
@@ -15,7 +23,7 @@
             placeholder="请输入姓名"
           />
           <van-field
-            v-model="school"
+            v-model.trim="school"
             :readonly="isDisable"
             label-class="content-form-text"
             label-width="90"
@@ -25,16 +33,17 @@
             error-message=""
           />
           <van-field
-            v-model="teacherName"
+            v-model.trim="number"
             :readonly="isDisable"
             label-class="content-form-text"
             label-width="90"
-            label="指导老师："
-            placeholder="请输入指导老师姓名"
+            type="tel"
+            label="学号："
+            placeholder="请输入学号"
             error-message=""
           />
           <van-field
-            v-model="email"
+            v-model.trim="email"
             :readonly="isDisable"
             label-class="content-form-text"
             label-width="90"
@@ -44,7 +53,7 @@
             error-message=""
           />
           <van-field
-            v-model="phone"
+            v-model.trim="phone"
             :readonly="isDisable"
             label-class="content-form-text"
             label-width="90"
@@ -62,10 +71,9 @@
             人脸录入：<span style="color: #03bd7c; margin-left: 10px" @click="takePhoto">{{ faceUrl ? '重新录入' : '点击录入' }}</span>
           </div> -->
         </van-cell-group>
-        <div class="face-btn">
-          <!-- <van-button class="facing" size="large" type="primary" round>人脸录入</van-button> -->
+        <!-- <div class="face-btn">
           <div class="text-tip">敬请关注相关消息，准时参加竞赛。</div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="footer van-hairline--top">
@@ -86,6 +94,7 @@
 
 <script>
 import Nav from '@/components/Nav'
+import { Dialog } from 'vant'
 import { Toast } from 'vant'
 import { getUserInfoByUid, updateUserInfoByUid } from '@/api/user'
 
@@ -99,15 +108,12 @@ export default {
       loading: false,
       hasStuRegister: 0,
       status: -1,
-      id: this.$route.query.id,
       info: {},
-      faceUrl: '',
       username: '',
       school: '',
-      teacherName: '',
+      number: '',
       email: '',
-      phone: '',
-      mhStuId: ''
+      phone: ''
     }
   },
   computed: {
@@ -146,6 +152,11 @@ export default {
       getUserInfoByUid()
         .then(res => {
           this.info = res.data
+          this.username = res.data.realName ? res.data.realName : ''
+          this.school = res.data.school ? res.data.school : ''
+          this.number = res.data.number ? res.data.number : ''
+          this.email = res.data.email ? res.data.email : ''
+          this.phone = res.data.mobile ? res.data.mobile : ''
         })
         .catch(err => {
           console.error(err)
@@ -153,15 +164,6 @@ export default {
     },
 
     submitInfo() {
-      // 获取电子签名
-      const signPic = localStorage.getItem(`esign${this.id}`) ? localStorage.getItem(`esign${this.id}`) : ''
-      if (!signPic) {
-        Toast({
-          message: '未签写电子签名，请检查',
-          position: 'middle'
-        })
-        return
-      }
       if (this.username.trim().length === 0) {
         Toast({
           message: '姓名不能为空',
@@ -183,42 +185,39 @@ export default {
         })
         return
       }
-      if (this.faceUrl.length === 0) {
-        Toast({
-          message: '请录入人脸信息',
-          position: 'middle'
-        })
-        return
-      }
 
       const data = {
-        masterheadId: this.id,
-        signPic,
-        name: this.username,
+        realName: this.username,
         school: this.school,
+        number: this.number,
         email: this.email,
-        facePic: this.faceUrl,
-        appointTeacher: this.teacherName,
         mobile: this.phone
       }
-      if (this.mhStuId) {
-        data.mhStuId = this.mhStuId
-      }
-      this.loading = true
-      updateUserInfoByUid(data)
-        .then(res => {
-          this.loading = false
-          Toast({
-            message: '更新成功',
-            position: 'middle'
-          })
-          this.init()
-        })
-        .catch(err => {
-          this.loading = false
 
-          console.error(err)
-        })
+      Dialog.confirm({
+        title: '提示',
+        message: '是否确认保存当前信息?',
+        confirmButtonText: '确认',
+        confirmButtonColor: '#00a400',
+        beforeClose: (action, done) => {
+          if (action === 'confirm') {
+            updateUserInfoByUid(data)
+              .then(res => {
+                Toast({
+                  message: '保存成功',
+                  position: 'middle'
+                })
+                done()
+              })
+              .catch(err => {
+                done()
+                console.error(err)
+              })
+          } else {
+            done()
+          }
+        }
+      })
     }
   }
 }
@@ -231,7 +230,8 @@ export default {
   position: relative;
   .content {
     width: 100%;
-    height: calc(100% - 180px);
+    // height: calc(100% - 180px);
+    min-height: 800px;
     overflow: auto;
     padding: 30px 28px 0 28px;
     padding-bottom: 100px;
@@ -240,13 +240,35 @@ export default {
       font-weight: 600;
     }
     .content-form {
-      height: 700px;
+      height: 800px;
       background-color: #fff;
       border-radius: 20px;
       padding-bottom: 20px;
+      padding-top: 20px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
+      .wx-user-info {
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-bottom: 50px;
+        .wx-pic {
+          margin-bottom: 10px;
+          img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto;
+          }
+        }
+        .wx-nickname {
+          text-align: center;
+          color: #646566;
+        }
+      }
       /deep/ .van-cell--required::before {
         left: 30px;
       }

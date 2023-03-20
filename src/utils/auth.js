@@ -22,6 +22,10 @@ function setUserId(uid) {
   return Cookies.set(UidKey, uid, { expires: 30 })
 }
 
+function removeUserId(uid) {
+  return Cookies.remove(UidKey)
+}
+
 function removeToken() {
   return Cookies.remove(TokenKey)
 }
@@ -66,6 +70,7 @@ export default {
   setToken,
   getUserId,
   setUserId,
+  removeUserId,
   removeToken,
   getUserInfo,
   setUserInfo,
