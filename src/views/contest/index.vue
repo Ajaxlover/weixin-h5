@@ -1,6 +1,7 @@
 <template>
   <div class="page-test">
     <div class="content">
+      <van-empty v-if="list.length === 0" description="无参与的竞赛" />
       <div v-for="item in list" :key="item.id" class="list-item" @click="goStart(item)">
         <div class="contest-name">{{ item.name }}</div>
         <div class="contest-info">

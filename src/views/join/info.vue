@@ -16,14 +16,20 @@
           />
           <van-field
             v-model="school"
+            clickable
             :readonly="isDisable"
             label-class="content-form-text"
             label-width="90"
             required
             label="学校："
-            placeholder="请输入学校名称"
+            placeholder="请选择学校代号"
             error-message=""
+            @click="toChooseSchool"
+            @focus="a"
           />
+          <van-popup v-model="showPicker" position="bottom">
+            <van-picker value-key="shortCode" show-toolbar :columns="schoolCodes" @confirm="onConfirm" @cancel="showPicker = false" />
+          </van-popup>
           <van-field
             v-model="teacherName"
             :readonly="isDisable"
@@ -89,7 +95,7 @@ import Nav from '@/components/Nav'
 import { Toast } from 'vant'
 import wx from 'weixin-js-sdk'
 import { uploadImage } from '@/api/exam'
-import { getContestDetail } from '@/api/home'
+import { getContestDetail, getPubCodes } from '@/api/home'
 import { registerJoin } from '@/api/exam'
 
 export default {
@@ -99,6 +105,7 @@ export default {
   },
   data() {
     return {
+      showPicker: false,
       loading: false,
       hasStuRegister: 0,
       status: -1,
@@ -110,7 +117,8 @@ export default {
       teacherName: '',
       email: '',
       phone: '',
-      mhStuId: ''
+      mhStuId: '',
+      schoolCodes: []
     }
   },
   computed: {
@@ -137,9 +145,14 @@ export default {
     }
   },
   mounted() {
+    this.getSchools()
     this.init()
   },
   methods: {
+    a() {
+      // 防止唤起手机键盘
+      document.activeElement.blur()
+    },
     base64toFile(dataurl) {
       const arr = dataurl.split(',')
       const mime = arr[0].match(/:(.*?);/)[1]
@@ -162,6 +175,17 @@ export default {
         type: mime
       })
     },
+    toChooseSchool() {
+      if (this.isDisable) {
+        return false
+      }
+      this.showPicker = true
+    },
+    onConfirm(value) {
+      const { shortCode } = value
+      this.school = shortCode
+      this.showPicker = false
+    },
     goBack() {
       this.$router.push({
         path: '/control',
@@ -169,6 +193,17 @@ export default {
           id: this.id
         }
       })
+    },
+    getSchools() {
+      getPubCodes()
+        .then(res => {
+          if (res.code === 200) {
+            this.schoolCodes = res.data
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
     },
     init() {
       getContestDetail({

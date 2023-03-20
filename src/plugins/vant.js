@@ -23,6 +23,7 @@ import {
   NavBar,
   Overlay, // 蒙层
   Popup, // 弹窗
+  Picker,
   Radio,
   RadioGroup, // 单选框
   Step,
@@ -61,6 +62,7 @@ Vue.use(Button)
   .use(NavBar)
   .use(Overlay)
   .use(Popup)
+  .use(Picker)
   .use(Radio)
   .use(RadioGroup)
   .use(Step)

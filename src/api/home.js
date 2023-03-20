@@ -47,3 +47,15 @@ export function start5minBefore(data) {
     data
   })
 }
+
+/**
+ * @desc 获取学校代号
+ * @param
+ */
+export function getPubCodes(data) {
+  return request({
+    url: '/user/publish/house/findList',
+    method: 'post',
+    data
+  })
+}

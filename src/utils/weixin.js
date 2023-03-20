@@ -56,13 +56,13 @@ function wxConfig(params) {
   console.log('configObj', configObj)
   wx.config(configObj)
   wx.ready(() => {
-    // setTimeout(() => {
-    //   wx.hideAllNonBaseMenuItem()
-    //   屏蔽功能菜单
-    //   wx.hideMenuItems({
-    //     menuList: params.hideMenuList
-    //   })
-    // }, 400)
+    setTimeout(() => {
+      // wx.hideAllNonBaseMenuItem()
+      // 屏蔽功能菜单
+      wx.hideMenuItems({
+        menuList: params.hideMenuList
+      })
+    }, 400)
   })
   wx.error(res => {
     console.log('wx.config fail', res)

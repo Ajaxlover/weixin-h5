@@ -80,8 +80,10 @@ export default {
       })
     },
     goAnswer() {
+      // 是否有本场考试的startTime  有=>判断是否还有时间  无=> 拍照
       checkStartExam({
-        examId: this.examId
+        examId: this.examId,
+        startTime: new Date().getTime()
       })
         .then(res => {
           if (res.code === 200) {
