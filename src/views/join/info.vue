@@ -334,12 +334,6 @@ export default {
           })
           localStorage.removeItem(`esign${this.id}`)
           this.init()
-          // this.$router.push({
-          //   path: '/control',
-          //   query: {
-          //     id: this.id
-          //   }
-          // })
         })
         .catch(err => {
           this.loading = false
