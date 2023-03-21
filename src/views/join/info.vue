@@ -291,7 +291,7 @@ export default {
       }
       if (this.school.trim().length === 0) {
         Toast({
-          message: '学校不能为空',
+          message: '请选择学校代号',
           position: 'middle'
         })
         return
@@ -332,6 +332,7 @@ export default {
             message: '报名成功',
             position: 'middle'
           })
+          localStorage.removeItem(`esign${this.id}`)
           this.init()
           // this.$router.push({
           //   path: '/control',
@@ -342,7 +343,6 @@ export default {
         })
         .catch(err => {
           this.loading = false
-
           console.error(err)
         })
     }

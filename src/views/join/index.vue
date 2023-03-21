@@ -66,13 +66,12 @@ export default {
       })
         .then(res => {
           this.info = res.data
-          const desc = res.data.introduction.replace(/<\/?.+?\/?>/g, '') // 去除html标签
+          const desc = res.data.introduction ? res.data.introduction.replace(/<\/?.+?\/?>/g, '') : '' // 去除html标签
           const params = {
             title: this.info.mhName, // 分享标题
             desc, // 分享描述
             link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             // imgUrl: 'http://www.ay1.cc/img?w=30&h=30' // 分享图标
-            // imgUrl: require('../../assets/image/share_logo.png')
             imgUrl: ''
           }
           wxUtils.share(params)
