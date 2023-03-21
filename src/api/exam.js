@@ -102,7 +102,7 @@ export function submitExam(data) {
  */
 export function getExamScore(data) {
   return request({
-    url: '/exam/exam/stu/getResultScore',
+    url: '/exam/exam/student/getResultScore',
     method: 'post',
     data
   })

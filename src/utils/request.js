@@ -69,7 +69,10 @@ service.interceptors.response.use(
 
     if (res && res.code === 200) {
       return res
-    } else if (res && (res.code === 246 || res.code === 247 || res.code === 248 || res.code === 251 || res.code === 249)) {
+    } else if (
+      res &&
+      (res.code === 246 || res.code === 247 || res.code === 248 || res.code === 251 || res.code === 249 || res.code === 241 || res.code === 250)
+    ) {
       return res
     } else {
       // token失效

@@ -16,7 +16,8 @@
 
 <script>
 import Nav from '@/components/Nav'
-import { getContestInfo, checkStartExam } from '@/api/exam'
+import { getContestInfo, checkStartExam, submitExam } from '@/api/exam'
+import Storage from '@/utils/auth'
 import { Toast } from 'vant'
 import wx from 'weixin-js-sdk'
 import { uploadImage } from '@/api/exam'
@@ -30,7 +31,8 @@ export default {
     return {
       id: this.$route.query.id,
       examId: this.$route.query.examId,
-      info: {}
+      info: {},
+      localIds: []
     }
   },
   computed: {},
@@ -79,6 +81,46 @@ export default {
         }
       })
     },
+    doSubmit() {
+      const startTime = localStorage.getItem(`startTime-${this.examId}`)
+      const examPic = localStorage.getItem(`examPic${this.examId}`)
+      const examResultUniqueId = localStorage.getItem(`uniqueId-${this.examId}`)
+      const questionCache = JSON.parse(Storage.getExamRecord(`contest-${this.examId}`))
+
+      const content = []
+      questionCache.forEach(item => {
+        content.push({
+          bankId: item.bankId,
+          parentId: item.parentId,
+          stuAnswer: item.stuAnswer ? item.stuAnswer : '',
+          sonSubList: item.sonSubList
+        })
+      })
+      const data = {
+        examId: this.examId,
+        examResultUniqueId,
+        forceSubmitFlag: 0,
+        startTime,
+        content: JSON.stringify(content),
+        examStuPicUrl: examPic
+      }
+      submitExam(data)
+        .then(res => {
+          if (res.code === 200) {
+            this.removeCaches()
+            this.$router.push({
+              path: '/result',
+              query: {
+                examId: this.examId,
+                id: this.id
+              }
+            })
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
     goAnswer() {
       // 是否有本场考试的startTime  有=>判断是否还有时间  无=> 拍照
       const startTimeCache = localStorage.getItem(`startTime-${this.examId}`) ? localStorage.getItem(`startTime-${this.examId}`) : ''
@@ -89,6 +131,7 @@ export default {
             position: 'middle'
           })
           // 提交原来记录 跳转答题结果
+          this.doSubmit()
         } else {
           this.$router.push({
             path: '/question',
@@ -114,10 +157,12 @@ export default {
                 sizeType: ['original'], // 可以指定是原图还是压缩图，默认二者都有
                 sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
                 success: function (res) {
-                  const localIds = res.localIds // 返回选定照片的本地 ID 列表，localId可以作为 img 标签的 src 属性显示图片
+                  // const localIds = res.localIds // 返回选定照片的本地 ID 列表，localId可以作为 img 标签的 src 属性显示图片
+                  that.localIds = res.localIds
                   wx.getLocalImgData({
-                    localId: localIds[0], // 图片的localID
+                    localId: that.localIds[0], // 图片的localID
                     success: function (res) {
+                      console.log(res)
                       let base64Data = ''
                       if (res.localData.indexOf(';base64,') === -1) {
                         // 兼容处理，安卓获取的图片base64码没有前缀，而苹果有,base64前缀并不固定
@@ -150,11 +195,28 @@ export default {
                 }
               })
             }
+            if (res.code === 241) {
+              // 超出作答次数
+              this.$router.push({
+                path: '/result',
+                query: {
+                  examId: this.examId,
+                  id: this.id
+                }
+              })
+            }
           })
           .catch(err => {
             console.error(err)
           })
       }
+    },
+    removeCaches() {
+      Storage.removeExamRecord(`contest-${this.examId}`)
+      localStorage.removeItem(`countDown-${this.examId}`)
+      localStorage.removeItem(`uniqueId-${this.examId}`)
+      localStorage.removeItem(`startTime-${this.examId}`)
+      localStorage.removeItem(`examPic${this.examId}`)
     }
   }
 }

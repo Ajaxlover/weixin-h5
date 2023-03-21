@@ -343,6 +343,13 @@ export default {
               message: '交卷成功',
               position: 'middle'
             })
+            this.$router.push({
+              path: '/result',
+              query: {
+                examId: this.examId,
+                id: this.id
+              }
+            })
           }
         })
         .catch(err => {
@@ -358,8 +365,7 @@ export default {
           bankId: item.bankId,
           parentId: item.parentId,
           stuAnswer: item.stuAnswer ? item.stuAnswer : '',
-          sonSubList: item.sonSubList,
-          examStuPicUrl: examPic
+          sonSubList: item.sonSubList
         })
       })
       const data = {
@@ -367,7 +373,8 @@ export default {
         examResultUniqueId: this.examResultUniqueId,
         forceSubmitFlag: 0,
         startTime,
-        content: JSON.stringify(content)
+        content: JSON.stringify(content),
+        examStuPicUrl: examPic
       }
       submitExam(data)
         .then(res => {
@@ -376,6 +383,13 @@ export default {
             Toast({
               message: '交卷成功',
               position: 'middle'
+            })
+            this.$router.push({
+              path: '/result',
+              query: {
+                examId: this.examId,
+                id: this.id
+              }
             })
           }
         })

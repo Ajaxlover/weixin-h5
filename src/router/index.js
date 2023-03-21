@@ -117,7 +117,7 @@ export const routes = [
         jsApiList: []
       },
       keepAlive: false,
-      title: '成绩公布'
+      title: '竞赛成绩'
     }
   },
   {
