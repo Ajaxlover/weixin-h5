@@ -3,7 +3,10 @@
     <Nav @go-back="goBack"></Nav>
     <div class="content">
       <div class="contest-name">{{ info.examName }}</div>
-      <div class="contest-score">{{ info.score }}</div>
+      <div class="contest-score">
+        <span v-if="showScore" class="score">{{ info.score }}</span>
+        <span v-else class="un-score">成绩暂未公布</span>
+      </div>
     </div>
   </div>
 </template>
@@ -88,7 +91,12 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 250px;
+      .un-score {
+        font-size: 50px;
+      }
+      .score {
+        font-size: 250px;
+      }
     }
   }
 }

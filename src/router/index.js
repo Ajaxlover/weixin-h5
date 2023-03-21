@@ -36,11 +36,7 @@ export const routes = [
           'updateAppMessageShareData', // 分享朋友
           'updateTimelineShareData' // 分享朋友圈
         ],
-        hideMenuList: [
-          'menuItem:copyUrl', // 屏蔽复制链接
-          'menuItem:openWithQQBrowser', // 屏蔽在QQ浏览器打开
-          'menuItem:openWithSafari' // 屏蔽在Safari浏览器打开
-        ]
+        showMenuList: []
       },
       keepAlive: false,
       title: '首页'
@@ -60,11 +56,7 @@ export const routes = [
           'hideMenuItems',
           'chooseImage' // 拍照
         ],
-        hideMenuList: [
-          'menuItem:copyUrl', // 屏蔽复制链接
-          'menuItem:openWithQQBrowser', // 屏蔽在QQ浏览器打开
-          'menuItem:openWithSafari' // 屏蔽在Safari浏览器打开
-        ]
+        showMenuList: []
       },
       keepAlive: false,
       title: '开始答题'
@@ -80,11 +72,7 @@ export const routes = [
       wx: {
         sign: true, // 是否需要微信验签
         jsApiList: ['hideAllNonBaseMenuItem', 'hideMenuItems'],
-        hideMenuList: [
-          'menuItem:copyUrl', // 屏蔽复制链接
-          'menuItem:openWithQQBrowser', // 屏蔽在QQ浏览器打开
-          'menuItem:openWithSafari' // 屏蔽在Safari浏览器打开
-        ]
+        showMenuList: []
       },
       keepAlive: false,
       title: '题目'
@@ -98,8 +86,8 @@ export const routes = [
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
-        sign: false, // 是否需要微信验签
-        jsApiList: []
+        sign: true, // 是否需要微信验签
+        jsApiList: ['hideAllNonBaseMenuItem']
       },
       keepAlive: false,
       title: '答题结束'
@@ -113,8 +101,8 @@ export const routes = [
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
-        sign: false, // 是否需要微信验签
-        jsApiList: []
+        sign: true, // 是否需要微信验签
+        jsApiList: ['hideAllNonBaseMenuItem']
       },
       keepAlive: false,
       title: '竞赛成绩'
@@ -130,9 +118,12 @@ export const routes = [
       wx: {
         sign: true, // 是否需要微信验签
         jsApiList: [
+          'showMenuItems',
+          'hideAllNonBaseMenuItem',
           'updateAppMessageShareData', // 分享朋友
           'updateTimelineShareData' // 分享朋友圈
-        ]
+        ],
+        showMenuList: ['menuItem:share:appMessage', 'menuItem:share:timeline']
       },
       keepAlive: false,
       title: '竞赛详情'
@@ -148,15 +139,11 @@ export const routes = [
       wx: {
         sign: true, // 是否需要微信验签
         jsApiList: [
-          'chooseImage' // 拍照
+          'chooseImage', // 拍照
           // 'hideMenuItems',
-          // 'hideAllNonBaseMenuItem'
+          'hideAllNonBaseMenuItem'
         ],
-        hideMenuList: [
-          'menuItem:copyUrl', // 屏蔽复制链接
-          'menuItem:openWithQQBrowser', // 屏蔽在QQ浏览器打开
-          'menuItem:openWithSafari' // 屏蔽在Safari浏览器打开
-        ]
+        showMenuList: []
       },
       keepAlive: false,
       title: '报名流程'
@@ -170,13 +157,8 @@ export const routes = [
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
-        sign: false, // 是否需要微信验签
-        jsApiList: [
-          'updateAppMessageShareData', // 分享朋友
-          'updateTimelineShareData', // 分享朋友圈
-          'getLocation', // 定位
-          'openLocation' // 打开地图
-        ]
+        sign: true, // 是否需要微信验签
+        jsApiList: ['hideAllNonBaseMenuItem']
       },
       keepAlive: false,
       title: '报名须知'
@@ -190,13 +172,8 @@ export const routes = [
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
-        sign: false, // 是否需要微信验签
-        jsApiList: [
-          'updateAppMessageShareData', // 分享朋友
-          'updateTimelineShareData', // 分享朋友圈
-          'getLocation', // 定位
-          'openLocation' // 打开地图
-        ]
+        sign: true, // 是否需要微信验签
+        jsApiList: ['hideAllNonBaseMenuItem']
       },
       keepAlive: false,
       title: ''
@@ -210,13 +187,8 @@ export const routes = [
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
-        sign: false, // 是否需要微信验签
-        jsApiList: [
-          'updateAppMessageShareData', // 分享朋友
-          'updateTimelineShareData', // 分享朋友圈
-          'getLocation', // 定位
-          'openLocation' // 打开地图
-        ]
+        sign: true, // 是否需要微信验签
+        jsApiList: ['hideAllNonBaseMenuItem']
       },
       keepAlive: false,
       title: '电子签名'
@@ -232,15 +204,11 @@ export const routes = [
       wx: {
         sign: true, // 是否需要微信验签
         jsApiList: [
-          'chooseImage' // 拍照
+          'chooseImage', // 拍照
           // 'hideMenuItems',
-          // 'hideAllNonBaseMenuItem'
+          'hideAllNonBaseMenuItem'
         ],
-        hideMenuList: [
-          'menuItem:copyUrl', // 屏蔽复制链接
-          'menuItem:openWithQQBrowser', // 屏蔽在QQ浏览器打开
-          'menuItem:openWithSafari' // 屏蔽在Safari浏览器打开
-        ]
+        showMenuList: []
       },
       keepAlive: false,
       title: '报名信息'
@@ -254,13 +222,8 @@ export const routes = [
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
-        sign: false, // 是否需要微信验签
-        jsApiList: [
-          'updateAppMessageShareData', // 分享朋友
-          'updateTimelineShareData', // 分享朋友圈
-          'getLocation', // 定位
-          'openLocation' // 打开地图
-        ]
+        sign: true, // 是否需要微信验签
+        jsApiList: ['hideAllNonBaseMenuItem']
       },
       keepAlive: false,
       title: '我的竞赛'
@@ -274,13 +237,8 @@ export const routes = [
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
-        sign: false, // 是否需要微信验签
-        jsApiList: [
-          'updateAppMessageShareData', // 分享朋友
-          'updateTimelineShareData', // 分享朋友圈
-          'getLocation', // 定位
-          'openLocation' // 打开地图
-        ]
+        sign: true, // 是否需要微信验签
+        jsApiList: ['hideAllNonBaseMenuItem']
       },
       keepAlive: false,
       title: '个人中心'
@@ -294,8 +252,8 @@ export const routes = [
       auth: false, // 需要登录
       thirdAuth: '', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
-        sign: false, // 是否需要微信验签
-        jsApiList: []
+        sign: true, // 是否需要微信验签
+        jsApiList: ['hideAllNonBaseMenuItem']
       },
       keepAlive: false,
       title: '个人信息'
@@ -309,8 +267,8 @@ export const routes = [
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
-        sign: false, // 是否需要微信验签
-        jsApiList: []
+        sign: true, // 是否需要微信验签
+        jsApiList: ['hideAllNonBaseMenuItem']
       },
       keepAlive: false,
       title: '证书列表'
@@ -324,8 +282,8 @@ export const routes = [
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
-        sign: false, // 是否需要微信验签
-        jsApiList: []
+        sign: true, // 是否需要微信验签
+        jsApiList: ['hideAllNonBaseMenuItem']
       },
       keepAlive: false,
       title: '证书详情'

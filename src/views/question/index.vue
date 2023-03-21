@@ -207,6 +207,10 @@ export default {
     },
     isErrorBankPre() {
       if (this.idx === 0) {
+        Toast({
+          message: '当前题目是第一题',
+          position: 'middle'
+        })
         return false
       }
       this.idx--

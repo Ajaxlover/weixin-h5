@@ -10,7 +10,7 @@ const wxSignParams = {
   timestamp: '',
   nonceStr: '',
   signature: '',
-  errorCount: 3 // 错误尝试次数
+  errorCount: 5 // 错误尝试次数
 }
 
 /**
@@ -26,7 +26,6 @@ function init(params) {
       url: wxSignParams.signUrl
     })
       .then(res => {
-        console.log('获取js-sdk参数', res)
         const { appId, timestamp, nonceStr, signature } = res.data
         wxSignParams.appId = appId
         wxSignParams.timestamp = timestamp
@@ -57,10 +56,10 @@ function wxConfig(params) {
   wx.config(configObj)
   wx.ready(() => {
     setTimeout(() => {
-      // wx.hideAllNonBaseMenuItem()
-      // 屏蔽功能菜单
-      wx.hideMenuItems({
-        menuList: params.hideMenuList
+      wx.hideAllNonBaseMenuItem()
+      // 显示功能菜单
+      wx.showMenuItems({
+        menuList: params.showMenuList
       })
     }, 400)
   })

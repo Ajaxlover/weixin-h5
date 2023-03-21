@@ -18,7 +18,7 @@ function doFilter() {
           // wx-js-sdk初始化
           wxUtils.init({
             apiList: to.meta.wx.jsApiList,
-            hideMenuList: to.meta.wx.hideMenuList ? to.meta.wx.hideMenuList : []
+            showMenuList: to.meta.wx.showMenuList ? to.meta.wx.showMenuList : []
           })
         })
       } else {
@@ -26,7 +26,7 @@ function doFilter() {
         // wx-js-sdk初始化
         wxUtils.init({
           apiList: to.meta.wx.jsApiList,
-          hideMenuList: to.meta.wx.hideMenuList ? to.meta.wx.hideMenuList : []
+          showMenuList: to.meta.wx.showMenuList ? to.meta.wx.showMenuList : []
         })
       }
       return next()

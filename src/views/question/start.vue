@@ -8,7 +8,7 @@
       <div class="contest-limit">考试限时：{{ info.answerTime }}分钟</div>
       <div class="contest-intro">考试说明：{{ info.examNotes ? info.examNotes : '无' }}</div>
       <div class="start-btn">
-        <van-button type="primary" size="large" round @click="goAnswer">开始</van-button>
+        <van-button type="primary" size="large" round @click="goAnswer">开始答题</van-button>
       </div>
     </div>
   </div>
@@ -196,7 +196,7 @@ export default {
               })
             }
             if (res.code === 241) {
-              // 超出作答次数
+              // 超出作答次数 跳转结果页
               this.$router.push({
                 path: '/result',
                 query: {
