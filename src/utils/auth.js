@@ -65,6 +65,10 @@ function getExamRecord(key) {
   return localStorage.getItem(key) ? localStorage.getItem(key) : ''
 }
 
+function removeExamRecord(key) {
+  return localStorage.removeItem(key)
+}
+
 export default {
   getToken,
   setToken,
@@ -78,5 +82,6 @@ export default {
   getWxCode,
   setWxCode,
   setExamRecord,
-  getExamRecord
+  getExamRecord,
+  removeExamRecord
 }

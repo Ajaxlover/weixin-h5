@@ -38,7 +38,14 @@
         </div>
       </div>
     </van-popup>
-    <Nav :is-show-right="isShowRight" :time="time" :is-show-time="isShowTime" @go-back="goBack" @right-click="rightClick" @finish="finish"></Nav>
+    <Nav
+      :is-show-right="isErrorBank == 1 ? false : isShowRight"
+      :time="time"
+      :is-show-time="isShowTime"
+      @go-back="goBack"
+      @right-click="rightClick"
+      @finish="finish"
+    ></Nav>
     <div class="content">
       <div v-for="(item, index) in question" v-show="index === idx" :key="index" class="question">
         <div class="subject-type">
@@ -65,7 +72,13 @@
       </div>
     </div>
     <div class="footer van-hairline--top">
-      <van-button class="join-btn" type="primary" size="large" round @click.native="next">提交本题</van-button>
+      <van-button v-if="isErrorBank == 0" class="join-btn" type="primary" size="large" round @click.native="next">下一题</van-button>
+      <div v-if="isErrorBank == 1" class="btn-container">
+        <van-button class="next-btn" type="primary" size="large" round @click.native="isErrorBankPre">上一题</van-button>
+        <van-button class="next-btn" type="primary" size="large" round @click.native="isErrorBankNext">{{
+          idx === question.length - 1 ? '交卷' : '下一题'
+        }}</van-button>
+      </div>
     </div>
   </div>
 </template>
@@ -91,6 +104,7 @@ export default {
       startAnswerTime: '',
       id: this.$route.query.id,
       examId: this.$route.query.examId,
+      isErrorBank: this.$route.query.isErrorBank,
       examResultUniqueId: '',
       time: 5000, // 倒计时初始值，注意不能设置为0,否则进页面就触发交卷
       show: false,
@@ -114,51 +128,65 @@ export default {
   },
   methods: {
     getInfo() {
-      getExamSubject({
-        examId: this.examId
-      })
-        .then(res => {
-          res.data.paperInfoList.forEach((item, idx) => {
-            item.num = idx + 1
-          })
-          this.question = res.data.paperInfoList
-          this.examResultUniqueId = res.data.examResultUniqueId
-          const startTimeCache = localStorage.getItem(`startTime-${this.examId}`) ? localStorage.getItem(`startTime-${this.examId}`) : ''
-          if (!startTimeCache) {
-            // 无本场考试开始时间缓存（首次）
+      const startTimeCache = localStorage.getItem(`startTime-${this.examId}`) ? localStorage.getItem(`startTime-${this.examId}`) : ''
+      if (startTimeCache) {
+        // 存在开始时间,说明是中途再次进入
+        let hasSpendTime = 0
+        const countDown = localStorage.getItem(`countDown-${this.examId}`) * 1000
+        if (new Date().getTime() - startTimeCache >= countDown) {
+          hasSpendTime = countDown
+        } else {
+          hasSpendTime = new Date().getTime() - startTimeCache
+        }
+        this.time = countDown - hasSpendTime // 设置倒计时
+        this.examResultUniqueId = localStorage.getItem(`uniqueId-${this.examId}`)
+
+        const questionCache = Storage.getExamRecord(`contest-${this.examId}`)
+        if (questionCache) {
+          this.question = JSON.parse(questionCache)
+        }
+
+        this.question.forEach(i => {
+          if (i.tSubject === 1) {
+            this.questionBoolean.push(i)
+          } else if (i.tSubject === 2) {
+            this.questionSingle.push(i)
+          } else {
+            this.questionMultiple.push(i)
+          }
+        })
+      } else {
+        // 首次进入
+        getExamSubject({
+          examId: this.examId
+        })
+          .then(res => {
+            res.data.paperInfoList.forEach((item, idx) => {
+              item.num = idx + 1
+            })
+            this.question = res.data.paperInfoList
+            this.examResultUniqueId = res.data.examResultUniqueId
+            Storage.setExamRecord(`contest-${this.examId}`, this.question)
+            localStorage.setItem(`countDown-${this.examId}`, res.data.countDown)
+            localStorage.setItem(`uniqueId-${this.examId}`, res.data.examResultUniqueId)
             localStorage.setItem(`startTime-${this.examId}`, res.data.startTime)
             this.time = res.data.countDown * 1000
-          } else {
-            // 中途再次进入
-            let hasSpendTime = 0
-            if (new Date().getTime() - startTimeCache >= res.data.countDown * 1000) {
-              hasSpendTime = res.data.countDown * 1000
-            } else {
-              hasSpendTime = new Date().getTime() - startTimeCache
-            }
-            this.time = res.data.countDown * 1000 - hasSpendTime
-          }
 
-          // 如果有缓存
-          const questionCache = Storage.getExamRecord(`contest-${this.examId}`)
-          if (questionCache) {
-            this.question = JSON.parse(questionCache)
-          }
-
-          this.question.forEach(i => {
-            if (i.tSubject === 1) {
-              this.questionBoolean.push(i)
-            } else if (i.tSubject === 2) {
-              this.questionSingle.push(i)
-            } else {
-              this.questionMultiple.push(i)
-            }
+            this.question.forEach(i => {
+              if (i.tSubject === 1) {
+                this.questionBoolean.push(i)
+              } else if (i.tSubject === 2) {
+                this.questionSingle.push(i)
+              } else {
+                this.questionMultiple.push(i)
+              }
+            })
+            // console.log(this.question)
           })
-          console.log(this.question)
-        })
-        .catch(err => {
-          console.error(err)
-        })
+          .catch(err => {
+            console.error(err)
+          })
+      }
     },
     // 切换到指定题目
     changIdx(i) {
@@ -176,6 +204,41 @@ export default {
           id: this.id
         }
       })
+    },
+    isErrorBankPre() {
+      if (this.idx === 0) {
+        return false
+      }
+      this.idx--
+    },
+    isErrorBankNext() {
+      if (this.idx === this.question.length - 1) {
+        Dialog.confirm({
+          title: '提示',
+          message: '是否确认交卷?',
+          confirmButtonText: '确认',
+          confirmButtonColor: '#00a400',
+          beforeClose: (action, done) => {
+            if (action === 'confirm') {
+              // 交卷
+              this.doSubmit()
+              done()
+            } else {
+              done()
+            }
+          }
+        })
+      } else {
+        // 切换下一题 当前题目未答不准切换
+        if (this.question[this.idx].stuAnswer) {
+          this.idx++
+        } else {
+          Toast({
+            message: '请先作答当前题目',
+            position: 'middle'
+          })
+        }
+      }
     },
     next() {
       if (this.idx === this.question.length - 1) {
@@ -203,7 +266,6 @@ export default {
       if (info.checked) {
         isAnswer = info.disorderOption // 选中的答案
       }
-      // const answer = this.question[this.idx].answer // 题目中的答案
 
       // 如果是多选
       if (question.tSubject === 3) {
@@ -214,26 +276,14 @@ export default {
             this.ismultipleAnswer.push(item.disorderOption)
           }
         })
-        isAnswer = this.ismultipleAnswer.join(',') // 将ismultipleAnswer转为字符串
+        isAnswer = this.ismultipleAnswer.join(',')
       }
 
       console.log('选中的答案', isAnswer)
       // console.log('题目的答案', answer)
-
       this.question[this.idx].stuAnswer = isAnswer // 记录学生答案
-
       // 缓存作答记录
       Storage.setExamRecord(`contest-${this.examId}`, this.question)
-
-      // 判断是否选正确，计算分数
-      // if (isAnswer == answer) {
-      //   // 如果选的答案与题目答案相等,isOk 说明选对了
-      //   this.question[this.idx].isOk = true
-      //   this.question[this.idx].isDone = true
-      // } else {
-      //   this.question[this.idx].isOk = false
-      //   this.question[this.idx].isDone = true
-      // }
     },
 
     submitPaper() {
@@ -251,7 +301,7 @@ export default {
             if (action === 'confirm') {
               done()
               // 交卷
-              this.submitExam()
+              this.doSubmit()
             } else {
               done()
             }
@@ -265,6 +315,7 @@ export default {
     // 直接交卷
     doSubmitDirect() {
       const startTime = localStorage.getItem(`startTime-${this.examId}`)
+      const examPic = localStorage.getItem(`examPic${this.examId}`)
       const content = []
       this.question.forEach(item => {
         content.push({
@@ -279,13 +330,15 @@ export default {
         examResultUniqueId: this.examResultUniqueId,
         forceSubmitFlag: 0,
         startTime,
-        content: JSON.stringify(content)
+        content: JSON.stringify(content),
+        examStuPicUrl: examPic
       }
       this.loading = true
       submitExam(data)
         .then(res => {
           if (res.code === 200) {
             this.loading = false
+            this.removeCaches()
             Toast({
               message: '交卷成功',
               position: 'middle'
@@ -298,13 +351,15 @@ export default {
     },
     doSubmit() {
       const startTime = localStorage.getItem(`startTime-${this.examId}`)
+      const examPic = localStorage.getItem(`examPic${this.examId}`)
       const content = []
       this.question.forEach(item => {
         content.push({
           bankId: item.bankId,
           parentId: item.parentId,
           stuAnswer: item.stuAnswer ? item.stuAnswer : '',
-          sonSubList: item.sonSubList
+          sonSubList: item.sonSubList,
+          examStuPicUrl: examPic
         })
       })
       const data = {
@@ -317,6 +372,7 @@ export default {
       submitExam(data)
         .then(res => {
           if (res.code === 200) {
+            this.removeCaches()
             Toast({
               message: '交卷成功',
               position: 'middle'
@@ -329,6 +385,13 @@ export default {
     },
     finish() {
       this.doSubmit()
+    },
+    removeCaches() {
+      Storage.removeExamRecord(`contest-${this.examId}`)
+      localStorage.removeItem(`countDown-${this.examId}`)
+      localStorage.removeItem(`uniqueId-${this.examId}`)
+      localStorage.removeItem(`startTime-${this.examId}`)
+      localStorage.removeItem(`examPic${this.examId}`)
     },
     // 保持页面常亮
     noSleep() {
@@ -476,6 +539,14 @@ export default {
     padding: 0 28px;
     .join-btn {
       height: 90px;
+    }
+    .btn-container {
+      display: flex;
+      justify-content: space-between;
+      .next-btn {
+        width: 49%;
+        height: 90px;
+      }
     }
   }
 }

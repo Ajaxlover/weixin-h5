@@ -17,7 +17,7 @@
 <script>
 import Nav from '@/components/Nav'
 import { getContestInfo, checkStartExam } from '@/api/exam'
-// import { Toast } from 'vant'
+import { Toast } from 'vant'
 import wx from 'weixin-js-sdk'
 import { uploadImage } from '@/api/exam'
 
@@ -81,59 +81,80 @@ export default {
     },
     goAnswer() {
       // 是否有本场考试的startTime  有=>判断是否还有时间  无=> 拍照
-      checkStartExam({
-        examId: this.examId,
-        startTime: new Date().getTime()
-      })
-        .then(res => {
-          if (res.code === 200) {
-            // 首次进入 拍照
-            const that = this
-            // eslint-disable-next-line no-undef
-            wx.chooseImage({
-              count: 1, // 默认9
-              sizeType: ['original'], // 可以指定是原图还是压缩图，默认二者都有
-              sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
-              success: function (res) {
-                const localIds = res.localIds // 返回选定照片的本地 ID 列表，localId可以作为 img 标签的 src 属性显示图片
-                wx.getLocalImgData({
-                  localId: localIds[0], // 图片的localID
-                  success: function (res) {
-                    let base64Data = ''
-                    if (res.localData.indexOf(';base64,') === -1) {
-                      // 兼容处理，安卓获取的图片base64码没有前缀，而苹果有,base64前缀并不固定
-                      base64Data = 'data:image/jpeg;base64,' + res.localData
-                    }
-                    if (res.localData.indexOf('data:image/jpg;base64,') !== -1) {
-                      // 兼容处理，若是苹果手机，将前缀中的jgp替换成jpeg
-                      base64Data = res.localData.replace('data:image/jpg;base64,', 'data:image/jpeg;base64,')
-                    }
-
-                    const file = that.base64toFile(base64Data)
-                    const fd = new FormData()
-                    fd.append('cosPath', 'gfkd/masterhead')
-                    fd.append('file', file)
-                    uploadImage(fd).then(result => {
-                      if (result.code === 200) {
-                        localStorage.setItem(`examPic${this.examId}`, result.data.accessUrl)
-                        this.$router.push({
-                          path: '/question',
-                          query: {
-                            examId: this.examId,
-                            id: this.id
-                          }
-                        })
+      const startTimeCache = localStorage.getItem(`startTime-${this.examId}`) ? localStorage.getItem(`startTime-${this.examId}`) : ''
+      if (startTimeCache) {
+        if (new Date().getTime() - startTimeCache >= this.info.answerTime * 60 * 1000) {
+          Toast({
+            message: '答题时间已超过限时',
+            position: 'middle'
+          })
+          // 提交原来记录 跳转答题结果
+        } else {
+          this.$router.push({
+            path: '/question',
+            query: {
+              examId: this.examId,
+              id: this.id,
+              isErrorBank: this.info.isErrorBank
+            }
+          })
+        }
+      } else {
+        checkStartExam({
+          examId: this.examId,
+          startTime: new Date().getTime()
+        })
+          .then(res => {
+            if (res.code === 200) {
+              // 首次进入 拍照
+              const that = this
+              // eslint-disable-next-line no-undef
+              wx.chooseImage({
+                count: 1, // 默认9
+                sizeType: ['original'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                  const localIds = res.localIds // 返回选定照片的本地 ID 列表，localId可以作为 img 标签的 src 属性显示图片
+                  wx.getLocalImgData({
+                    localId: localIds[0], // 图片的localID
+                    success: function (res) {
+                      let base64Data = ''
+                      if (res.localData.indexOf(';base64,') === -1) {
+                        // 兼容处理，安卓获取的图片base64码没有前缀，而苹果有,base64前缀并不固定
+                        base64Data = 'data:image/jpeg;base64,' + res.localData
                       }
-                    })
-                  }
-                })
-              }
-            })
-          }
-        })
-        .catch(err => {
-          console.error(err)
-        })
+                      if (res.localData.indexOf('data:image/jpg;base64,') !== -1) {
+                        // 兼容处理，若是苹果手机，将前缀中的jgp替换成jpeg
+                        base64Data = res.localData.replace('data:image/jpg;base64,', 'data:image/jpeg;base64,')
+                      }
+
+                      const file = that.base64toFile(base64Data)
+                      const fd = new FormData()
+                      fd.append('cosPath', 'gfkd/masterhead')
+                      fd.append('file', file)
+                      uploadImage(fd).then(result => {
+                        if (result.code === 200) {
+                          localStorage.setItem(`examPic${that.examId}`, result.data.accessUrl)
+                          that.$router.push({
+                            path: '/question',
+                            query: {
+                              examId: that.examId,
+                              id: that.id,
+                              isErrorBank: that.info.isErrorBank
+                            }
+                          })
+                        }
+                      })
+                    }
+                  })
+                }
+              })
+            }
+          })
+          .catch(err => {
+            console.error(err)
+          })
+      }
     }
   }
 }

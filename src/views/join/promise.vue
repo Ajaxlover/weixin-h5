@@ -42,6 +42,9 @@ export default {
       })
         .then(res => {
           this.info = res.data
+          if (res.data.signPic) {
+            localStorage.setItem(`esign${this.id}`, res.data.signPic)
+          }
         })
         .catch(err => {
           console.error(err)
