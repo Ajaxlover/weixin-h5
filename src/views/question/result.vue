@@ -39,10 +39,10 @@ export default {
       })
         .then(res => {
           this.info = res.data
-          if (res.code === 200) {
-            this.showScore = true
-          } else if (res.code === 250) {
+          if (res.data.score === -1) {
             this.showScore = false
+          } else {
+            this.showScore = true
           }
         })
         .catch(err => {

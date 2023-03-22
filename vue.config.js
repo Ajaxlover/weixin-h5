@@ -9,7 +9,7 @@ const IS_PROD = ['production'].includes(process.env.NODE_ENV)
 const port = process.env.port || 8086 // 端口
 
 // ------雪碧图样式处理模板开始------
-const SpritesmithTemplate = function(data) {
+const SpritesmithTemplate = function (data) {
   //  background-size为生成雪碧图的大小
   const icons = {}
   let tpl = `.ico {
@@ -131,7 +131,7 @@ module.exports = {
         hints: 'warning',
         maxEntrypointSize: 50000000, // 入口起点的最大体积
         maxAssetSize: 30000000, // 生成文件的最大体积
-        assetFilter: function(assetFilename) {
+        assetFilter: function (assetFilename) {
           // 只给出 js 文件的性能提示
           return assetFilename.endsWith('.js')
         }
@@ -174,10 +174,7 @@ module.exports = {
 
   chainWebpack: config => {
     // --- svg-sprite-loader 开始---
-    config.module
-      .rule('svg')
-      .exclude.add(resolve('src/assets/icon/svg'))
-      .end()
+    config.module.rule('svg').exclude.add(resolve('src/assets/icon/svg')).end()
     config.module
       .rule('svg-sprite-loader')
       .test(/\.svg$/)

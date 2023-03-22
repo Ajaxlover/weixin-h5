@@ -21,14 +21,12 @@ function doFilter() {
 
     // 第三方环境code处理
     if (!hasToken && thirdType && to.meta.thirdAuth && third_redirect_code && third_redirect_code !== old_third_redirect_code) {
-      console.log('zhixinf')
       // code获取token
       code2AccessToken({
         code: third_redirect_code,
         state: third_redirect_state
       })
         .then(res => {
-          console.log('55', res)
           // 保存微信返回的code 判断code已用且仍在url中,但是清除了token
           store.dispatch('user/setWxCode', third_redirect_code)
           store.dispatch('user/setToken', res.data.token)

@@ -52,7 +52,6 @@ function wxConfig(params) {
     signature: wxSignParams.signature,
     jsApiList: params.apiList
   }
-  console.log('configObj', configObj)
   wx.config(configObj)
   wx.ready(() => {
     setTimeout(() => {

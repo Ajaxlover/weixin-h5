@@ -66,7 +66,7 @@
             class="option-item van-hairline--surround"
             @click="handleClick(i, j)"
           >
-            {{ i.disorderOption }}. {{ i.text }}
+            {{ i.disorderOption }}.<JaxMath :data="i.text"></JaxMath>
           </div>
         </div>
       </div>
