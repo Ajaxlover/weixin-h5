@@ -5,7 +5,7 @@
       <div class="contest-name">{{ info.examName }}</div>
       <div class="contest-score">
         <span v-if="showScore" class="score">{{ info.score }}</span>
-        <span v-else class="un-score">成绩暂未公布</span>
+        <span v-else class="un-score">注意:竞赛已结束，后续信息会通过微信公众号发送，在个人中心也可查看。</span>
       </div>
     </div>
   </div>
@@ -92,7 +92,8 @@ export default {
       justify-content: center;
       align-items: center;
       .un-score {
-        font-size: 50px;
+        font-size: 38px;
+        padding: 0 80px;
       }
       .score {
         font-size: 250px;
