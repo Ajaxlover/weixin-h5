@@ -97,7 +97,7 @@ export default {
         })
     },
     goBack() {
-      if (this.type === 1) {
+      if (this.type === '1') {
         this.$router.push({
           path: '/control',
           query: {
@@ -198,6 +198,7 @@ export default {
     height: 100px;
     bottom: 100px;
     background-color: #f4f4f4;
+    padding: 0 28px;
     z-index: 999;
     .join-btn {
       height: 90px;

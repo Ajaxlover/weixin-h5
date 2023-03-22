@@ -103,6 +103,7 @@ export default {
     bottom: 0;
     background-color: #fff;
     z-index: 999;
+    padding: 0 28px;
     .join-btn {
       height: 90px;
     }

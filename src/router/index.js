@@ -75,7 +75,7 @@ export const routes = [
         showMenuList: []
       },
       keepAlive: false,
-      title: '题目'
+      title: ''
     }
   },
   {
@@ -105,7 +105,7 @@ export const routes = [
         jsApiList: ['hideAllNonBaseMenuItem']
       },
       keepAlive: false,
-      title: '竞赛成绩'
+      title: '竞赛结果'
     }
   },
   {
@@ -176,7 +176,7 @@ export const routes = [
         jsApiList: ['hideAllNonBaseMenuItem']
       },
       keepAlive: false,
-      title: ''
+      title: '考生守则'
     }
   },
   {
@@ -271,7 +271,7 @@ export const routes = [
         jsApiList: ['hideAllNonBaseMenuItem']
       },
       keepAlive: false,
-      title: '证书列表'
+      title: '证书'
     }
   },
   {

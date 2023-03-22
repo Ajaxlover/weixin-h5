@@ -134,6 +134,7 @@ export default {
   height: 100%;
   width: 100%;
   background-color: #fff;
+  overflow: auto;
   .t-container {
     padding: 0 28px;
 
@@ -192,6 +193,7 @@ export default {
       margin-bottom: 20px;
     }
     .home-exams {
+      overflow: auto;
       .home-exam-item {
         margin-top: 10px;
         display: flex;

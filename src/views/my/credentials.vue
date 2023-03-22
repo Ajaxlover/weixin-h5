@@ -118,7 +118,7 @@ export default {
           margin-bottom: 10px;
         }
         .item-btn {
-          bottom: 0;
+          bottom: 50px;
           right: 0;
           position: absolute;
           background-color: #2cad69;

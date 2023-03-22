@@ -399,6 +399,7 @@ export default {
     height: 100px;
     bottom: 0;
     background-color: #fff;
+    padding: 0 28px;
     z-index: 999;
     .join-btn {
       height: 90px;

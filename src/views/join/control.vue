@@ -131,10 +131,12 @@ export default {
           masterHeadId: this.id
         }).then(res => {
           if (res.code === 200) {
+            const { competeStuId } = res.data
             this.$router.push({
               path: item.path,
               query: {
                 id: this.id,
+                competeStuId,
                 type: 1 // control进入证书详情
               }
             })
