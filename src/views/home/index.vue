@@ -188,6 +188,7 @@ export default {
   .b-container {
     margin-top: 30px;
     padding: 0 28px;
+    overflow: auto;
     .home-text {
       text-align: center;
       margin-bottom: 20px;

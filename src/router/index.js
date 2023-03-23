@@ -321,10 +321,11 @@ const createRouter = () =>
     scrollBehavior() {
       return { y: 0 }
     },
-    // base: '/',
+    base: process.env.BASE_URL,
     routes: routes
   })
 
+console.log(process.env)
 const router = createRouter()
 
 // router.beforeEach((to, from, next) => {

@@ -76,6 +76,7 @@ export default {
             this.$router.push({
               path: '/start',
               query: {
+                id: item.id,
                 examId
               }
             })

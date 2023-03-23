@@ -35,7 +35,7 @@ const SpritesmithTemplate = function (data) {
 // -----------雪碧图样式处理模板结束-------------------
 
 module.exports = {
-  publicPath: '/', // 署应用包时的基本 URL。 history模式使用
+  publicPath: '/gfkd', // 署应用包时的基本 URL。 history模式使用
   // publicPath: './', // 署应用包时的基本 URL。hash 模式使用
   outputDir: 'dist',
   assetsDir: 'static',

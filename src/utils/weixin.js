@@ -10,7 +10,7 @@ const wxSignParams = {
   timestamp: '',
   nonceStr: '',
   signature: '',
-  errorCount: 5 // 错误尝试次数
+  errorCount: 3 // 错误尝试次数
 }
 
 /**

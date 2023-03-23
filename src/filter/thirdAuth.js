@@ -39,7 +39,6 @@ function doFilter() {
       } else {
         // 已经拿到code(old_third_redirect_code 防止失效code仍在url中,需重新拿到third_redirect_code)
         if (third_redirect_code && third_redirect_code !== old_third_redirect_code) {
-          console.log('2222')
           return next()
         }
         const url = process.env.VUE_APP_BASEURL + process.env.VUE_APP_BASE_PUBLIC_PATH + to.fullPath
@@ -74,7 +73,6 @@ function doFilter() {
       } else if (to.path === '/sign_in') {
         return next()
       } else {
-        console.log('888')
         const redirect_url = getThirdUrl(to)
         window.location.href = redirect_url
         // return next()

@@ -12,7 +12,7 @@
           </div>
           <div class="info">
             <div class="part">
-              <div class="part-left">学校:</div>
+              <div class="part-left">学&#12288;&#12288;校:</div>
               <div class="part-right">{{ info.school }}</div>
             </div>
             <div class="part">
@@ -186,6 +186,7 @@ export default {
               background: url('../../assets/image/text_container.png') no-repeat 100%;
               border-radius: 20px;
               line-height: 50px;
+              padding-left: 10px;
             }
           }
         }
