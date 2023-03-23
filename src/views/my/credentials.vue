@@ -94,6 +94,7 @@ export default {
       background-color: #fff;
       border-radius: 10px;
       padding: 42px 44px;
+      margin-bottom: 26px;
       .item-box {
         position: relative;
         height: 100%;

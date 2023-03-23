@@ -1,30 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
-import Home from '@/views/home'
-import Test from '@/views/contest'
-import My from '@/views/my'
-import Personal from '@/views/my/personal.vue'
-import Credentials from '@/views/my/credentials.vue'
-import CreDetail from '@/views/my/credentialsDetail.vue'
-
-import Join from '@/views/join'
-import Control from '@/views/join/control.vue'
-import Rule from '@/views/join/rule.vue'
-import Promise from '@/views/join/promise.vue'
-import Sign from '@/views/join/sign.vue'
-import Info from '@/views/join/info.vue'
-
-import Start from '@/views/question/start.vue'
-import Question from '@/views/question'
-import Finish from '@/views/question/finish.vue'
-import Result from '@/views/question/result.vue'
 
 export const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: () => import('@/views/home'),
     meta: {
       auth: true, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -45,7 +27,7 @@ export const routes = [
   {
     path: '/start',
     name: 'Start',
-    component: Start,
+    component: () => import('@/views/question/start.vue'),
     meta: {
       auth: false, // 需要登录
       thirdAuth: '', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -65,7 +47,7 @@ export const routes = [
   {
     path: '/question',
     name: 'Question',
-    component: Question,
+    component: () => import('@/views/question'),
     meta: {
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -81,7 +63,7 @@ export const routes = [
   {
     path: '/finish',
     name: 'Finish',
-    component: Finish,
+    component: () => import('@/views/question/finish.vue'),
     meta: {
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -96,7 +78,7 @@ export const routes = [
   {
     path: '/result',
     name: 'Result',
-    component: Result,
+    component: () => import('@/views/question/result.vue'),
     meta: {
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -111,7 +93,7 @@ export const routes = [
   {
     path: '/join',
     name: 'Join',
-    component: Join,
+    component: () => import('@/views/join'),
     meta: {
       auth: true, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -132,7 +114,7 @@ export const routes = [
   {
     path: '/control',
     name: 'Control',
-    component: Control,
+    component: () => import('@/views/join/control.vue'),
     meta: {
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -152,7 +134,7 @@ export const routes = [
   {
     path: '/rule',
     name: 'Rule',
-    component: Rule,
+    component: () => import('@/views/join/rule.vue'),
     meta: {
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -167,7 +149,7 @@ export const routes = [
   {
     path: '/promise',
     name: 'Promise',
-    component: Promise,
+    component: () => import('@/views/join/promise.vue'),
     meta: {
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -182,7 +164,7 @@ export const routes = [
   {
     path: '/sign',
     name: 'Sign',
-    component: Sign,
+    component: () => import('@/views/join/sign.vue'),
     meta: {
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -197,7 +179,7 @@ export const routes = [
   {
     path: '/info',
     name: 'Info',
-    component: Info,
+    component: () => import('@/views/join/info.vue'),
     meta: {
       auth: false, // 需要登录
       thirdAuth: '', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -217,7 +199,7 @@ export const routes = [
   {
     path: '/test',
     name: 'Test',
-    component: Test,
+    component: () => import('@/views/contest'),
     meta: {
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -232,7 +214,7 @@ export const routes = [
   {
     path: '/my',
     name: 'My',
-    component: My,
+    component: () => import('@/views/my'),
     meta: {
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -247,7 +229,7 @@ export const routes = [
   {
     path: '/personal',
     name: 'Personal',
-    component: Personal,
+    component: () => import('@/views/my/personal.vue'),
     meta: {
       auth: false, // 需要登录
       thirdAuth: '', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -262,7 +244,7 @@ export const routes = [
   {
     path: '/credentials',
     name: 'Credentials',
-    component: Credentials,
+    component: () => import('@/views/my/credentials.vue'),
     meta: {
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -277,7 +259,7 @@ export const routes = [
   {
     path: '/credentials-detail',
     name: 'credentials-detail',
-    component: CreDetail,
+    component: () => import('@/views/my/credentialsDetail.vue'),
     meta: {
       auth: false, // 需要登录
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
@@ -288,22 +270,22 @@ export const routes = [
       keepAlive: false,
       title: '证书详情'
     }
-  },
-  {
-    path: '/sign_in',
-    name: 'sign',
-    component: () => import('@/views/signIn/index'),
-    meta: {
-      auth: false,
-      thirdAuth: '',
-      wx: {
-        sign: false,
-        jsApiList: ['getLocation']
-      },
-      keepAlive: false,
-      title: '登录'
-    }
   }
+  // {
+  //   path: '/sign_in',
+  //   name: 'sign',
+  //   component: () => import('@/views/signIn/index'),
+  //   meta: {
+  //     auth: false,
+  //     thirdAuth: '',
+  //     wx: {
+  //       sign: false,
+  //       jsApiList: ['getLocation']
+  //     },
+  //     keepAlive: false,
+  //     title: '登录'
+  //   }
+  // }
 
   // 404
   // {

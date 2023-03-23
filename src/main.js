@@ -23,8 +23,9 @@ import components from './components' // 全局组件
 // eslint-disable-next-line
 import mixins from './mixins' // 全局混入
 
-import { parseTime } from './utils'
+import { parseTime, base64toFile } from './utils'
 Vue.prototype.$parseTime = parseTime // 时间戳格式化
+Vue.prototype.$base64toFile = base64toFile // base64转file
 
 Vue.prototype.$NoSleep = NoSleep
 
