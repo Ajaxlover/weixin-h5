@@ -135,6 +135,7 @@ export default {
   width: 100%;
   background-color: #fff;
   overflow: auto;
+  padding-bottom: 160px;
   .t-container {
     padding: 0 28px;
 
