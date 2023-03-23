@@ -60,15 +60,16 @@ export default {
   },
   methods: {
     goStart(item) {
+      const { id } = item
       start5minBefore({
-        masterHeadId: item.id
+        masterHeadId: id
       })
         .then(res => {
           if (res.code === 249) {
             this.$router.push({
               path: '/control',
               query: {
-                id: item.id
+                id
               }
             })
           } else if (res.code === 200) {
@@ -76,7 +77,7 @@ export default {
             this.$router.push({
               path: '/start',
               query: {
-                id: item.id,
+                id,
                 examId
               }
             })
