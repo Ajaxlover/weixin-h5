@@ -367,6 +367,7 @@ export default {
     z-index: 999;
     .join-btn {
       height: 90px;
+      background-color: #2cad69;
     }
   }
 }

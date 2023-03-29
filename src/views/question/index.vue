@@ -101,6 +101,7 @@ export default {
       id: this.$route.query.id,
       examId: this.$route.query.examId,
       isErrorBank: this.$route.query.isErrorBank,
+      switchScreenTimes: this.$route.query.switchScreenTimes,
       examResultUniqueId: '',
       time: 5000, // 倒计时初始值，注意不能设置为0,否则进页面就触发交卷
       show: false,
@@ -121,6 +122,17 @@ export default {
   },
   mounted() {
     this.noSleep()
+  },
+  beforeDestroy() {
+    let screenTimes = localStorage.getItem(`screenTimes-${this.examResultUniqueId}`)
+    // eslint-disable-next-line eqeqeq
+    if (screenTimes == this.switchScreenTimes) {
+      // 自动提交
+      this.doSubmit(1)
+    } else {
+      screenTimes++
+      localStorage.setItem(`screenTimes-${this.examResultUniqueId}`, screenTimes)
+    }
   },
   methods: {
     getInfo() {
@@ -165,6 +177,7 @@ export default {
             Storage.setExamRecord(`contest-${this.examId}`, this.question)
             localStorage.setItem(`countDown-${this.examId}`, res.data.countDown)
             localStorage.setItem(`uniqueId-${this.examId}`, res.data.examResultUniqueId)
+            localStorage.setItem(`screenTimes-${this.examResultUniqueId}`, 0) // 本次examResultUniqueId对应的切屏次数
             localStorage.setItem(`startTime-${this.examId}`, res.data.startTime)
             this.time = res.data.countDown * 1000
 
@@ -361,7 +374,7 @@ export default {
           console.error(err)
         })
     },
-    doSubmit() {
+    doSubmit(forceSubmitFlag = 0) {
       const startTime = localStorage.getItem(`startTime-${this.examId}`)
       const examPic = localStorage.getItem(`examPic${this.examId}`)
       const content = []
@@ -376,7 +389,7 @@ export default {
       const data = {
         examId: this.examId,
         examResultUniqueId: this.examResultUniqueId,
-        forceSubmitFlag: 0,
+        forceSubmitFlag,
         startTime,
         content: JSON.stringify(content),
         examStuPicUrl: examPic
@@ -411,6 +424,7 @@ export default {
       localStorage.removeItem(`uniqueId-${this.examId}`)
       localStorage.removeItem(`startTime-${this.examId}`)
       localStorage.removeItem(`examPic${this.examId}`)
+      localStorage.removeItem(`screenTimes-${this.examResultUniqueId}`)
     },
     // 保持页面常亮
     noSleep() {

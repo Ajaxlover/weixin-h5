@@ -98,7 +98,7 @@ import wx from 'weixin-js-sdk'
 import { uploadImage } from '@/api/exam'
 import { isEmail, isMobile } from '@/utils/validate'
 import smartInput from '@/components/smart-input'
-
+import { getUserInfoByUid } from '@/api/user'
 import { getContestDetail, getPubCodes } from '@/api/home'
 import { registerJoin } from '@/api/exam'
 
@@ -127,7 +127,8 @@ export default {
       attr: {
         attrName: '学校：',
         value: ''
-      }
+      },
+      userInfo: null
     }
   },
   computed: {
@@ -209,6 +210,21 @@ export default {
         .then(res => {
           this.info = res.data
           this.hasStuRegister = res.data.hasStuRegister
+          if (res.data.hasStuRegister === 0) {
+            getUserInfoByUid()
+              .then(res => {
+                this.userInfo = res.data
+                this.username = res.data.realName ? res.data.realName : ''
+                this.school = res.data.school ? res.data.school : ''
+                this.attr.value = res.data.school ? res.data.school : ''
+                this.number = res.data.number ? res.data.number : ''
+                this.email = res.data.email ? res.data.email : ''
+                this.phone = res.data.mobile ? res.data.mobile : ''
+              })
+              .catch(err => {
+                console.error(err)
+              })
+          }
           if (res.data.hasStuRegister === 1) {
             // 已报名
             const { name, facePic, school, email, appointTeacher, mobile, status, mhStuId } = res.data

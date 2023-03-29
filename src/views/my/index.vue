@@ -33,9 +33,10 @@
 </template>
 
 <script>
-import authUtils from '@/utils/auth.js'
+// import authUtils from '@/utils/auth.js'
 import { Dialog } from 'vant'
 import { Toast } from 'vant'
+import { getUserInfoByUid } from '@/api/user'
 
 export default {
   name: 'My',
@@ -56,10 +57,13 @@ export default {
   },
   computed: {},
   mounted() {
-    const info = authUtils.getUserInfo()
-    if (info) {
-      this.info = JSON.parse(info)
-    }
+    getUserInfoByUid()
+      .then(res => {
+        this.info = res.data
+      })
+      .catch(err => {
+        console.error(err)
+      })
   },
   methods: {
     confirm() {

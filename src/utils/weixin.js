@@ -23,6 +23,9 @@ function init(params, url) {
   if (url) {
     wxSignParams.signUrl = window.entryUrl
   }
+  if (!isiOS) {
+    wxSignParams.signUrl = window.location.href
+  }
 
   console.log('real', wxSignParams.signUrl)
   // wxSignParams.signUrl = isiOS ? store.getters.originUrl : window.location.href
@@ -63,7 +66,7 @@ function wxConfig(params) {
   var code = getUrlParam('code')
 
   // 如果URL中存在code参数，则将其移除并重新加载当前页面
-  if (code && isiOS) {
+  if (code) {
     var newUrl = window.location.href.replace(/\?code=.*$/, '')
     window.history.replaceState({}, '', newUrl)
     window.location.reload()
@@ -82,14 +85,11 @@ function wxConfig(params) {
     console.log('wx.config fail', res)
 
     if (wxSignParams.errorCount >= 0) {
-      // if (isiOS) {
-      //   console.log('999')
-      //   wxSignParams.signUrl = 'http://192.168.254.8:8086/gfkd/'
-      // } else {
-      //   wxSignParams.signUrl = window.location.href.indexOf('?') === -1 ? window.location.href : window.location.href
-      // }
-      // console.log('retry', window.location)
+      wxSignParams.errorCount = wxSignParams.errorCount - 1
       wxSignParams.signUrl = window.entryUrl
+      if (!isiOS) {
+        wxSignParams.signUrl = window.location.href
+      }
       init(params)
     }
   })

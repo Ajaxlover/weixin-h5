@@ -116,7 +116,8 @@ export default {
             query: {
               examId: this.examId,
               id: this.id,
-              isErrorBank: this.info.isErrorBank
+              isErrorBank: this.info.isErrorBank,
+              switchScreenTimes: this.info.switchScreenTimes
             }
           })
         }
@@ -163,7 +164,8 @@ export default {
                             query: {
                               examId: that.examId,
                               id: that.id,
-                              isErrorBank: that.info.isErrorBank
+                              isErrorBank: that.info.isErrorBank,
+                              switchScreenTimes: that.info.switchScreenTimes
                             }
                           })
                         }
@@ -195,6 +197,8 @@ export default {
       localStorage.removeItem(`uniqueId-${this.examId}`)
       localStorage.removeItem(`startTime-${this.examId}`)
       localStorage.removeItem(`examPic${this.examId}`)
+      const examResultUniqueId = localStorage.getItem(`uniqueId-${this.examId}`)
+      localStorage.removeItem(`screenTimes-${examResultUniqueId}`)
     }
   }
 }

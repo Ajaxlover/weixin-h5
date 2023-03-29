@@ -65,18 +65,8 @@ export default {
   computed: {},
   mounted() {
     // 监听 popstate 事件
-    window.addEventListener('popstate', function (event) {
-      console.log(event)
-      // 判断浏览器历史记录中是否有前一个页面
-      if (event.state) {
-        // 如果有前一个页面，则跳转到该页面
-        // location.href = event.state.url;
-      } else {
-        // 如果没有前一个页面，则返回首页
-        // location.href = '/';
-        console.log('oooooo')
-      }
-    })
+    // window.history.replaceState({}, '', process.env.VUE_APP_BASEURL)
+
     this.getListData()
   },
   methods: {
