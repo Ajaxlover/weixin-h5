@@ -68,8 +68,9 @@ function wxConfig(params) {
   // 如果URL中存在code参数，则将其移除并重新加载当前页面
   if (code) {
     var newUrl = window.location.href.replace(/\?code=.*$/, '')
-    window.history.replaceState({}, '', newUrl)
-    window.location.reload()
+    // window.history.replaceState({}, '', newUrl)
+    // window.location.reload()
+    window.location.replace(newUrl)
   }
   wx.config(configObj)
   wx.ready(() => {

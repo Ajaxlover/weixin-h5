@@ -9,6 +9,8 @@ import '@/assets/style/index.scss' // 全局生效样式
 import '@/plugins/vant' // 按需引入UI库 vant
 import NoSleep from 'nosleep.js/dist/NoSleep.min.js'
 
+import Meta from 'vue-meta'
+Vue.use(Meta)
 if (process.env.VUE_APP_USE_VCONSOLE === 'true') {
   const vConsole = require('vconsole')
   // eslint-disable-next-line

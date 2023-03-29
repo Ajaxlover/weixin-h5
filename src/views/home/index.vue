@@ -49,6 +49,8 @@
 
 <script>
 import { getContestList } from '@/api/home'
+// import wx from 'weixin-js-sdk'
+
 // import authUtils from '@/utils/auth.js'
 
 export default {
@@ -62,11 +64,32 @@ export default {
       pageSize: 99999
     }
   },
+  metaInfo() {
+    return {
+      meta: [
+        { name: 'Cache-Control', content: 'no-cache, no-store, must-revalidate' },
+        { name: 'Pragma', content: 'no-cache' },
+        { name: 'Expires', content: '0' }
+      ]
+    }
+  },
   computed: {},
   mounted() {
+    // 监听IOS下物理返回键
+    if (window.history && window.history.pushState) {
+      window.history.pushState(null, null, document.URL)
+      window.addEventListener(
+        'popstate',
+        () => {
+          // 重定向你要的地址即可
+          // wx.closeWindow()
+          window.location.reload()
+        },
+        false
+      )
+    }
     // 监听 popstate 事件
     // window.history.replaceState({}, '', process.env.VUE_APP_BASEURL)
-
     this.getListData()
   },
   methods: {

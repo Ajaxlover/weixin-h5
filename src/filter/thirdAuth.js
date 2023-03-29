@@ -47,8 +47,6 @@ function doFilter() {
         })
           .then(res => {
             window.location.replace(res.data.authorizationUrl)
-            // window.location.href.replace(res.data.authorizationUrl)
-            // window.location.href = res.data.authorizationUrl
           })
           .catch(() => {
             console.error('获取网页授权回调地址失败')

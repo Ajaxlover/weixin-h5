@@ -13,6 +13,7 @@ export const routes = [
       wx: {
         sign: true, // 是否需要微信验签
         jsApiList: [
+          'showMenuItems',
           'hideAllNonBaseMenuItem',
           'hideMenuItems',
           'updateAppMessageShareData', // 分享朋友
@@ -34,6 +35,7 @@ export const routes = [
       wx: {
         sign: true, // 是否需要微信验签
         jsApiList: [
+          'showMenuItems',
           'hideAllNonBaseMenuItem',
           'hideMenuItems',
           'chooseImage' // 拍照
@@ -53,7 +55,7 @@ export const routes = [
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: true, // 是否需要微信验签
-        jsApiList: ['hideAllNonBaseMenuItem', 'hideMenuItems'],
+        jsApiList: ['hideAllNonBaseMenuItem', 'hideMenuItems', 'showMenuItems'],
         showMenuList: []
       },
       keepAlive: false,
@@ -84,7 +86,7 @@ export const routes = [
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: true, // 是否需要微信验签
-        jsApiList: ['hideAllNonBaseMenuItem']
+        jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
       title: '竞赛结果'
@@ -123,7 +125,8 @@ export const routes = [
         jsApiList: [
           'chooseImage', // 拍照
           // 'hideMenuItems',
-          'hideAllNonBaseMenuItem'
+          'hideAllNonBaseMenuItem',
+          'showMenuItems'
         ],
         showMenuList: []
       },
@@ -140,7 +143,7 @@ export const routes = [
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: true, // 是否需要微信验签
-        jsApiList: ['hideAllNonBaseMenuItem']
+        jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
       title: '报名须知'
@@ -155,7 +158,7 @@ export const routes = [
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: true, // 是否需要微信验签
-        jsApiList: ['hideAllNonBaseMenuItem']
+        jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
       title: '考生守则'
@@ -170,7 +173,7 @@ export const routes = [
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: true, // 是否需要微信验签
-        jsApiList: ['hideAllNonBaseMenuItem']
+        jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
       title: '电子签名'
@@ -188,7 +191,8 @@ export const routes = [
         jsApiList: [
           'chooseImage', // 拍照
           // 'hideMenuItems',
-          'hideAllNonBaseMenuItem'
+          'hideAllNonBaseMenuItem',
+          'showMenuItems'
         ],
         showMenuList: []
       },
@@ -205,7 +209,7 @@ export const routes = [
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: true, // 是否需要微信验签
-        jsApiList: ['hideAllNonBaseMenuItem']
+        jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
       title: '我的竞赛'
@@ -220,7 +224,7 @@ export const routes = [
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: true, // 是否需要微信验签
-        jsApiList: ['hideAllNonBaseMenuItem']
+        jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
       title: '个人中心'
@@ -235,7 +239,7 @@ export const routes = [
       thirdAuth: '', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: true, // 是否需要微信验签
-        jsApiList: ['hideAllNonBaseMenuItem']
+        jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
       title: '个人信息'
@@ -250,7 +254,7 @@ export const routes = [
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: true, // 是否需要微信验签
-        jsApiList: ['hideAllNonBaseMenuItem']
+        jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
       title: '证书'
@@ -265,7 +269,7 @@ export const routes = [
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: true, // 是否需要微信验签
-        jsApiList: ['hideAllNonBaseMenuItem']
+        jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
       title: '证书详情'

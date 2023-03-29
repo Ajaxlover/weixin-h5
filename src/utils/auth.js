@@ -12,14 +12,14 @@ function getToken() {
 }
 
 function setToken(token) {
-  return Cookies.set(TokenKey, token, { expires: 30 })
+  return Cookies.set(TokenKey, token, { expires: 60 })
 }
 
 function getUserId(uid) {
   return Cookies.get(UidKey) ? Cookies.get(UidKey) : ''
 }
 function setUserId(uid) {
-  return Cookies.set(UidKey, uid, { expires: 30 })
+  return Cookies.set(UidKey, uid, { expires: 60 })
 }
 
 function removeUserId(uid) {
@@ -39,7 +39,7 @@ function setUserInfo(info) {
   const origin = getUserInfo()
   let userInfo = info
   origin ? (userInfo = { ...origin, ...info }) : ''
-  return Cookies.set(UserInfoKey, userInfo, { expires: 30 })
+  return Cookies.set(UserInfoKey, userInfo, { expires: 60 })
 }
 
 function removeUserInfo() {

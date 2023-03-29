@@ -1,5 +1,7 @@
 import router from '../router'
-import authUtils from '@/utils/auth'
+// import wx from 'weixin-js-sdk'
+
+// import authUtils from '@/utils/auth'
 
 /**
  * @desc 页面进入权限
@@ -7,14 +9,13 @@ import authUtils from '@/utils/auth'
  */
 function doFilter() {
   router.beforeEach(async (to, from, next) => {
-    const hasToken = authUtils.getToken() // token
-    const pathList = ['/sign_in']
-    if (hasToken && pathList.includes(to.path)) {
-      return next({ path: '/' })
-    } else {
-      return next()
-    }
-    // next()
+    // if (from.fullPath === '/') {
+    //   wx.closeWindow()
+    // } else {
+    //   next()
+    // }
+
+    next()
   })
 }
 
