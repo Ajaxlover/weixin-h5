@@ -43,7 +43,7 @@ export const routes = [
         showMenuList: []
       },
       keepAlive: false,
-      title: '开始答题'
+      title: ''
     }
   },
   {
@@ -89,7 +89,7 @@ export const routes = [
         jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
-      title: '竞赛结果'
+      title: ''
     }
   },
   {
@@ -146,7 +146,7 @@ export const routes = [
         jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
-      title: '报名须知'
+      title: ''
     }
   },
   {
@@ -161,7 +161,7 @@ export const routes = [
         jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
-      title: '考生守则'
+      title: ''
     }
   },
   {
@@ -176,7 +176,7 @@ export const routes = [
         jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
-      title: '电子签名'
+      title: ''
     }
   },
   {
@@ -197,7 +197,7 @@ export const routes = [
         showMenuList: []
       },
       keepAlive: false,
-      title: '报名信息'
+      title: ''
     }
   },
   {
@@ -242,7 +242,7 @@ export const routes = [
         jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
-      title: '个人信息'
+      title: ''
     }
   },
   {
@@ -257,7 +257,7 @@ export const routes = [
         jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
-      title: '证书'
+      title: ''
     }
   },
   {
@@ -272,7 +272,7 @@ export const routes = [
         jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
       },
       keepAlive: false,
-      title: '证书详情'
+      title: ''
     }
   }
   // {

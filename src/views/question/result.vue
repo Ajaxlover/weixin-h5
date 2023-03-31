@@ -1,6 +1,6 @@
 <template>
   <div class="page-result">
-    <Nav @go-back="goBack"></Nav>
+    <Nav title="竞赛结果" @go-back="goBack"></Nav>
     <div class="content">
       <div class="contest-name">{{ info.examName }}</div>
       <div class="contest-score">

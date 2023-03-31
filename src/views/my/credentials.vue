@@ -1,6 +1,6 @@
 <template>
   <div class="page-credentials">
-    <Nav @go-back="goBack"></Nav>
+    <Nav title="证书" @go-back="goBack"></Nav>
     <div class="content">
       <van-empty v-if="list.length === 0" description="您还没有证书" />
       <div v-for="(item, idx) in list" v-else :key="idx" class="list-item" @click="goDetail(item)">

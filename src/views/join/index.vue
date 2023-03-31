@@ -1,6 +1,6 @@
 <template>
   <div class="page-join">
-    <Nav @go-back="goBack"></Nav>
+    <Nav :title="info.mhName" @go-back="goBack"></Nav>
     <div class="content">
       <div class="pic">
         <img :src="info.coverUrl" alt="" />
@@ -78,7 +78,7 @@ export default {
             desc, // 分享描述
             link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             // imgUrl: 'http://www.ay1.cc/img?w=30&h=30' // 分享图标
-            imgUrl: ''
+            imgUrl: 'https://img-1253402545.cos.ap-beijing-1.myqcloud.com/xieyi/share.jpg'
           }
           wxUtils.share(params)
         })
@@ -156,6 +156,7 @@ export default {
       border-radius: 10px;
       padding: 10px 10px;
       background-color: #fff;
+      overflow-x: hidden;
       .contest-detail-title {
         margin-bottom: 20px;
         color: #333;

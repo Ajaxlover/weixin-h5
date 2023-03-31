@@ -1,6 +1,6 @@
 <template>
   <div class="page-promise">
-    <Nav @go-back="goBack"></Nav>
+    <Nav title="考生守则" @go-back="goBack"></Nav>
     <div class="content" v-html="info.credible"></div>
     <div class="footer van-hairline--top">
       <van-button class="join-btn" :class="time == 0 ? '' : 'time-down-bgc'" :disabled="isDisable" type="primary" size="large" round @click="next">{{
@@ -92,7 +92,8 @@ export default {
     width: 100%;
     // height: calc(100% - 180px);
     min-height: 1200px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 20px 28px 100px 28px;
   }
 

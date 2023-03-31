@@ -1,6 +1,6 @@
 <template>
   <div class="page-sign">
-    <Nav @go-back="goBack"></Nav>
+    <Nav title="电子签名" @go-back="goBack"></Nav>
     <div class="content">
       <div class="intro">
         <div class="intro-title">诚信考试承诺书</div>

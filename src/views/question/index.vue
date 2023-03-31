@@ -41,7 +41,7 @@
     <Nav
       :is-show-right="isErrorBank == 1 ? false : isShowRight"
       :time="time"
-      :is-show-time="isShowTime"
+      :is-show-time="answerTime > 0 ? isShowTime : false"
       @go-back="goBack"
       @right-click="rightClick"
       @finish="finish"
@@ -55,9 +55,7 @@
           <span>{{ index + 1 }}/{{ question.length }}</span>
           <span>({{ item.score }}分)</span>
         </div>
-        <div class="subject-title">
-          <JaxMath :data="item.title"></JaxMath>
-        </div>
+        <div class="subject-title"><JaxMath :data="item.title"></JaxMath></div>
         <div class="subject-options">
           <div v-for="(i, j) in item.answerList" :key="i.id" :class="i.checked ? 'bgc' : ''" class="option-item" @click="handleClick(i, j)">
             <!-- <div class="option-letter">{{ i.disorderOption }}</div> -->
@@ -102,8 +100,9 @@ export default {
       examId: this.$route.query.examId,
       isErrorBank: this.$route.query.isErrorBank,
       switchScreenTimes: this.$route.query.switchScreenTimes,
+      answerTime: this.$route.query.answerTime,
       examResultUniqueId: '',
-      time: 5000, // 倒计时初始值，注意不能设置为0,否则进页面就触发交卷
+      time: 8000, // 倒计时初始值，注意不能设置为0,否则进页面就触发交卷
       show: false,
       loading: false,
       idx: 0,
@@ -124,14 +123,17 @@ export default {
     this.noSleep()
   },
   beforeDestroy() {
-    let screenTimes = localStorage.getItem(`screenTimes-${this.examResultUniqueId}`)
-    // eslint-disable-next-line eqeqeq
-    if (screenTimes == this.switchScreenTimes) {
-      // 自动提交
-      this.doSubmit(1)
-    } else {
-      screenTimes++
-      localStorage.setItem(`screenTimes-${this.examResultUniqueId}`, screenTimes)
+    if (this.switchScreenTimes > 0) {
+      // 开启了防切屏
+      let screenTimes = localStorage.getItem(`screenTimes-${this.examResultUniqueId}`)
+      // eslint-disable-next-line eqeqeq
+      if (screenTimes == this.switchScreenTimes) {
+        // 达到切屏次数自动提交
+        this.doSubmit(1)
+      } else {
+        screenTimes++
+        localStorage.setItem(`screenTimes-${this.examResultUniqueId}`, screenTimes)
+      }
     }
   },
   methods: {
@@ -164,6 +166,11 @@ export default {
           }
         })
       } else {
+        Toast.loading({
+          duration: 4000,
+          message: '加载中...',
+          forbidClick: true
+        })
         // 首次进入
         getExamSubject({
           examId: this.examId
@@ -538,7 +545,8 @@ export default {
     width: 100%;
     // height: calc(100% - 180px);
     min-height: 1200px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 20px 28px 100px 28px;
     .question {
       .subject-type {

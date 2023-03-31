@@ -1,6 +1,6 @@
 <template>
   <div class="page-credentials-detail">
-    <Nav @go-back="goBack"></Nav>
+    <Nav title="证书详情" @go-back="goBack"></Nav>
     <div class="content">
       <div class="content-box">
         <div class="title">{{ info.masterheadName }}</div>

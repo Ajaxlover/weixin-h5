@@ -6,7 +6,7 @@ const SpritesmithPlugin = require('webpack-spritesmith') // 雪碧图(一倍图)
 const path = require('path')
 const resolve = dir => path.join(__dirname, dir)
 const IS_PROD = ['production'].includes(process.env.NODE_ENV)
-const port = process.env.port || 8086 // 端口
+const port = process.env.port || 8080 // 端口
 
 // ------雪碧图样式处理模板开始------
 const SpritesmithTemplate = function (data) {
@@ -35,7 +35,7 @@ const SpritesmithTemplate = function (data) {
 // -----------雪碧图样式处理模板结束-------------------
 
 module.exports = {
-  publicPath: '/gfkd', // 署应用包时的基本 URL。 history模式使用
+  publicPath: '/', // 署应用包时的基本 URL。 history模式使用
   // publicPath: './', // 署应用包时的基本 URL。hash 模式使用
   outputDir: 'dist',
   assetsDir: 'static',

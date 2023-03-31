@@ -29,8 +29,8 @@ import {
   Step,
   Steps, // 步骤条
   Sticky, // 粘性布局
-  // Swipe,
-  // SwipeItem, // 轮播
+  Swipe,
+  SwipeItem, // 轮播
   // SwipeCell, // 滑动单元格
   Tabbar,
   TabbarItem, // 标签栏
@@ -68,8 +68,8 @@ Vue.use(Button)
   .use(Step)
   .use(Steps)
   .use(Sticky)
-  // .use(Swipe)
-  // .use(SwipeItem)
+  .use(Swipe)
+  .use(SwipeItem)
   // .use(SwipeCell)
   .use(Tabbar)
   .use(TabbarItem)

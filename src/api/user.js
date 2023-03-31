@@ -4,11 +4,11 @@ import request from '@/utils/request'
  * @desc 微信授权code换取accessToken
  * @param
  */
-export function code2AccessToken(params) {
+export function code2AccessToken(data) {
   return request({
     url: '/wx/loginByCode',
-    method: 'get',
-    params
+    method: 'post',
+    data
   })
 }
 

@@ -7,7 +7,18 @@
           <span>国防科大竞赛</span>
         </div>
         <div class="home-banner van-hairline--surround">
-          <img src="../../assets/image/banner.png" alt="" />
+          <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
+            <van-swipe-item v-for="(item, idx) in bannerList" :key="idx">
+              <img :src="item.bannerCover" alt="" />
+            </van-swipe-item>
+            <!-- https://test.guangyiedu.com/service/1680162740715.png -->
+            <!-- <van-swipe-item>
+              <img src="../../assets/image/banner.png" alt="" />
+            </van-swipe-item>
+            <van-swipe-item>
+              <img src="../../assets/image/banner.png" alt="" />
+            </van-swipe-item> -->
+          </van-swipe>
         </div>
         <div class="home-btn">
           <div class="home-btn-l" @click="toExamList">
@@ -48,7 +59,7 @@
 </template>
 
 <script>
-import { getContestList } from '@/api/home'
+import { getBanner, getContestList } from '@/api/home'
 // import wx from 'weixin-js-sdk'
 
 // import authUtils from '@/utils/auth.js'
@@ -57,6 +68,7 @@ export default {
   name: 'Home',
   data() {
     return {
+      bannerList: [],
       list: [],
       loading: false,
       finished: false,
@@ -90,9 +102,21 @@ export default {
     }
     // 监听 popstate 事件
     // window.history.replaceState({}, '', process.env.VUE_APP_BASEURL)
+    this.getBannerList()
     this.getListData()
   },
   methods: {
+    getBannerList() {
+      getBanner()
+        .then(res => {
+          if (res.code === 200) {
+            this.bannerList = res.data.list
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
     onLoad() {
       if (this.finished || this.loading) {
         return
@@ -188,9 +212,12 @@ export default {
         border-radius: 8px;
         overflow: hidden;
         height: 290px;
-        img {
-          width: 100%;
+        .van-swipe {
           height: 100%;
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
       }
       .home-btn {

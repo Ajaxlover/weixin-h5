@@ -1,6 +1,18 @@
 import request from '@/utils/request'
 
 /**
+ * @desc 获取首页轮播图
+ * @param
+ */
+export function getBanner(data) {
+  return request({
+    url: '/platform/banner/findMhBannerList',
+    method: 'post',
+    data
+  })
+}
+
+/**
  * @desc 获取首页竞赛列表
  * @param
  */

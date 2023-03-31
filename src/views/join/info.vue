@@ -1,6 +1,6 @@
 <template>
   <div class="page-info">
-    <Nav @go-back="goBack"></Nav>
+    <Nav title="报名信息" @go-back="goBack"></Nav>
     <div class="content">
       <div class="desc">报考信息</div>
       <div class="content-form">
@@ -49,12 +49,14 @@
             label="邮箱："
             placeholder="请输入邮箱"
             error-message=""
+            @input="validateEmail"
           />
           <van-field
             v-model="phone"
             :readonly="isDisable"
             label-class="content-form-text"
             label-width="90"
+            maxlength="11"
             type="tel"
             label="联系电话："
             placeholder="请输入手机号码"
@@ -166,6 +168,12 @@ export default {
     this.init()
   },
   methods: {
+    validateEmail() {
+      this.email = this.email.replace(
+        /^(?:[\u3400-\u4DB5\u4E00-\u9FEA\uFA0E\uFA0F\uFA11\uFA13\uFA14\uFA1F\uFA21\uFA23\uFA24\uFA27-\uFA29]|[\uD840-\uD868\uD86A-\uD86C\uD86F-\uD872\uD874-\uD879][\uDC00-\uDFFF]|\uD869[\uDC00-\uDED6\uDF00-\uDFFF]|\uD86D[\uDC00-\uDF34\uDF40-\uDFFF]|\uD86E[\uDC00-\uDC1D\uDC20-\uDFFF]|\uD873[\uDC00-\uDEA1\uDEB0-\uDFFF]|\uD87A[\uDC00-\uDFE0])+$/,
+        ''
+      )
+    },
     syncService(data) {
       this.school = data.shortCode
     },
@@ -255,7 +263,7 @@ export default {
       // eslint-disable-next-line no-undef
       wx.chooseImage({
         count: 1, // 默认9
-        sizeType: ['original'], // 可以指定是原图还是压缩图，默认二者都有
+        sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
         sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
           const localIds = res.localIds // 返回选定照片的本地 ID 列表，localId可以作为 img 标签的 src 属性显示图片
@@ -278,6 +286,10 @@ export default {
               fd.append('file', file)
               uploadImage(fd).then(result => {
                 if (result.code === 200) {
+                  Toast({
+                    message: '上传成功',
+                    position: 'middle'
+                  })
                   that.faceUrl = result.data.accessUrl
                 }
               })
