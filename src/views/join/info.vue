@@ -96,7 +96,8 @@
 <script>
 import Nav from '@/components/Nav'
 import { Toast } from 'vant'
-import wx from 'weixin-js-sdk'
+// import wx from 'weixin-js-sdk'
+import wx from 'jweixin-1.6.0'
 import { uploadImage } from '@/api/exam'
 import { isEmail, isMobile } from '@/utils/validate'
 import smartInput from '@/components/smart-input'
@@ -260,42 +261,47 @@ export default {
         return
       }
       const that = this
-      // eslint-disable-next-line no-undef
-      wx.chooseImage({
-        count: 1, // 默认9
-        sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
-        sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
-        success: function (res) {
-          const localIds = res.localIds // 返回选定照片的本地 ID 列表，localId可以作为 img 标签的 src 属性显示图片
-          wx.getLocalImgData({
-            localId: localIds[0], // 图片的localID
-            success: function (res) {
-              let base64Data = ''
-              if (res.localData.indexOf(';base64,') === -1) {
-                // 兼容处理，安卓获取的图片base64码没有前缀，而苹果有,base64前缀并不固定
-                base64Data = 'data:image/jpeg;base64,' + res.localData
-              }
-              if (res.localData.indexOf('data:image/jpg;base64,') !== -1) {
-                // 兼容处理，若是苹果手机，将前缀中的jgp替换成jpeg
-                base64Data = res.localData.replace('data:image/jpg;base64,', 'data:image/jpeg;base64,')
-              }
 
-              const file = that.$base64toFile(base64Data)
-              const fd = new FormData()
-              fd.append('cosPath', 'gfkd/masterhead')
-              fd.append('file', file)
-              uploadImage(fd).then(result => {
-                if (result.code === 200) {
-                  Toast({
-                    message: '上传成功',
-                    position: 'middle'
+      wx.ready(() => {
+        setTimeout(() => {
+          // eslint-disable-next-line no-undef
+          wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+              const localIds = res.localIds // 返回选定照片的本地 ID 列表，localId可以作为 img 标签的 src 属性显示图片
+              wx.getLocalImgData({
+                localId: localIds[0], // 图片的localID
+                success: function (res) {
+                  let base64Data = ''
+                  if (res.localData.indexOf(';base64,') === -1) {
+                    // 兼容处理，安卓获取的图片base64码没有前缀，而苹果有,base64前缀并不固定
+                    base64Data = 'data:image/jpeg;base64,' + res.localData
+                  }
+                  if (res.localData.indexOf('data:image/jpg;base64,') !== -1) {
+                    // 兼容处理，若是苹果手机，将前缀中的jgp替换成jpeg
+                    base64Data = res.localData.replace('data:image/jpg;base64,', 'data:image/jpeg;base64,')
+                  }
+
+                  const file = that.$base64toFile(base64Data)
+                  const fd = new FormData()
+                  fd.append('cosPath', 'gfkd/masterhead')
+                  fd.append('file', file)
+                  uploadImage(fd).then(result => {
+                    if (result.code === 200) {
+                      Toast({
+                        message: '上传成功',
+                        position: 'middle'
+                      })
+                      that.faceUrl = result.data.accessUrl
+                    }
                   })
-                  that.faceUrl = result.data.accessUrl
                 }
               })
             }
           })
-        }
+        }, 200)
       })
     },
     submitInfo() {

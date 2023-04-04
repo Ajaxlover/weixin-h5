@@ -1,4 +1,5 @@
-import wx from 'weixin-js-sdk'
+// import wx from 'weixin-js-sdk'
+import wx from 'jweixin-1.6.0'
 import store from '@/store'
 import { wxSign } from '@/api/wx'
 
@@ -11,7 +12,7 @@ const wxSignParams = {
   timestamp: '',
   nonceStr: '',
   signature: '',
-  errorCount: 2 // 错误尝试次数
+  errorCount: 3 // 错误尝试次数
 }
 
 /**
@@ -21,13 +22,15 @@ const wxSignParams = {
 function init(params, url) {
   wxSignParams.signUrl = window.entryUrl
   if (url) {
-    wxSignParams.signUrl = window.entryUrl
+    wxSignParams.signUrl = decodeURIComponent(wx.signurl())
   }
   if (!isiOS) {
     wxSignParams.signUrl = window.location.href
   }
 
   console.log('real', wxSignParams.signUrl)
+  console.log('wx.signurl', decodeURIComponent(wx.signurl()))
+
   // wxSignParams.signUrl = isiOS ? store.getters.originUrl : window.location.href
   if (store.getters.thirdType === 'wx') {
     // 获取验签参数
@@ -90,6 +93,9 @@ function wxConfig(params) {
       wxSignParams.signUrl = window.entryUrl
       if (!isiOS) {
         wxSignParams.signUrl = window.location.href
+      } else {
+        console.log('wx.signurlAndorid', wx.signurl())
+        wxSignParams.signUrl = decodeURIComponent(wx.signurl())
       }
       init(params)
     }

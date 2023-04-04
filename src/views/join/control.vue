@@ -96,7 +96,8 @@ export default {
               path: item.path,
               query: {
                 examId,
-                id: this.id
+                id: this.id,
+                isMock: '0'
               }
             })
           } else {
@@ -116,7 +117,8 @@ export default {
               path: item.path,
               query: {
                 examId,
-                id: this.id
+                id: this.id,
+                isMock: '1'
               }
             })
           } else {

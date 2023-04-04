@@ -8,8 +8,8 @@ function doFilters() {
   common.doFilter()
   thirdAuth.doFilter()
   thirdAuthCB.doFilter()
-  weixin.doFilter()
   permission.doFilter()
+  weixin.doFilter()
 }
 
 export default {

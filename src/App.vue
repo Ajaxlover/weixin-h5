@@ -67,6 +67,7 @@ body,
   // height: 100%;
   width: 100%;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   background-color: #f4f4f4;
   display: flex;
   flex-direction: column;

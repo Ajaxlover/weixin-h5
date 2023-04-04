@@ -93,8 +93,7 @@ export default {
   },
   data() {
     return {
-      // 考试结束时间-开始时间>= 限时(倒计时)
-      // 1.记录开始考试时间 2.倒计时 限时-（当前-开始）
+      isMock: this.$route.query.isMock,
       startAnswerTime: '',
       id: this.$route.query.id,
       examId: this.$route.query.examId,
@@ -127,8 +126,8 @@ export default {
       // 开启了防切屏
       let screenTimes = localStorage.getItem(`screenTimes-${this.examResultUniqueId}`)
       // eslint-disable-next-line eqeqeq
-      if (screenTimes == this.switchScreenTimes) {
-        // 达到切屏次数自动提交
+      if (screenTimes == this.switchScreenTimes + 1) {
+        // 超过切屏次数自动提交
         this.doSubmit(1)
       } else {
         screenTimes++
@@ -167,7 +166,7 @@ export default {
         })
       } else {
         Toast.loading({
-          duration: 4000,
+          duration: 2500,
           message: '加载中...',
           forbidClick: true
         })
@@ -197,7 +196,6 @@ export default {
                 this.questionMultiple.push(i)
               }
             })
-            // console.log(this.question)
           })
           .catch(err => {
             console.error(err)
@@ -217,7 +215,9 @@ export default {
         path: '/start',
         query: {
           examId: this.examId,
-          id: this.id
+          id: this.id,
+          // eslint-disable-next-line eqeqeq
+          isMock: this.isMock == 1 ? this.isMock : 0
         }
       })
     },
@@ -340,7 +340,7 @@ export default {
     // 直接交卷
     doSubmitDirect() {
       const startTime = localStorage.getItem(`startTime-${this.examId}`)
-      const examPic = localStorage.getItem(`examPic${this.examId}`)
+      const examPic = localStorage.getItem(`examPic${this.examId}`) ? localStorage.getItem(`examPic${this.examId}`) : ''
       const content = []
       this.question.forEach(item => {
         content.push({
@@ -372,7 +372,9 @@ export default {
               path: '/result',
               query: {
                 examId: this.examId,
-                id: this.id
+                id: this.id,
+                // eslint-disable-next-line eqeqeq
+                isMock: this.isMock == 1 ? this.isMock : 0
               }
             })
           }
@@ -383,7 +385,7 @@ export default {
     },
     doSubmit(forceSubmitFlag = 0) {
       const startTime = localStorage.getItem(`startTime-${this.examId}`)
-      const examPic = localStorage.getItem(`examPic${this.examId}`)
+      const examPic = localStorage.getItem(`examPic${this.examId}`) ? localStorage.getItem(`examPic${this.examId}`) : ''
       const content = []
       this.question.forEach(item => {
         content.push({
@@ -406,14 +408,17 @@ export default {
           if (res.code === 200) {
             this.removeCaches()
             Toast({
-              message: '交卷成功',
+              // eslint-disable-next-line eqeqeq
+              message: forceSubmitFlag == 1 ? '超过切屏次数，自动交卷成功' : '交卷成功',
               position: 'middle'
             })
             this.$router.replace({
               path: '/result',
               query: {
                 examId: this.examId,
-                id: this.id
+                id: this.id,
+                // eslint-disable-next-line eqeqeq
+                isMock: this.isMock == 1 ? this.isMock : 0
               }
             })
           }

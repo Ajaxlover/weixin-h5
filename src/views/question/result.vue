@@ -5,7 +5,13 @@
       <div class="contest-name">{{ info.examName }}</div>
       <div class="contest-score">
         <span v-if="showScore" class="score">{{ info.score }}</span>
-        <span v-else class="un-score">注意:本次竞赛已结束。竞赛最新动态将在个人中心及微信公众号内公布，请各位选手及时关注。 </span>
+        <span v-else class="un-score"
+          >注意:{{
+            isMock == 1
+              ? '本次模拟已结束，请准时参加竞赛，及时关注竞赛的最新动态。'
+              : '本次竞赛已结束。竞赛最新动态将在个人中心及微信公众号内公布，请各位选手及时关注。'
+          }}</span
+        >
       </div>
     </div>
   </div>
@@ -22,6 +28,7 @@ export default {
   },
   data() {
     return {
+      isMock: this.$route.query.isMock,
       id: this.$route.query.id,
       examId: this.$route.query.examId,
       info: {},
@@ -54,7 +61,9 @@ export default {
         path: '/start',
         query: {
           id: this.id,
-          examId: this.examId
+          examId: this.examId,
+          // eslint-disable-next-line eqeqeq
+          isMock: this.isMock == 1 ? this.isMock : 0
         }
       })
     }
