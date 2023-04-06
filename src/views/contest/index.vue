@@ -129,11 +129,15 @@ export default {
 
 <style lang="scss" scoped>
 .page-test {
-  // height: 100%;
+  height: 100%;
+  height: 100%;
+
   width: 100%;
   min-height: 1100px;
   .content {
     padding: 38px 28px 0 28px;
+    display: flex;
+    flex-direction: column;
     .list-item {
       height: 290px;
       background-color: #fff;

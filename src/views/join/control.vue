@@ -206,7 +206,7 @@ export default {
       display: flex;
       align-items: center;
       padding-left: 8px;
-      font-size: 31px;
+      font-size: 29px;
       .clock {
         width: 23px;
         height: 23px;
