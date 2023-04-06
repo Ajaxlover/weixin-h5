@@ -209,14 +209,21 @@ export default {
         color: #222222;
       }
       .home-banner {
-        border-radius: 8px;
         overflow: hidden;
         height: 290px;
+        border-radius: 20px;
+
         .van-swipe {
           height: 100%;
+          overflow: hidden;
+          border-radius: 20px;
+
           img {
             width: 100%;
             height: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            vertical-align: middle;
           }
         }
       }

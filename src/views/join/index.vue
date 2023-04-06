@@ -120,20 +120,21 @@ export default {
     height: 100%;
     overflow: auto;
     // padding-bottom: 100px;
-    padding: 30px 28px 200px 28px;
+    padding: 30px 12px 200px 12px;
     position: relative;
     // background-color: #fff;
     .pic {
-      border-radius: 10px;
+      border-radius: 30px;
       overflow: hidden;
       margin-bottom: 28px;
       img {
         width: 100%;
         height: 290px;
+        vertical-align: middle;
       }
     }
     .contest-info {
-      height: 300px;
+      min-height: 300px;
       border-radius: 10px;
       margin-bottom: 28px;
       padding-top: 10px;
@@ -148,6 +149,8 @@ export default {
       .contest-time {
         margin-bottom: 18px;
         color: #666;
+        // font-size: 32px;
+        font-size: 32px;
       }
     }
     .contest-detail {
@@ -189,7 +192,7 @@ export default {
     z-index: 999;
     display: flex;
     justify-content: space-between;
-    padding: 0 28px;
+    padding: 0 12px;
     /deep/ .van-button {
       width: 49%;
       height: 70px;

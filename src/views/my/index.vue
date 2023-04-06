@@ -113,7 +113,8 @@ export default {
 }
 .page-my {
   width: 100%;
-
+  min-height: 1100px;
+  overflow-y: hidden;
   .my-box {
     position: relative;
     overflow: hidden;

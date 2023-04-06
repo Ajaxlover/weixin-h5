@@ -56,6 +56,17 @@ export default {
   },
   computed: {},
   mounted() {
+    // document.body.addEventListener(
+    //   'touchmove',
+    //   function (e) {
+    //     if (e._isScroller) return
+    //     // 阻止默认事件
+    //     e.preventDefault()
+    //   },
+    //   {
+    //     passive: false
+    //   }
+    // )
     this.getListData()
   },
   methods: {
@@ -120,6 +131,7 @@ export default {
 .page-test {
   // height: 100%;
   width: 100%;
+  min-height: 1100px;
   .content {
     padding: 38px 28px 0 28px;
     .list-item {

@@ -3,7 +3,7 @@
   <div>
     <van-nav-bar :title="title" left-text="" right-text="" fixed placeholder left-arrow @click-left="onClickLeft" @click-right="onClickRight">
       <template v-if="isShowTime" #title>
-        <van-count-down :time="time" @finish="finish" />
+        <van-count-down ref="countColor" :style="{ color: textColor }" :time="time" @change="change" @finish="finish" />
       </template>
       <template v-if="isShowRight" #right>
         <van-icon name="apps-o" />
@@ -30,13 +30,15 @@ export default {
     },
     time: {
       type: Number,
-      default: 10 * 1000
+      default: 20 * 60 * 1000
     }
   },
   data() {
-    return {}
+    return {
+      textColor: '#323232'
+    }
   },
-
+  computed: {},
   methods: {
     onClickLeft() {
       this.$emit('go-back')
@@ -46,6 +48,15 @@ export default {
     },
     finish() {
       this.$emit('finish')
+    },
+    change(timeData) {
+      const { minutes, seconds, milliseconds } = timeData
+      const down = (minutes * 60 + seconds) * 1000 + milliseconds
+      if (down <= 15 * 60 * 1000) {
+        this.textColor = 'red'
+      } else {
+        this.textColor = '#323232'
+      }
     }
   }
 }

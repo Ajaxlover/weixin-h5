@@ -1,6 +1,6 @@
 <template>
   <div class="page-question">
-    <van-popup v-model="show" round position="bottom" :style="{ height: '600px' }">
+    <van-popup v-model="show" round position="bottom" :style="{ height: '580px' }">
       <div class="contest-popup">
         <div class="contest-popup-toolBar van-hairline--bottom">
           <div class="text-l">题目列表</div>
@@ -52,11 +52,13 @@
           <van-tag v-if="item.tSubject === 3" plain type="primary">多选题</van-tag>
           <van-tag v-else-if="item.tSubject === 2" plain type="primary">单选题</van-tag>
           <van-tag v-else-if="item.tSubject === 1" plain type="primary">判断题</van-tag>
+          <van-tag v-else-if="item.tSubject === 5" plain type="primary">问答题</van-tag>
           <span>{{ index + 1 }}/{{ question.length }}</span>
           <span>({{ item.score }}分)</span>
         </div>
         <div class="subject-title"><JaxMath :data="item.title"></JaxMath></div>
-        <div class="subject-options">
+        <div v-if="item.tSubject === 5" class="subject-options">问答题</div>
+        <div v-else class="subject-options">
           <div v-for="(i, j) in item.answerList" :key="i.id" :class="i.checked ? 'bgc' : ''" class="option-item" @click="handleClick(i, j)">
             <!-- <div class="option-letter">{{ i.disorderOption }}</div> -->
             {{ i.disorderOption }}.<JaxMath :data="i.text"></JaxMath>
@@ -93,6 +95,7 @@ export default {
   },
   data() {
     return {
+      flag: 0, // 非默认倒计时
       isMock: this.$route.query.isMock,
       startAnswerTime: '',
       id: this.$route.query.id,
@@ -101,7 +104,7 @@ export default {
       switchScreenTimes: this.$route.query.switchScreenTimes,
       answerTime: this.$route.query.answerTime,
       examResultUniqueId: '',
-      time: 8000, // 倒计时初始值，注意不能设置为0,否则进页面就触发交卷
+      time: 0, // 倒计时初始值，注意不能设置为0,否则进页面就触发交卷
       show: false,
       loading: false,
       idx: 0,
@@ -111,7 +114,8 @@ export default {
       question: [],
       questionBoolean: [], // 判断题
       questionSingle: [], // 单选题
-      questionMultiple: [] // 多选题
+      questionMultiple: [], // 多选题
+      questionType5: [] // 问答题
     }
   },
   computed: {},
@@ -148,6 +152,7 @@ export default {
           hasSpendTime = new Date().getTime() - startTimeCache
         }
         this.time = countDown - hasSpendTime // 设置倒计时
+        this.flag = 1
         this.examResultUniqueId = localStorage.getItem(`uniqueId-${this.examId}`)
 
         const questionCache = Storage.getExamRecord(`contest-${this.examId}`)
@@ -160,16 +165,20 @@ export default {
             this.questionBoolean.push(i)
           } else if (i.tSubject === 2) {
             this.questionSingle.push(i)
+          } else if (i.tSubject === 5) {
+            this.questionType5.push(i)
           } else {
             this.questionMultiple.push(i)
           }
         })
       } else {
-        Toast.loading({
-          duration: 2500,
-          message: '加载中...',
-          forbidClick: true
+        // eslint-disable-next-line no-unused-vars
+        const toast = Toast.loading({
+          duration: 0, // 持续展示 toast
+          forbidClick: true,
+          message: '加载中...'
         })
+
         // 首次进入
         getExamSubject({
           examId: this.examId
@@ -186,12 +195,15 @@ export default {
             localStorage.setItem(`screenTimes-${this.examResultUniqueId}`, 0) // 本次examResultUniqueId对应的切屏次数
             localStorage.setItem(`startTime-${this.examId}`, res.data.startTime)
             this.time = res.data.countDown * 1000
-
+            this.flag = 1
+            Toast.clear()
             this.question.forEach(i => {
               if (i.tSubject === 1) {
                 this.questionBoolean.push(i)
               } else if (i.tSubject === 2) {
                 this.questionSingle.push(i)
+              } else if (i.tSubject === 5) {
+                this.questionType5.push(i)
               } else {
                 this.questionMultiple.push(i)
               }
@@ -428,7 +440,9 @@ export default {
         })
     },
     finish() {
-      this.doSubmit()
+      if (this.flag === 1) {
+        this.doSubmit()
+      }
     },
     removeCaches() {
       Storage.removeExamRecord(`contest-${this.examId}`)

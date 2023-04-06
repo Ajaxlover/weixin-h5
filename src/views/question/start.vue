@@ -315,6 +315,7 @@ export default {
     box-shadow: 5px 5px 5px #cdcfcf;
     overflow: hidden;
     position: relative;
+    padding-bottom: 20px;
     .contest-name {
       height: 90px;
       background-color: #a5e3bd;

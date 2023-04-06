@@ -2,10 +2,18 @@
   <span ref="mymath" class="mymath"></span>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+.mymath {
+  img {
+    display: block;
+    max-width: 180px;
+    width: 100%;
+  }
+}
 .mymath img {
   display: block;
   max-width: 180px;
+  // width: 100%;
   /* height: auto !important; */
 }
 .mymath p {

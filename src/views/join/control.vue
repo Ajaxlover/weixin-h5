@@ -190,7 +190,7 @@ export default {
     // height: calc(100% - 180px);
     height: 100%;
     overflow: auto;
-    padding: 30px 20px 0 20px;
+    padding: 30px 12px 0 12px;
     padding-bottom: 100px;
     .contest-name {
       text-align: center;
@@ -206,6 +206,7 @@ export default {
       display: flex;
       align-items: center;
       padding-left: 8px;
+      font-size: 31px;
       .clock {
         width: 23px;
         height: 23px;
@@ -240,6 +241,7 @@ export default {
         }
         span {
           color: #666;
+          font-size: 32px;
         }
       }
     }

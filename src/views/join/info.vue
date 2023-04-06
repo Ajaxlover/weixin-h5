@@ -451,7 +451,7 @@ export default {
   }
 
   .footer {
-    margin-top: 300px;
+    margin-top: 200px;
     width: 100%;
     // position: fixed;
     height: 100px;
