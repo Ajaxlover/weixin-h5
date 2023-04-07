@@ -109,7 +109,7 @@ export default {
   },
   data() {
     return {
-      flag: 0, // 非默认倒计时
+      flag: 0, // 1-非默认倒计时,=0时不会触发自动提交
       isMock: this.$route.query.isMock,
       startAnswerTime: '',
       id: this.$route.query.id,
