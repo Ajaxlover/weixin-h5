@@ -30,6 +30,12 @@
               <div :class="j.stuAnswer ? 'answered-bgc' : ''" class="item" @click="changIdx(j)">{{ j.num }}</div>
             </div>
           </div>
+          <div v-if="questionType5.length > 0" class="contest-popup-danxuan">问答题</div>
+          <div v-if="questionType5.length > 0" class="contest-popup-danxuan-list">
+            <div v-for="(k, index) in questionType5" :key="index" class="list-item">
+              <div :class="k.stuAnswer ? 'answered-bgc' : ''" class="item" @click="changIdx(k)">{{ k.num }}</div>
+            </div>
+          </div>
         </div>
         <div class="commit">
           <van-button :loading="loading" loading-text="交卷中..." class="commit-btn" type="primary" size="large" round @click="submitPaper"
@@ -57,7 +63,12 @@
           <span>({{ item.score }}分)</span>
         </div>
         <div class="subject-title"><JaxMath :data="item.title"></JaxMath></div>
-        <div v-if="item.tSubject === 5" class="subject-options">问答题</div>
+        <div v-if="item.tSubject === 5" class="subject-options">
+          <div class="upload-icon-pic" @click="handleUpload(item)"></div>
+          <div v-if="item.stuAnswer" class="upload-icon-img">
+            <img :src="item.stuAnswer" alt="" />
+          </div>
+        </div>
         <div v-else class="subject-options">
           <div v-for="(i, j) in item.answerList" :key="i.id" :class="i.checked ? 'bgc' : ''" class="option-item" @click="handleClick(i, j)">
             <!-- <div class="option-letter">{{ i.disorderOption }}</div> -->
@@ -84,7 +95,10 @@ import { Toast } from 'vant'
 import Nav from '@/components/Nav'
 import JaxMath from '@/components/JaxMath'
 import Storage from '@/utils/auth'
-import { getExamSubject, submitExam } from '@/api/exam'
+
+import { getExamSubject, submitExam, uploadImage } from '@/api/exam'
+import wx from 'jweixin-1.6.0'
+
 // import wx from 'weixin-js-sdk'
 
 export default {
@@ -278,6 +292,55 @@ export default {
         return
       }
       this.idx++
+    },
+    // 拍照上传问答题答题记录
+    handleUpload(item) {
+      wx.ready(() => {
+        setTimeout(() => {
+          const that = this
+          // eslint-disable-next-line no-undef
+          wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+              // const localIds = res.localIds // 返回选定照片的本地 ID 列表，localId可以作为 img 标签的 src 属性显示图片
+              that.localIds = res.localIds
+              wx.getLocalImgData({
+                localId: that.localIds[0], // 图片的localID
+                success: function (res) {
+                  let base64Data = ''
+                  if (res.localData.indexOf(';base64,') === -1) {
+                    // 兼容处理，安卓获取的图片base64码没有前缀，而苹果有,base64前缀并不固定
+                    base64Data = 'data:image/jpeg;base64,' + res.localData
+                  }
+                  if (res.localData.indexOf('data:image/jpg;base64,') !== -1) {
+                    // 兼容处理，若是苹果手机，将前缀中的jgp替换成jpeg
+                    base64Data = res.localData.replace('data:image/jpg;base64,', 'data:image/jpeg;base64,')
+                  }
+
+                  const file = that.$base64toFile(base64Data)
+                  const fd = new FormData()
+                  fd.append('cosPath', 'gfkd/masterhead')
+                  fd.append('file', file)
+                  uploadImage(fd).then(result => {
+                    if (result.code === 200) {
+                      Toast({
+                        message: '上传成功',
+                        position: 'middle'
+                      })
+                      that.question[that.idx].stuAnswer = result.data.accessUrl
+                      that.$set(that.question, that.idx, that.question[that.idx])
+                      // 缓存作答记录
+                      Storage.setExamRecord(`contest-${that.examId}`, that.question)
+                    }
+                  })
+                }
+              })
+            }
+          })
+        }, 100)
+      })
     },
     handleClick(info, idx) {
       const question = this.question[this.idx] // 每题选项
@@ -573,8 +636,31 @@ export default {
       }
       .subject-title {
         margin-bottom: 60px;
+        white-space: wrap;
+        .mymath {
+          display: block;
+          .mjx-chtml {
+            white-space: wrap;
+            word-wrap: break-word;
+            word-break: break-all;
+          }
+          // span {
+          //   padding-right: 10px;
+          // }
+        }
       }
       .subject-options {
+        .upload-icon-pic {
+          // width: 100%;
+          height: 180px;
+          background-color: red;
+          background: url('../../assets/image/add.png') no-repeat center center;
+        }
+        .upload-icon-img {
+          img {
+            width: 100%;
+          }
+        }
         .option-item {
           margin-bottom: 40px;
           min-height: 90px;

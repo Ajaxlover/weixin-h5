@@ -50,8 +50,8 @@ export default {
       this.$emit('finish')
     },
     change(timeData) {
-      const { minutes, seconds, milliseconds } = timeData
-      const down = (minutes * 60 + seconds) * 1000 + milliseconds
+      const { hours, minutes, seconds, milliseconds } = timeData
+      const down = (hours * 60 * 60 + minutes * 60 + seconds) * 1000 + milliseconds
       if (down <= 15 * 60 * 1000) {
         this.textColor = 'red'
       } else {

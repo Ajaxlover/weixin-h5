@@ -60,6 +60,7 @@
 
 <script>
 import { getBanner, getContestList } from '@/api/home'
+// import BetterScroll from 'better-scroll'
 // import wx from 'weixin-js-sdk'
 
 // import authUtils from '@/utils/auth.js'
@@ -87,6 +88,11 @@ export default {
   },
   computed: {},
   mounted() {
+    // eslint-disable-next-line no-unused-vars
+    // const bs = new BetterScroll('.wrap-home', {
+    //   scrollY: true
+    // })
+
     // 监听IOS下物理返回键
     if (window.history && window.history.pushState) {
       window.history.pushState(null, null, document.URL)

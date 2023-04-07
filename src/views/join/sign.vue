@@ -20,8 +20,8 @@
           :line-color="lineColor"
           :bg-color.sync="bgColor"
         />
-        <van-button class="resign" type="primary" size="large" round @click="clearPaint">重新签名</van-button>
         <van-button class="resign" :disabled="isDisable" type="primary" size="large" round @click="handleGenerate">确定</van-button>
+        <van-button class="resign" type="primary" size="large" round @click="clearPaint">重新签名</van-button>
       </div>
     </div>
     <!-- <div class="footer van-hairline--top">

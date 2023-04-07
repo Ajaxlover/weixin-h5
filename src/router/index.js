@@ -55,7 +55,7 @@ export const routes = [
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: true, // 是否需要微信验签
-        jsApiList: ['hideAllNonBaseMenuItem', 'hideMenuItems', 'showMenuItems'],
+        jsApiList: ['hideAllNonBaseMenuItem', 'hideMenuItems', 'showMenuItems', 'chooseImage'],
         showMenuList: []
       },
       keepAlive: false,
@@ -86,7 +86,7 @@ export const routes = [
       thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
       wx: {
         sign: true, // 是否需要微信验签
-        jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems']
+        jsApiList: ['hideAllNonBaseMenuItem', 'showMenuItems', 'chooseImage']
       },
       keepAlive: false,
       title: ''

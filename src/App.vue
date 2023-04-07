@@ -65,10 +65,12 @@ body {
 html,
 body,
 #app {
-  // height: 100%;
-  width: 100%;
+  // height: 100vh;
+  width: 100vw;
   overflow: auto;
+  // overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  // background-color: red;
   background-color: #f4f4f4;
   display: flex;
   flex-direction: column;
@@ -89,5 +91,14 @@ img {
 .mymath img {
   display: block;
   max-width: 40%;
+}
+.mymath p {
+  margin: 0;
+  display: inline-block;
+  vertical-align: top;
+  color: red;
+}
+.mymath .MathJax_CHTML {
+  outline: 0 !important;
 }
 </style>

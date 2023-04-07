@@ -4,6 +4,8 @@
     <div class="content">
       <div class="desc">报考信息</div>
       <div class="content-form">
+        <!-- 人脸录入图片 -->
+        <van-image v-if="faceUrl" class="face-pic" round :src="faceUrl" @click="previewFace" />
         <van-cell-group>
           <van-field
             v-model="username"
@@ -95,7 +97,8 @@
 
 <script>
 import Nav from '@/components/Nav'
-import { Toast } from 'vant'
+// eslint-disable-next-line no-unused-vars
+import { Toast, ImagePreview } from 'vant'
 // import wx from 'weixin-js-sdk'
 import wx from 'jweixin-1.6.0'
 import { uploadImage } from '@/api/exam'
@@ -169,6 +172,13 @@ export default {
     this.init()
   },
   methods: {
+    previewFace() {
+      const url = this.faceUrl
+      ImagePreview({
+        images: [url],
+        showIndex: false
+      })
+    },
     validateEmail() {
       this.email = this.email.replace(
         /^(?:[\u3400-\u4DB5\u4E00-\u9FEA\uFA0E\uFA0F\uFA11\uFA13\uFA14\uFA1F\uFA21\uFA23\uFA24\uFA27-\uFA29]|[\uD840-\uD868\uD86A-\uD86C\uD86F-\uD872\uD874-\uD879][\uDC00-\uDFFF]|\uD869[\uDC00-\uDED6\uDF00-\uDFFF]|\uD86D[\uDC00-\uDF34\uDF40-\uDFFF]|\uD86E[\uDC00-\uDC1D\uDC20-\uDFFF]|\uD873[\uDC00-\uDEA1\uDEB0-\uDFFF]|\uD87A[\uDC00-\uDFE0])+$/,
@@ -417,13 +427,22 @@ export default {
       font-weight: 600;
     }
     .content-form {
-      height: 700px;
+      min-height: 700px;
       background-color: #fff;
       border-radius: 20px;
+      padding-top: 20px;
       padding-bottom: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      .face-pic {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 10px;
+      }
       /deep/ .van-cell--required::before {
         left: 100px;
       }
