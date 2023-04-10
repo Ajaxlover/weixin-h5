@@ -82,9 +82,11 @@ export default {
 
 <style lang="scss" scoped>
 .page-credentials {
-  height: 1400px;
+  // height: 1400px;
   width: 100%;
   background-color: #f4f4f4;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
   .content {
     background-color: #f4f4f4;
     padding: 30px 28px 0 28px;

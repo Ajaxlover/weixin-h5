@@ -33,7 +33,31 @@ export default {
       isRouterAlive: true
     }
   },
-  mounted() {},
+  mounted() {
+    var overscroll = function (el) {
+      el.addEventListener('touchstart', function () {
+        const top = el.scrollTop
+        const totalScroll = el.scrollHeight
+        const currentScroll = top + el.offsetHeight
+        if (top === 0) {
+          el.scrollTop = 1
+        } else if (currentScroll === totalScroll) {
+          el.scrollTop = top - 1
+        }
+      })
+      el.addEventListener('touchmove', function (evt) {
+        if (el.offsetHeight < el.scrollHeight) {
+          evt._isScroller = true
+        }
+      })
+    }
+    overscroll(document.querySelector('body'))
+    document.body.addEventListener('touchmove', function (evt) {
+      if (!evt._isScroller) {
+        evt.preventDefault()
+      }
+    })
+  },
   methods: {
     // 用provide / inject 组合,控制router-view的显示或隐藏，从而控制页面的再次加载
     reload() {
@@ -69,7 +93,6 @@ body,
   width: 100vw;
   overflow: auto;
   // overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
   // background-color: red;
   background-color: #f4f4f4;
   display: flex;
@@ -79,6 +102,9 @@ body,
     overflow: auto;
   }
 }
+// .van-tabbar__placeholder {
+//   height: 100px;
+// }
 
 img {
   pointer-events: none;
@@ -96,7 +122,6 @@ img {
   margin: 0;
   display: inline-block;
   vertical-align: top;
-  color: red;
 }
 .mymath .MathJax_CHTML {
   outline: 0 !important;

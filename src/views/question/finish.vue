@@ -1,11 +1,11 @@
 <template>
-  <div class="page-credentials">
+  <div class="page-finish">
     <Nav title="证书" @go-back="goBack"></Nav>
     <div class="content">
-      <van-empty v-if="list.length === 0" description="您还没有证书" />
-      <div v-for="(item, idx) in list" v-else :key="idx" class="list-item" @click="goDetail(item)">
+      <!-- <van-empty v-if="list.length === 0" description="您还没有证书" /> -->
+      <div v-for="(item, idx) in 100" :key="idx" class="list-item" @click="goDetail(item)">
         <div class="item-box">
-          <div class="item-name">{{ item.masterheadName }}</div>
+          <div class="item-name">{{ idx + 1 }}</div>
           <div class="item-honor">
             <div class="item-icon"></div>
             <span>{{ item.awardName }}</span>
@@ -38,7 +38,7 @@ export default {
   },
   computed: {},
   mounted() {
-    this.getListData()
+    // this.getListData()
   },
   methods: {
     getListData() {
@@ -81,13 +81,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page-credentials {
-  height: 1400px;
+.page-finish {
+  // height: 1400px;
   width: 100%;
-  background-color: #f4f4f4;
+  // background-color: red;
+  // border-bottom: 1px solid #000;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
   .content {
     background-color: #f4f4f4;
     padding: 30px 28px 0 28px;
+    // border-top: 1px solid #000;
+    // border-bottom: 1px solid #000;
+    // height: calc(100vw - 180px);
+    height: calc(100% - 180px);
+    // background-color: red;
+
     .list-item {
       width: 100%;
       height: 270px;

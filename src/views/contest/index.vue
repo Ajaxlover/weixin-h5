@@ -133,10 +133,14 @@ export default {
   // background-color: red;
   width: 100%;
   min-height: 1000px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  // border: 1px solid #000;
   .content {
     // height: calc(100vh-50px);
     // background-color: red;
     padding: 38px 28px 0 28px;
+
     display: flex;
     flex-direction: column;
     .list-item {
