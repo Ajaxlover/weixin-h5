@@ -76,6 +76,7 @@ export default {
   box-sizing: border-box;
 }
 body {
+  touch-action: none;
   -webkit-tap-highlight-color: rgba($color: #000000, $alpha: 0); // 点击高亮
   -webkit-text-size-adjust: 100% !important; // ios禁止调整字体大小
   overflow: hidden;
