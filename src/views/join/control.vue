@@ -158,19 +158,28 @@ export default {
         })
       }
     },
-    init() {
-      getContestDetail({
+    async init() {
+      const res = await getContestDetail({
         masterheadId: this.id
       })
-        .then(res => {
-          this.info = res.data
-          if (res.data.signPic) {
-            localStorage.setItem(`esign${this.id}`, res.data.signPic)
-          }
-        })
-        .catch(err => {
-          console.error(err)
-        })
+      if (res.code === 200) {
+        this.info = res.data
+        if (res.data.signPic) {
+          localStorage.setItem(`esign${this.id}`, res.data.signPic)
+        }
+      }
+      // getContestDetail({
+      //   masterheadId: this.id
+      // })
+      //   .then(res => {
+      //     this.info = res.data
+      //     if (res.data.signPic) {
+      //       localStorage.setItem(`esign${this.id}`, res.data.signPic)
+      //     }
+      //   })
+      //   .catch(err => {
+      //     console.error(err)
+      //   })
     }
   }
 }
