@@ -60,6 +60,7 @@
             label-width="90"
             maxlength="11"
             type="tel"
+            required
             label="联系电话："
             placeholder="请输入手机号码"
             error-message=""
@@ -348,6 +349,13 @@ export default {
       if (!isEmail(this.email)) {
         Toast({
           message: '请填写有效的邮箱',
+          position: 'middle'
+        })
+        return
+      }
+      if (this.phone.trim().length === 0) {
+        Toast({
+          message: '手机号不能为空',
           position: 'middle'
         })
         return

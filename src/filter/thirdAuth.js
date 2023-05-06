@@ -99,7 +99,7 @@ function getThirdUrl(to) {
         encodeURIComponent(process.env.VUE_APP_BASEURL + process.env.VUE_APP_BASE_PUBLIC_PATH + to.fullPath) +
         '&response_type=code&scope=snsapi_base&state=' +
         process.env.VUE_APP_STATE +
-        '#wechat_redirect'
+        '&connect_redirect=1#wechat_redirect'
     } else if (to.meta.thirdAuth === 'userinfo') {
       redirect_url =
         'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
@@ -108,7 +108,7 @@ function getThirdUrl(to) {
         encodeURIComponent(process.env.VUE_APP_BASEURL + process.env.VUE_APP_BASE_PUBLIC_PATH + to.fullPath) +
         '&response_type=code&scope=snsapi_userinfo&state=' +
         process.env.VUE_APP_STATE +
-        '#wechat_redirect'
+        '&connect_redirect=1#wechat_redirect'
     }
   } else if (store.getters.thirdType === 'ali') {
     // ali

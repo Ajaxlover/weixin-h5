@@ -4,7 +4,7 @@
     <div class="wrap-home">
       <div class="t-container">
         <div class="home-title">
-          <span>国防科大竞赛</span>
+          <span>知识竞赛</span>
         </div>
         <div class="home-banner van-hairline--surround">
           <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
@@ -41,6 +41,8 @@
           <van-list v-else v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
             <div v-for="item in list" :key="item.id" class="home-exam-item van-hairline--surround" @click="toJoin(item)">
               <!-- <img src="../../assets/image/test_pic .png" alt="" /> -->
+              <!-- 报名结束显示遮罩层 -->
+              <div v-if="new Date().getTime() >= item.endTime" class="img-mask"></div>
               <img :src="item.coverUrl" alt="" />
               <div class="exam-name van-ellipsis">
                 <div class="exam-name van-ellipsis">
@@ -275,11 +277,19 @@ export default {
         overflow: auto;
         min-height: 600px;
         .home-exam-item {
+          position: relative;
           margin-top: 10px;
           display: flex;
           flex-direction: column;
           margin-bottom: 30px;
-
+          .img-mask {
+            position: absolute;
+            width: 100%;
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.3);
+          }
           img {
             width: 100%;
             height: 300px;

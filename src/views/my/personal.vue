@@ -63,6 +63,7 @@
           <van-field
             v-model.trim="phone"
             :readonly="isDisable"
+            required
             label-class="content-form-text"
             label-width="90"
             maxlength="11"
@@ -238,6 +239,13 @@ export default {
       if (!isEmail(this.email)) {
         Toast({
           message: '请填写有效的邮箱',
+          position: 'middle'
+        })
+        return
+      }
+      if (this.phone.trim().length === 0) {
+        Toast({
+          message: '手机号不能为空',
           position: 'middle'
         })
         return

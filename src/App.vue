@@ -117,7 +117,8 @@ img {
 }
 .mymath img {
   display: block;
-  max-width: 60%;
+  min-width: 60%;
+  max-width: 70%;
 }
 .mymath p {
   margin: 0;
