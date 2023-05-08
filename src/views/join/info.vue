@@ -61,7 +61,7 @@
             maxlength="11"
             type="tel"
             required
-            label="联系电话："
+            label="手机："
             placeholder="请输入手机号码"
             error-message=""
           />

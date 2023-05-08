@@ -68,7 +68,7 @@
             label-width="90"
             maxlength="11"
             type="tel"
-            label="联系电话："
+            label="手机："
             placeholder="请输入手机号码"
             error-message=""
           />
@@ -218,13 +218,6 @@ export default {
       if (this.school.trim().length === 0) {
         Toast({
           message: '学校不能为空',
-          position: 'middle'
-        })
-        return
-      }
-      if (this.email.trim().length === 0) {
-        Toast({
-          message: '邮箱不能为空',
           position: 'middle'
         })
         return
