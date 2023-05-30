@@ -57,7 +57,7 @@
         </div>
       </div>
     </van-popup>
-    <Nav :is-show-right="true" title="查看答卷" :time="time" :is-show-time="false" @go-back="goBack" @right-click="rightClick"></Nav>
+    <Nav :is-show-right="true" title="答卷" :time="time" :is-show-time="false" @go-back="goBack" @right-click="rightClick"></Nav>
     <div class="content">
       <div v-for="(item, index) in question" v-show="index === idx" :key="index" class="question">
         <div class="subject-type">
