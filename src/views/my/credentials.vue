@@ -5,7 +5,8 @@
       <van-empty v-if="list.length === 0" description="您还没有证书" />
       <div v-for="(item, idx) in list" v-else :key="idx" class="list-item" @click="goDetail(item)">
         <div class="item-box">
-          <div class="item-name">{{ item.masterheadName }}</div>
+          <div v-if="item.masterheadName" class="item-name">{{ item.masterheadName }}</div>
+          <div v-else class="item-name-empty">11111111</div>
           <div class="item-honor">
             <div class="item-icon"></div>
             <span>{{ item.awardName }}</span>
@@ -101,6 +102,12 @@ export default {
         position: relative;
         height: 100%;
         .item-name {
+          margin-bottom: 40px;
+          color: #222;
+          font-weight: 600;
+        }
+        .item-name-empty {
+          visibility: hidden;
           margin-bottom: 40px;
           color: #222;
           font-weight: 600;
