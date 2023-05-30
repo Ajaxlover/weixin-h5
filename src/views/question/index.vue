@@ -1,5 +1,12 @@
 <template>
   <div class="page-question">
+    <van-overlay z-index="99999" :show="showOverlay">
+      <div class="wrapper" @click.stop>
+        <div class="block">
+          <van-button class="overlay-btn" :loading="overlayLoading" loading-text="交卷中..." type="primary" @click="overlaySubmit">交卷</van-button>
+        </div>
+      </div>
+    </van-overlay>
     <van-popup v-model="show" round position="bottom" :style="{ height: '580px' }">
       <div class="contest-popup">
         <div class="contest-popup-toolBar van-hairline--bottom">
@@ -27,6 +34,12 @@
           <div v-if="questionMultiple.length > 0" class="contest-popup-danxuan">多选题</div>
           <div v-if="questionMultiple.length > 0" class="contest-popup-danxuan-list">
             <div v-for="(j, index) in questionMultiple" :key="index" class="list-item">
+              <div :class="j.stuAnswer ? 'answered-bgc' : ''" class="item" @click="changIdx(j)">{{ j.num }}</div>
+            </div>
+          </div>
+          <div v-if="questionType4.length > 0" class="contest-popup-danxuan">填空题</div>
+          <div v-if="questionType4.length > 0" class="contest-popup-danxuan-list">
+            <div v-for="(j, index) in questionType4" :key="index" class="list-item">
               <div :class="j.stuAnswer ? 'answered-bgc' : ''" class="item" @click="changIdx(j)">{{ j.num }}</div>
             </div>
           </div>
@@ -59,11 +72,12 @@
           <van-tag v-else-if="item.tSubject === 2" plain type="primary">单选题</van-tag>
           <van-tag v-else-if="item.tSubject === 1" plain type="primary">判断题</van-tag>
           <van-tag v-else-if="item.tSubject === 5" plain type="primary">问答题</van-tag>
+          <van-tag v-else-if="item.tSubject === 4" plain type="primary">填空题</van-tag>
           <span>{{ index + 1 }}/{{ question.length }}</span>
           <span>({{ item.score }}分)</span>
         </div>
         <div class="subject-title"><JaxMath :data="item.title"></JaxMath></div>
-        <div v-if="item.tSubject === 5" class="subject-options">
+        <div v-if="item.tSubject === 5 || item.tSubject === 4" class="subject-options">
           <div class="upload-icon-pic" @click="handleUpload(item)"></div>
           <div v-if="item.stuAnswer" class="upload-icon-img">
             <img :src="item.stuAnswer" alt="" />
@@ -80,10 +94,18 @@
     <div class="footer van-hairline--top">
       <van-button v-if="isErrorBank == 0" class="join-btn" type="primary" size="large" round @click.native="next">下一题</van-button>
       <div v-if="isErrorBank == 1" class="btn-container">
-        <van-button class="next-btn" type="primary" size="large" round @click.native="isErrorBankPre">上一题</van-button>
-        <van-button class="next-btn" type="primary" size="large" round @click.native="isErrorBankNext">{{
-          idx === question.length - 1 ? '交卷' : '下一题'
-        }}</van-button>
+        <!-- class="btn-container" -->
+        <!-- <van-button class="next-btn" type="primary" size="large" round @click.native="isErrorBankPre">上一题</van-button> -->
+        <van-button
+          class="next-btn"
+          :loading="isErrorBankLoading"
+          loading-text="交卷中..."
+          type="primary"
+          size="large"
+          round
+          @click.native="isErrorBankNext"
+          >{{ idx === question.length - 1 ? '交卷' : '下一题' }}</van-button
+        >
       </div>
     </div>
   </div>
@@ -109,6 +131,9 @@ export default {
   },
   data() {
     return {
+      isView: this.$route.query.isView,
+      overlayLoading: false, // 遮罩交卷按钮
+      showOverlay: false, // 自动提交遮罩
       flag: 0, // 1-非默认倒计时,=0时不会触发自动提交
       isMock: this.$route.query.isMock,
       startAnswerTime: '',
@@ -121,6 +146,7 @@ export default {
       time: 0, // 倒计时初始值，注意不能设置为0,否则进页面就触发交卷
       show: false,
       loading: false,
+      isErrorBankLoading: false, // 闯关模式交卷
       idx: 0,
       isShowTime: true,
       isShowRight: true,
@@ -129,7 +155,9 @@ export default {
       questionBoolean: [], // 判断题
       questionSingle: [], // 单选题
       questionMultiple: [], // 多选题
-      questionType5: [] // 问答题
+      questionType5: [], // 问答题
+      questionType4: [], // 填空题
+      isSubmit: 1 // 2-交卷时不触发切屏  1-交卷时触发切屏
     }
   },
   computed: {},
@@ -140,16 +168,24 @@ export default {
     this.noSleep()
   },
   beforeDestroy() {
-    if (this.switchScreenTimes > 0) {
+    this.showOverlay = false
+    if (this.switchScreenTimes > 0 && this.isSubmit === 1) {
       // 开启了防切屏
-      let screenTimes = localStorage.getItem(`screenTimes-${this.examResultUniqueId}`)
+      let screenTimes = Number(localStorage.getItem(`screenTimes-${this.examResultUniqueId}`))
       // eslint-disable-next-line eqeqeq
-      if (screenTimes == this.switchScreenTimes + 1) {
+      if (screenTimes == Number(this.switchScreenTimes) + 1) {
         // 超过切屏次数自动提交
         this.doSubmit(1)
       } else {
         screenTimes++
-        localStorage.setItem(`screenTimes-${this.examResultUniqueId}`, screenTimes)
+        localStorage.setItem(`screenTimes-${this.examResultUniqueId}`, Number(screenTimes))
+        Toast({
+          // eslint-disable-next-line eqeqeq
+          message: `考试过程中不允许切屏，切屏次数达到${Number(this.switchScreenTimes) + 1}次，系统将强制自动交卷；你目前已切屏${Number(
+            screenTimes
+          )}次`,
+          position: 'middle'
+        })
       }
     }
   },
@@ -181,6 +217,8 @@ export default {
             this.questionSingle.push(i)
           } else if (i.tSubject === 5) {
             this.questionType5.push(i)
+          } else if (i.tSubject === 4) {
+            this.questionType4.push(i)
           } else {
             this.questionMultiple.push(i)
           }
@@ -218,6 +256,8 @@ export default {
                 this.questionSingle.push(i)
               } else if (i.tSubject === 5) {
                 this.questionType5.push(i)
+              } else if (i.tSubject === 4) {
+                this.questionType4.push(i)
               } else {
                 this.questionMultiple.push(i)
               }
@@ -259,21 +299,21 @@ export default {
     },
     isErrorBankNext() {
       if (this.idx === this.question.length - 1) {
-        Dialog.confirm({
-          title: '提示',
-          message: '是否确认交卷?',
-          confirmButtonText: '确认',
-          confirmButtonColor: '#2cad69',
-          beforeClose: (action, done) => {
-            if (action === 'confirm') {
-              // 交卷
-              this.doSubmit()
-              done()
-            } else {
-              done()
-            }
-          }
-        })
+        this.doErrorBankSubmit()
+        // Dialog.confirm({
+        //   title: '提示',
+        //   message: '是否确认交卷?',
+        //   confirmButtonText: '确认',
+        //   confirmButtonColor: '#2cad69',
+        //   beforeClose: (action, done) => {
+        //     if (action === 'confirm') {
+        //       this.doSubmit()
+        //       done()
+        //     } else {
+        //       done()
+        //     }
+        //   }
+        // })
       } else {
         // 切换下一题 当前题目未答不准切换
         if (this.question[this.idx].stuAnswer) {
@@ -412,6 +452,103 @@ export default {
         this.doSubmitDirect()
       }
     },
+    // 遮罩手动交卷
+    overlaySubmit() {
+      const startTime = localStorage.getItem(`startTime-${this.examId}`)
+      const examPic = localStorage.getItem(`examPic${this.examId}`) ? localStorage.getItem(`examPic${this.examId}`) : ''
+      const content = []
+      this.question.forEach(item => {
+        content.push({
+          bankId: item.bankId,
+          parentId: item.parentId,
+          stuAnswer: item.stuAnswer ? item.stuAnswer : '',
+          sonSubList: item.sonSubList
+        })
+      })
+      const data = {
+        examId: this.examId,
+        examResultUniqueId: this.examResultUniqueId,
+        forceSubmitFlag: 0,
+        startTime,
+        content: JSON.stringify(content),
+        examStuPicUrl: examPic
+      }
+      this.overlayLoading = true
+      submitExam(data)
+        .then(res => {
+          if (res.code === 200) {
+            this.isSubmit = 2
+            this.overlayLoading = false
+            this.showOverlay = false
+            this.removeCaches()
+            Toast({
+              message: '交卷成功',
+              position: 'middle'
+            })
+            this.$router.replace({
+              path: '/result',
+              query: {
+                examId: this.examId,
+                id: this.id,
+                isView: this.isView,
+                // eslint-disable-next-line eqeqeq
+                isMock: this.isMock == 1 ? this.isMock : 0
+              }
+            })
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
+    // 闯关模式交卷
+    doErrorBankSubmit() {
+      const startTime = localStorage.getItem(`startTime-${this.examId}`)
+      const examPic = localStorage.getItem(`examPic${this.examId}`) ? localStorage.getItem(`examPic${this.examId}`) : ''
+      const content = []
+      this.question.forEach(item => {
+        content.push({
+          bankId: item.bankId,
+          parentId: item.parentId,
+          stuAnswer: item.stuAnswer ? item.stuAnswer : '',
+          sonSubList: item.sonSubList
+        })
+      })
+      const data = {
+        examId: this.examId,
+        examResultUniqueId: this.examResultUniqueId,
+        forceSubmitFlag: 0,
+        startTime,
+        content: JSON.stringify(content),
+        examStuPicUrl: examPic
+      }
+      this.isErrorBankLoading = true
+      submitExam(data)
+        .then(res => {
+          if (res.code === 200) {
+            this.isErrorBankLoading = false
+            this.isSubmit = 2
+            this.removeCaches()
+            Toast({
+              message: '交卷成功',
+              position: 'middle'
+            })
+            this.$router.replace({
+              path: '/result',
+              query: {
+                examId: this.examId,
+                id: this.id,
+                isView: this.isView,
+                // eslint-disable-next-line eqeqeq
+                isMock: this.isMock == 1 ? this.isMock : 0
+              }
+            })
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
     // 直接交卷
     doSubmitDirect() {
       const startTime = localStorage.getItem(`startTime-${this.examId}`)
@@ -438,6 +575,7 @@ export default {
         .then(res => {
           if (res.code === 200) {
             this.loading = false
+            this.isSubmit = 2
             this.removeCaches()
             Toast({
               message: '交卷成功',
@@ -448,6 +586,7 @@ export default {
               query: {
                 examId: this.examId,
                 id: this.id,
+                isView: this.isView,
                 // eslint-disable-next-line eqeqeq
                 isMock: this.isMock == 1 ? this.isMock : 0
               }
@@ -482,9 +621,10 @@ export default {
         .then(res => {
           if (res.code === 200) {
             this.removeCaches()
+            this.isSubmit = 2
             Toast({
               // eslint-disable-next-line eqeqeq
-              message: forceSubmitFlag == 1 ? '超过切屏次数，自动交卷成功' : '交卷成功',
+              message: forceSubmitFlag == 1 ? `考试过程中不允许切屏，切屏次数达到${Number(this.switchScreenTimes) + 1}次，强制交卷成功` : '交卷成功',
               position: 'middle'
             })
             this.$router.replace({
@@ -492,6 +632,7 @@ export default {
               query: {
                 examId: this.examId,
                 id: this.id,
+                isView: this.isView,
                 // eslint-disable-next-line eqeqeq
                 isMock: this.isMock == 1 ? this.isMock : 0
               }
@@ -502,9 +643,62 @@ export default {
           console.error(err)
         })
     },
+    // 自动交卷
+    doAutoSubmit(forceSubmitFlag = 0) {
+      const startTime = localStorage.getItem(`startTime-${this.examId}`)
+      const examPic = localStorage.getItem(`examPic${this.examId}`) ? localStorage.getItem(`examPic${this.examId}`) : ''
+      const content = []
+      this.question.forEach(item => {
+        content.push({
+          bankId: item.bankId,
+          parentId: item.parentId,
+          stuAnswer: item.stuAnswer ? item.stuAnswer : '',
+          sonSubList: item.sonSubList
+        })
+      })
+      const data = {
+        examId: this.examId,
+        examResultUniqueId: this.examResultUniqueId,
+        forceSubmitFlag,
+        startTime,
+        content: JSON.stringify(content),
+        examStuPicUrl: examPic
+      }
+      submitExam(data)
+        .then(res => {
+          if (res.code === 200) {
+            this.isSubmit = 2
+            this.removeCaches()
+            Toast({
+              // eslint-disable-next-line eqeqeq
+              message: forceSubmitFlag == 1 ? '超过切屏次数，自动交卷成功' : '交卷成功',
+              position: 'middle'
+            })
+            this.$router.replace({
+              path: '/result',
+              query: {
+                examId: this.examId,
+                id: this.id,
+                isView: this.isView,
+                // eslint-disable-next-line eqeqeq
+                isMock: this.isMock == 1 ? this.isMock : 0
+              }
+            })
+          } else {
+            // 显示交卷遮罩
+            this.showOverlay = true
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
     finish() {
       if (this.flag === 1) {
-        this.doSubmit()
+        if (this.show) {
+          this.show = false
+        }
+        this.doAutoSubmit()
       }
     },
     removeCaches() {
@@ -543,6 +737,21 @@ export default {
   width: 100%;
   background-color: #fff;
   position: relative;
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    .block {
+      .overlay-btn {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        color: #fff;
+        background-color: #2cad69;
+      }
+    }
+  }
   /deep/ .van-popup--bottom {
     padding-top: 30px;
   }
@@ -699,10 +908,10 @@ export default {
       background-color: #2cad69;
     }
     .btn-container {
-      display: flex;
-      justify-content: space-between;
+      // display: flex;
+      // justify-content: space-between;
       .next-btn {
-        width: 49%;
+        // width: 49%;
         height: 90px;
         background-color: #2cad69;
       }

@@ -35,3 +35,15 @@ export function contestCredential(data) {
     data
   })
 }
+
+/**
+ * @desc 获取证书图片
+ * @param
+ */
+export function getCredentialImg(data) {
+  return request({
+    url: '/exam/masterHead/award/lookStuAwardImg',
+    method: 'post',
+    data
+  })
+}

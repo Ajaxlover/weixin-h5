@@ -4,7 +4,7 @@
     <div class="content">
       <div class="contest-name">{{ info.examName }}</div>
       <div class="contest-score">
-        <span v-if="showScore" class="score">{{ info.score }}</span>
+        <div v-if="showScore" class="score">{{ info.score }}分</div>
         <span v-else class="un-score"
           >注意:{{
             isMock == 1
@@ -12,6 +12,9 @@
               : '本次竞赛已结束。竞赛最新动态将在个人中心及微信公众号内公布，请各位选手及时关注。'
           }}</span
         >
+        <div class="paper-btn">
+          <van-button v-if="isView != 0" class="s-btn" type="primary" size="large" round @click="goPaper">查看答卷</van-button>
+        </div>
       </div>
     </div>
   </div>
@@ -19,7 +22,7 @@
 
 <script>
 import Nav from '@/components/Nav'
-import { getExamScore } from '@/api/exam'
+import { getExamScore, getPaper } from '@/api/exam'
 
 export default {
   name: 'Result',
@@ -28,6 +31,7 @@ export default {
   },
   data() {
     return {
+      isView: this.$route.query.isView,
       isMock: this.$route.query.isMock,
       id: this.$route.query.id,
       examId: this.$route.query.examId,
@@ -66,6 +70,28 @@ export default {
           isMock: this.isMock == 1 ? this.isMock : 0
         }
       })
+    },
+    goPaper() {
+      getPaper({
+        examId: this.examId
+      })
+        .then(res => {
+          if (res.code === 200) {
+            this.$router.replace({
+              path: '/paper',
+              query: {
+                id: this.id,
+                examId: this.examId,
+                // eslint-disable-next-line eqeqeq
+                isMock: this.isMock == 1 ? this.isMock : 0,
+                isView: this.isView
+              }
+            })
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
     }
   }
 }
@@ -100,12 +126,28 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
       .un-score {
         font-size: 38px;
         padding: 0 80px;
       }
       .score {
-        font-size: 250px;
+        width: 500px;
+        height: 500px;
+        font-size: 100px;
+        text-align: center;
+        line-height: 500px;
+        background: url('../../assets/image/score.png') no-repeat;
+        background-size: 100%;
+      }
+
+      .paper-btn {
+        position: absolute;
+        bottom: 15px;
+        .s-btn {
+          width: 400px;
+          background-color: #2cad69;
+        }
       }
     }
   }

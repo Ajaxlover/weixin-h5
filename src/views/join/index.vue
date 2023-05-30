@@ -31,9 +31,8 @@
     </div>
     <div class="footer van-hairline--top">
       <van-button square type="primary" :icon="iconUrl" @click="toShare">分享 </van-button>
-      <van-button :disabled="isDisabled" :class="isDisabled ? 'time-down-bgc' : ''" square type="primary" @click="goControl">{{
-        isDisabled ? '已结束' : '报名'
-      }}</van-button>
+      <!-- :class="isDisabled ? 'time-down-bgc' : ''" -->
+      <van-button square type="primary" @click="goControl">{{ isDisabled ? '进入竞赛' : '报名' }}</van-button>
     </div>
   </div>
 </template>

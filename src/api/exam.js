@@ -107,3 +107,15 @@ export function getExamScore(data) {
     data
   })
 }
+
+/**
+ * @desc 查询考试答卷
+ * @param
+ */
+export function getPaper(data) {
+  return request({
+    url: '/exam/exam/student/getResultDetail',
+    method: 'post',
+    data
+  })
+}

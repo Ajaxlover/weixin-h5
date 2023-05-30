@@ -20,6 +20,7 @@
             label-width="90"
             required
             label="姓名："
+            maxlength="30"
             placeholder="请输入姓名"
           />
           <!-- label="学校：" -->

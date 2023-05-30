@@ -108,7 +108,8 @@ export default {
                 examId: this.examId,
                 id: this.id,
                 // eslint-disable-next-line eqeqeq
-                isMock: this.isMock == 1 ? this.isMock : 0
+                isMock: this.isMock == 1 ? this.isMock : 0,
+                isView: this.info.isView
               }
             })
           }
@@ -135,6 +136,7 @@ export default {
               query: {
                 examId: this.examId,
                 id: this.id,
+                isView: this.info.isView,
                 isErrorBank: this.info.isErrorBank,
                 switchScreenTimes: this.info.switchScreenTimes,
                 answerTime: this.info.answerTime,
@@ -149,6 +151,7 @@ export default {
             query: {
               examId: this.examId,
               id: this.id,
+              isView: this.info.isView,
               isErrorBank: this.info.isErrorBank,
               switchScreenTimes: this.info.switchScreenTimes,
               answerTime: this.info.answerTime,
@@ -211,6 +214,7 @@ export default {
                                     query: {
                                       examId: that.examId,
                                       id: that.id,
+                                      isView: that.info.isView,
                                       isErrorBank: that.info.isErrorBank,
                                       switchScreenTimes: that.info.switchScreenTimes,
                                       answerTime: that.info.answerTime,
@@ -232,6 +236,7 @@ export default {
                   query: {
                     examId: this.examId,
                     id: this.id,
+                    isView: this.info.isView,
                     isErrorBank: this.info.isErrorBank,
                     switchScreenTimes: this.info.switchScreenTimes,
                     answerTime: this.info.answerTime,
@@ -248,7 +253,8 @@ export default {
                   examId: this.examId,
                   id: this.id,
                   // eslint-disable-next-line eqeqeq
-                  isMock: this.isMock == 1 ? this.isMock : 0
+                  isMock: this.isMock == 1 ? this.isMock : 0,
+                  isView: this.info.isView
                 }
               })
             }

@@ -32,14 +32,14 @@
       </div>
     </div>
     <div class="footer van-hairline--top">
-      <van-button class="join-btn" type="primary" size="large" round @click="preview(info)">查看证书</van-button>
+      <van-button class="join-btn" type="primary" size="large" round @click="preview">查看证书</van-button>
     </div>
   </div>
 </template>
 
 <script>
 import Nav from '@/components/Nav'
-import { getCredentialDetail, contestCredential } from '@/api/credential'
+import { getCredentialDetail, contestCredential, getCredentialImg } from '@/api/credential'
 import { ImagePreview } from 'vant'
 
 export default {
@@ -64,11 +64,21 @@ export default {
     }
   },
   methods: {
-    preview(info) {
-      ImagePreview({
-        images: [info.certificateUrl],
-        showIndex: false
+    preview() {
+      getCredentialImg({
+        competeStuId: this.competeStuId
       })
+        .then(res => {
+          if (res.code === 200) {
+            ImagePreview({
+              images: [res.data.certificateUrl],
+              showIndex: false
+            })
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
     },
     getTypeOne() {
       contestCredential({

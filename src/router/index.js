@@ -63,6 +63,22 @@ export const routes = [
     }
   },
   {
+    path: '/paper',
+    name: 'Paper',
+    component: () => import('@/views/question/paper.vue'),
+    meta: {
+      auth: false, // 需要登录
+      thirdAuth: 'base', // '': 无需鉴权 base: 静默授权 userinfo: 用户点击授权
+      wx: {
+        sign: true, // 是否需要微信验签
+        jsApiList: ['hideAllNonBaseMenuItem', 'hideMenuItems', 'showMenuItems', 'chooseImage'],
+        showMenuList: []
+      },
+      keepAlive: false,
+      title: ''
+    }
+  },
+  {
     path: '/finish',
     name: 'Finish',
     component: () => import('@/views/question/finish.vue'),

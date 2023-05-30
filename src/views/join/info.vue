@@ -12,6 +12,7 @@
             :readonly="isDisable"
             label-class="content-form-text"
             label-width="90"
+            maxlength="30"
             required
             label="姓名："
             placeholder="请输入姓名"
@@ -34,10 +35,11 @@
             <van-picker value-key="shortCode" show-toolbar :columns="schoolCodes" @confirm="onConfirm" @cancel="showPicker = false" />
           </van-popup>
           <van-field
-            v-model="teacherName"
+            v-model.trim="teacherName"
             :readonly="isDisable"
             label-class="content-form-text"
             label-width="90"
+            maxlength="30"
             label="指导老师："
             placeholder="请输入指导老师姓名"
             error-message=""
